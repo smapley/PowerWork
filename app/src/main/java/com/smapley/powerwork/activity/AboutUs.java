@@ -17,6 +17,7 @@ import me.nereo.multi_image_selector.bean.Image;
 /**
  * Created by smapley on 15/10/24.
  * 关于我们
+ * asdf
  */
 @ContentView(R.layout.activity_aboutus)
 public class AboutUs extends BaseActivity {
