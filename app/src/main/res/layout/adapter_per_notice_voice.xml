@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/per_ll_layout">
+
+    <ImageView
+        style="@style/per_iv"
+        android:src="@mipmap/voice_iv" />
+
+    <TextView
+        android:id="@+id/per_tv_notice_voice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="50dp"
+        android:layout_marginStart="10dp"
+        android:background="@mipmap/voice_iv_notes" />
+
+    <TextView
+        android:id="@+id/per_tv_notice_voice_length"
+        android:layout_marginStart="5dp"
+        style="@style/per_tv_name" />
+
+    <TextView
+        android:id="@+id/per_tv_notice_voice_time"
+        style="@style/per_tv_time"  />
+</LinearLayout>

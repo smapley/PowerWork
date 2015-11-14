@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/add_im_menu_pic"
+        style="@style/add_iv_menu"
+        android:src="@drawable/new_pic_iv_select" />
+
+    <ImageView
+        android:id="@+id/add_im_menu_voice"
+        style="@style/add_iv_menu"
+        android:src="@drawable/new_voice_iv_select" />
+
+    <ImageView
+        android:id="@+id/add_im_menu_write"
+        style="@style/add_iv_menu"
+        android:src="@drawable/new_write_iv_select" />
+
+    <ImageView
+        android:id="@+id/add_im_menu_annex"
+        style="@style/add_iv_menu"
+        android:src="@drawable/new_annex_iv_select" />
+</LinearLayout>

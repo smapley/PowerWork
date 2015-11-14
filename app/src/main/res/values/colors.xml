@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="decorator">#00b5c8</color>
+    <color name="cal_text">#505050</color>
+    <color name="gray">#dddddd</color>
+    <color name="default_text">#03a9f4</color>
+    <color name="gray_text">#aaa</color>
+    <color name="white">#fff</color>
+    <color name="gray_lin">#ddd</color>
+</resources>

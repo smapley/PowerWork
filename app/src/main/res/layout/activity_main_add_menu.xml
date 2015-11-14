@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentEnd="true"
+    android:padding="@dimen/fab_margin"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:id="@+id/main_add_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <LinearLayout style="@style/main_add_ll_layout">
+
+            <TextView
+                android:id="@+id/main_add_menu_tv_item1"
+                style="@style/main_add_tv_item"
+                android:text="asdfas"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/main_add_menu_iv_item1"
+                style="@style/main_add_iv_pic"
+                android:src="@mipmap/new_annex_iv"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/main_add_ll_layout">
+
+            <TextView
+                android:id="@+id/main_add_menu_tv_item2"
+                style="@style/main_add_tv_item"
+                android:text="asdfas"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/main_add_menu_iv_item2"
+                style="@style/main_add_iv_pic"
+                android:src="@mipmap/new_write_iv"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/main_add_ll_layout">
+
+            <TextView
+                android:id="@+id/main_add_menu_tv_item3"
+                style="@style/main_add_tv_item"
+                android:text="asdfas"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/main_add_menu_iv_item3"
+                style="@style/main_add_iv_pic"
+                android:src="@mipmap/new_pic_iv"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/main_add_ll_layout">
+
+            <TextView
+                android:id="@+id/main_add_menu_tv_item4"
+                style="@style/main_add_tv_item"
+                android:text="asdfas"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/main_add_menu_iv_item4"
+                style="@style/main_add_iv_pic"
+                android:src="@mipmap/new_voice_iv"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/main_add_ll_layout">
+
+            <TextView
+                android:id="@+id/main_add_menu_tv_item5"
+                style="@style/main_add_tv_item"
+                android:text="asdfas"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/main_add_menu_iv_item5"
+                style="@style/main_add_iv_pic"
+                android:src="@mipmap/new_write_iv"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/main_add_menu_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:src="@mipmap/main_iv_add" />
+</LinearLayout>

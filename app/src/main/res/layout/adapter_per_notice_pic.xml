@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/per_ll_layout">
+
+    <ImageView
+        style="@style/per_iv"
+        android:src="@mipmap/pic_iv" />
+
+    <TextView
+        android:id="@+id/per_tv_notice_pic_name"
+        style="@style/per_tv_name" />
+
+    <TextView
+        android:id="@+id/per_tv_notice_pic_time"
+        style="@style/per_tv_time" />
+</LinearLayout>

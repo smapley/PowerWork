@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/per_ll_layout">
+
+    <ImageView
+        android:id="@+id/cal_iv_task_state"
+        style="@style/per_iv"
+        android:src="@mipmap/task_iv" />
+
+    <TextView
+        android:id="@+id/cal_tv_task_name"
+        style="@style/per_tv_name"
+        android:textColor="@color/default_text" />
+
+    <TextView
+        android:id="@+id/cal_tv_task_time"
+        style="@style/per_tv_time" />
+</LinearLayout>

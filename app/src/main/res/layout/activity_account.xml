@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp">
+
+            <ImageView
+                android:id="@+id/acc_iv_pic"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/acc_iv_changepic"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="60dp"
+                android:src="@mipmap/ic_launcher" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/account_tv_item"
+            android:text="@string/acc_tv_name" />
+
+        <EditText
+            android:id="@+id/acc_et_name"
+            style="@style/account_et_item"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_lin" />
+
+        <TextView
+            style="@style/account_tv_item"
+            android:text="@string/acc_tv_phone" />
+
+        <EditText
+            android:id="@+id/acc_et_phone"
+            style="@style/account_et_item"
+            android:inputType="phone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_lin" />
+
+        <TextView
+            style="@style/account_tv_item"
+            android:text="@string/acc_tv_birthday" />
+
+        <TextView
+            android:id="@+id/acc_tv_birthday"
+            android:minHeight="40dp"
+            style="@style/account_et_item"
+            android:inputType="date" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_lin" />
+
+        <Button
+            android:id="@+id/acc_bt_exit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="30dp"
+            android:text="@string/acc_bt_exit" />
+    </LinearLayout>
+</LinearLayout>

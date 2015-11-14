@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/per_ll_layout">
+
+    <ImageView
+        android:id="@+id/per_iv_task_state"
+        android:src="@mipmap/task_iv"
+        style="@style/per_iv" />
+
+    <TextView
+        android:id="@+id/per_tv_task_name"
+        style="@style/per_tv_name" />
+
+    <ImageView
+        android:id="@+id/per_iv_task_change"
+        android:src="@drawable/task_change_iv_select"
+        android:visibility="gone"
+        style="@style/per_iv" />
+</LinearLayout>

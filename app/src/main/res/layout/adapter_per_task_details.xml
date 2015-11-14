@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="40dp"
+    android:layout_marginEnd="30dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/per_tv_task_details_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_text"/>
+
+        <TextView
+            android:id="@+id/per_tv_task_details_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/per_iv_task_details_warm"
+            android:src="@drawable/warm_iv_select"
+            style="@style/per_iv_task_details" />
+        <ImageView
+            android:id="@+id/per_iv_task_details_mark"
+            style="@style/per_iv_task_details"
+            android:src="@drawable/mark_iv_select"/>
+        <ImageView
+            android:id="@+id/per_iv_task_details_appoint"
+            style="@style/per_iv_task_details"
+            android:src="@drawable/appoint_iv_select"/>
+    </LinearLayout>
+</LinearLayout>

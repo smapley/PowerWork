@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">PowerWork</string>
+    <string name="slogan">标语</string>
+    <string name="versions">1.0</string>
+
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+    <string name="back">返回</string>
+    <string name="exit">退出</string>
+    <string name="save">保存</string>
+    <string name="no_save">不保存</string>
+    <string name="check">查看</string>
+    <string name="recompose">修改</string>
+
+    <string name="navigation_drawer_open">oprn</string>
+    <string name="navigation_drawer_close">close</string>
+    <string name="action_settings">Settings</string>
+    <string name="internet_err">网络不给力，换个姿势试试吧</string>
+
+    <string name="feedback">意见反馈</string>
+    <string name="fee_et_content">反馈内容</string>
+    <string name="fee_bt_submit">提交反馈</string>
+    <string name="fee_content_null">反馈信息不能为空的哦！</string>
+    <string name="fee_submit_success">我们已经收到了您的反馈，我们将火速赶去处理</string>
+
+    <string name="aboutus">关于我们</string>
+    <string name="abo_bt_good">给个好评吧</string>
+
+    <string name="setting">设置</string>
+    <string name="set_tv_account">账号设置</string>
+    <string name="set_tv_info">通知设置</string>
+    <string name="set_tv_feedback">意见反馈</string>
+    <string name="set_tv_aboutus">关于我们</string>
+
+    <string name="notification">通知设置</string>
+    <string name="not_tv_type">通知类型</string>
+    <string name="not_tv_type1">分配给我</string>
+    <string name="not_tv_type2">提醒关注</string>
+    <string name="not_tv_type3">我的安排</string>
+    <string name="not_tv_info">通知方式</string>
+    <string name="not_tv_info1">消息推送</string>
+
+    <string name="account">账号设置</string>
+    <string name="acc_tv_name">姓名</string>
+    <string name="acc_tv_phone">电话</string>
+    <string name="acc_tv_birthday">生日</string>
+    <string name="acc_bt_save">保存</string>
+    <string name="acc_bt_exit">退出当前账号</string>
+    <string name="acc_dialog_title">换个头像，换个心情</string>
+    <string name="acc_dialog_title2">修改的信息还没有保存哦！</string>
+    <string name="acc_dialog_ok">去相册</string>
+
+    <string name="addtask">添加任务</string>
+
+    <string name="login">登陆</string>
+    <string name="log_et_username">用户名</string>
+    <string name="log_et_password">密码</string>
+    <string name="log_et_phone">手机号码</string>
+    <string name="log_bt_forget">忘记密码</string>
+    <string name="log_bt_register">注册</string>
+    <string name="log_null_username">用户名不能为空哦！</string>
+    <string name="log_null_password">密码不能为空哦！</string>
+    <string name="log_null_phone">电话号码不能为空哦！</string>
+
+
+    <string-array name="cal_month">
+        <item>一月</item>
+        <item>二月</item>
+        <item>三月</item>
+        <item>四月</item>
+        <item>五月</item>
+        <item>六月</item>
+        <item>七月</item>
+        <item>八月</item>
+        <item>九月</item>
+        <item>十月</item>
+        <item>十一月</item>
+        <item>十二月</item>
+    </string-array>
+
+
+    <string name="achievement">我的成就</string>
+    <string name="ach_tv_type1">偶像派</string>
+    <string name="ach_tv_type2">实力派</string>
+    <string name="ach_tv_order1">你已经超过了</string>
+    <string name="ach_tv_order2">的小伙伴</string>
+    <string name="ach_tv_task">任务</string>
+    <string name="ach_tv_read">已阅</string>
+    <string name="ach_bt_show">别拦我，让我去炫耀！</string>
+
+
+    <string name="notes">我的记录</string>
+
+    <string name="task">我的任务</string>
+
+</resources>
