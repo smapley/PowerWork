@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import com.lidroid.xutils.util.LogUtils;
 import com.smapley.powerwork.utils.JFileKit;
-import com.smapley.powerwork.utils.MyData;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,12 +16,11 @@ import java.util.Date;
 /**
  * Created by smapley on 15/10/22.
  */
-public class LocalFileHandler extends BaseExceptionHandler {
+public class LocalFileHandler extends BaseExceptionHandler{
 
     private Context context;
-
-    public LocalFileHandler(Context context) {
-        this.context = context;
+    public LocalFileHandler(Context context){
+        this.context=context;
     }
 
     /**
@@ -31,14 +29,14 @@ public class LocalFileHandler extends BaseExceptionHandler {
      */
     @Override
     public boolean handleException(Throwable ex) {
-        if (ex == null) {
+        if(ex==null){
             return false;
         }
 
-        new Thread() {
-            public void run() {
+        new Thread(){
+            public void run(){
                 Looper.prepare();
-                Toast.makeText(context, "很抱歉，程序出现异常，正在从错误中恢复", Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"很抱歉，程序出现异常，正在从错误中恢复",Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
         }.start();
@@ -49,18 +47,18 @@ public class LocalFileHandler extends BaseExceptionHandler {
     }
 
     //保存错误日志
-    public void saveLog(Throwable ex) {
-        try {
-            File errFile = new File(JFileKit.getDiskCacheDir(context) + MyData.File_Log_Crash);
-            if (!errFile.exists()) {
+    public void saveLog(Throwable ex){
+        try{
+            File errFile=new File(JFileKit.getDiskCacheDir(context)+"/log/crash.log");
+            if(!errFile.exists()){
                 errFile.createNewFile();
             }
 
-            OutputStream outputStream = new FileOutputStream(errFile, true);
+            OutputStream outputStream = new FileOutputStream(errFile,true);
 
-            outputStream.write(("\n\n------错误分割线" + dateFoemat.format(new Date()) + "------\n\n").getBytes());
+            outputStream.write(("\n\n------错误分割线"+dateFoemat.format(new Date())+"------\n\n").getBytes());
 
-            PrintStream stream = new PrintStream(outputStream);
+            PrintStream stream=new PrintStream(outputStream);
 
             ex.printStackTrace(stream);
 
@@ -73,7 +71,7 @@ public class LocalFileHandler extends BaseExceptionHandler {
             outputStream.close();
 
 
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
     }

@@ -39,7 +39,6 @@ import com.fourmob.datetimepicker.Utils;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -132,11 +131,6 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         return newInstance(callback, hourOfDay, minute, is24HourMode, true);
     }
 
-    public static TimePickerDialog newInstance(OnTimeSetListener callback, long time) {
-        Date date = new Date(time);
-        return newInstance(callback, date.getHours(), date.getMinutes(), false, false);
-    }
-
     public static TimePickerDialog newInstance(OnTimeSetListener callback,
                                                int hourOfDay, int minute, boolean is24HourMode, boolean vibrate) {
         TimePickerDialog ret = new TimePickerDialog();
@@ -222,7 +216,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
 
                 @Override
                 public CharSequence getTransformation(CharSequence source, View view) {
-                    return source != null ? source.toString().toUpperCase(locale) : null;
+                        return source != null ? source.toString().toUpperCase(locale) : null;
                 }
 
                 @Override
@@ -378,7 +372,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
             Utils.tryAccessibilityAnnounce(mTimePicker, announcement);
         } else if (pickerIndex == MINUTE_INDEX) {
             setMinute(newValue);
-            if (mCloseOnSingleTapMinute) {
+            if(mCloseOnSingleTapMinute) {
                 onDoneButtonClick();
             }
         } else if (pickerIndex == AMPM_INDEX) {

@@ -2,12 +2,20 @@ package com.smapley.powerwork.activity;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -17,7 +25,7 @@ import com.smapley.powerwork.adapter.MainViewPagerAdapter;
 import com.smapley.powerwork.fragment.Calendar;
 import com.smapley.powerwork.fragment.Message;
 import com.smapley.powerwork.fragment.Personal;
-import com.smapley.powerwork.fragment.Projects;
+import com.smapley.powerwork.fragment.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +88,7 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> main_lt_pages;
     private MainViewPagerAdapter main_vp_adapter;
     private Personal main_vp_personal;
-    private Projects main_vp_projects;
+    private Team main_vp_team;
     private Calendar main_vp_calendar;
     private Message main_vp_message;
 
@@ -110,11 +118,11 @@ public class MainActivity extends BaseActivity {
 
         main_lt_pages = new ArrayList<>();
         main_vp_personal = new Personal();
-        main_vp_projects = new Projects();
+        main_vp_team = new Team();
         main_vp_calendar = new Calendar();
         main_vp_message = new Message();
         main_lt_pages.add(main_vp_calendar);
-        main_lt_pages.add(main_vp_projects);
+        main_lt_pages.add(main_vp_team);
         main_lt_pages.add(main_vp_personal);
         main_lt_pages.add(main_vp_message);
 
