@@ -12,11 +12,6 @@
         <item name="android:textColorPrimary">@color/default_text</item>
     </style>
 
-    <style name="pop_voice">
-        <item name="android:windowEnterAnimation">@anim/pop_voice_in</item>
-        <item name="android:windowExitAnimation">@anim/pop_voice_out</item>
-    </style>
-
     <style name="setting_item">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -58,10 +53,6 @@
 
     <style name="per_name_expanded">
         <item name="android:textSize">15sp</item>
-        <item name="android:typeface">normal</item>
-    </style>
-    <style name="pro_name_expanded">
-        <item name="android:textSize">20sp</item>
         <item name="android:typeface">normal</item>
     </style>
 
@@ -154,14 +145,4 @@
         <item name="android:padding">5dp</item>
         <item name="android:layout_marginStart">10dp</item>
     </style>
-
-    <style name="pro_btn_item_text">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/cal_text</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-
 </resources>
