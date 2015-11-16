@@ -77,6 +77,8 @@
         <activity
             android:name=".activity.Task"
             android:label="@string/task" />
+        <activity android:name=".activity.Project"
+            android:label="@string/project"/>
     </application>
 
 </manifest>

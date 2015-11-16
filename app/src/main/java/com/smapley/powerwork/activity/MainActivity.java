@@ -17,7 +17,7 @@ import com.smapley.powerwork.adapter.MainViewPagerAdapter;
 import com.smapley.powerwork.fragment.Calendar;
 import com.smapley.powerwork.fragment.Message;
 import com.smapley.powerwork.fragment.Personal;
-import com.smapley.powerwork.fragment.Project;
+import com.smapley.powerwork.fragment.Projects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> main_lt_pages;
     private MainViewPagerAdapter main_vp_adapter;
     private Personal main_vp_personal;
-    private Project main_vp_project;
+    private Projects main_vp_projects;
     private Calendar main_vp_calendar;
     private Message main_vp_message;
 
@@ -110,11 +110,11 @@ public class MainActivity extends BaseActivity {
 
         main_lt_pages = new ArrayList<>();
         main_vp_personal = new Personal();
-        main_vp_project = new Project();
+        main_vp_projects = new Projects();
         main_vp_calendar = new Calendar();
         main_vp_message = new Message();
         main_lt_pages.add(main_vp_calendar);
-        main_lt_pages.add(main_vp_project);
+        main_lt_pages.add(main_vp_projects);
         main_lt_pages.add(main_vp_personal);
         main_lt_pages.add(main_vp_message);
 

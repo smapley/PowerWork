@@ -11,12 +11,22 @@ public class Per_Task_Details_Mode extends BaseMode {
 
     private String time;
 
+    //闹钟时间
+    private long warm=0;
+
     private final int type = 7;
 
     public boolean isCheck() {
         return check;
     }
 
+    public long getWarm() {
+        return warm;
+    }
+
+    public void setWarm(long warm) {
+        this.warm = warm;
+    }
 
     public void setCheck(boolean check) {
         this.check = check;
