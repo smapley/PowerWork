@@ -8,6 +8,7 @@ import com.lidroid.xutils.HttpUtils;
 import com.smapley.powerwork.exception.BaseExceptionHandler;
 import com.smapley.powerwork.exception.LocalFileHandler;
 import com.smapley.powerwork.utils.JFileKit;
+import com.smapley.powerwork.utils.MyData;
 
 import java.io.File;
 
@@ -44,10 +45,15 @@ public class LocalApplication extends BaseApplication {
         //初始化网络模块
         httpUtils=new HttpUtils();
 
-        //创建app崩溃日志记录
-        File appFolder=new File(JFileKit.getDiskCacheDir(this)+"/log");
-        if(!appFolder.exists()){
-            appFolder.mkdirs();
+        //创建log目录
+        File logFolder=new File(JFileKit.getDiskCacheDir(this)+ MyData.File_Log);
+        if(!logFolder.exists()){
+            logFolder.mkdirs();
+        }
+        //创建audio目录
+        File audioFolder=new File(JFileKit.getDiskCacheDir(this) + MyData.File_Audio);
+        if(!audioFolder.exists()){
+            audioFolder.mkdirs();
         }
 
         instance=this;

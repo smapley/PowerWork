@@ -1,5 +1,8 @@
 package com.smapley.powerwork.activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,12 +20,15 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.AddTaskAdapter;
 import com.smapley.powerwork.mode.Add_Menu_Mode;
+import com.smapley.powerwork.mode.Add_Pic_Mode;
 import com.smapley.powerwork.mode.Add_Text_Mode;
 import com.smapley.powerwork.mode.BaseMode;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 /**
  * Created by smapley on 15/10/24.
@@ -83,6 +89,25 @@ public class AddTask extends BaseActivity {
             case 4:
                 break;
             case 5:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 3:
+                //选择图片
+                if (resultCode == RESULT_OK) {
+                    List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                    for (int i = 0; i < resultList.size(); i++) {
+                        Add_Pic_Mode add_Pic_Mode = new Add_Pic_Mode();
+                        add_Pic_Mode.setPath(resultList.get(i));
+                        add_aa_adapter.addItem(new Add_Text_Mode());
+                        add_aa_adapter.addItem(add_Pic_Mode);
+                    }
+                }
                 break;
         }
     }
