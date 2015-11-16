@@ -7,6 +7,15 @@ public class Add_Text_Mode extends BaseMode {
 
 
     private final int type = 5;
+    private String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
     @Override
     public int getType() {

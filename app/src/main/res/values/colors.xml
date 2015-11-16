@@ -10,4 +10,6 @@
     <color name="gray_text">#aaa</color>
     <color name="white">#fff</color>
     <color name="gray_lin">#ddd</color>
+    <color name="gray_circle">#eee</color>
+    <color name="gray_circle2">#e5e5e5</color>
 </resources>

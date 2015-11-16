@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/circle_white"
+    android:minHeight="280dp"
+    android:orientation="vertical"
+    android:paddingTop="50dp">
+
+    <LinearLayout
+        android:id="@+id/pop_add_circle_big"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circles_white"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:id="@+id/pop_add_circle_smo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp">
+
+                <ImageView
+                    android:id="@+id/pop_add_voice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/circles_white"
+                    android:padding="5dp"
+                    android:src="@mipmap/pop_add_voice_1" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pop_add_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="8dp"
+        android:text="@string/pop_add_voice_action"
+        android:textColor="@color/cal_text"
+        android:textSize="18sp" />
+
+
+    <LinearLayout
+        android:id="@+id/pop_add_voice_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/pop_add_voice_iv_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@mipmap/play_iv" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/playbar_iv"/>
+
+                <SeekBar
+                    android:id="@+id/pop_add_voice_sb_bar"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/pop_add_voice_tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/cal_text" />
+
+            <ImageView
+                android:id="@+id/pop_add_voice_iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@mipmap/close_iv" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@color/gray_lin" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@+id/pop_add_voice_tv_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/pop_add_tv_cancel"
+                android:textColor="@color/cal_text" />
+
+            <TextView
+                android:layout_width="0.3dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_lin" />
+
+            <TextView
+                android:id="@+id/pop_add_voice_tv_ok"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/pop_add_tv_ok"
+                android:textColor="@color/cal_text" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
