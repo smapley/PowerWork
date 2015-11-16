@@ -93,4 +93,20 @@
 
     <string name="task">我的任务</string>
 
+    <string name="pop_add_voice_action">点击纪录</string>
+    <string name="pop_add_tv_cancel">算了吧</string>
+    <string name="pop_add_tv_ok">添加</string>
+
+    <string name="error_no_sdcard">没有SD卡，无法存储录音数据</string>
+    <string name="error_state_record">正在录音中，请先停止录音</string>
+    <string name="error_unknown">无法识别的错误</string>
+
+
+    <string name="project">项目</string>
+    <string name="pro_tv_btn_item1">首页</string>
+    <string name="pro_tv_btn_item2">统计</string>
+    <string name="pro_tv_btn_item3">任务</string>
+    <string name="pro_tv_btn_item4">团队</string>
+    <string name="pro_tv_btn_item5">文件</string>
+
 </resources>

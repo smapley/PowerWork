@@ -20,7 +20,7 @@ package com.smapley.powerwork.entity;
  * Date: 13-8-13
  * Time: 上午11:15
  */
-public abstract class EntityBase {
+public abstract class BaseEntity {
 
 
     //@Id // 如果主键没有命名名为id或_id的时，需要为主键添加此注解

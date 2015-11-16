@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/pro_fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/pro_ll_btn_layout" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_below="@+id/pro_fl_content"
+        android:background="@color/gray_lin" />
+
+    <LinearLayout
+        android:id="@+id/pro_ll_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/pro_tv_btn_item1"
+            style="@style/pro_btn_item_text"
+            android:text="@string/pro_tv_btn_item1" />
+
+        <TextView
+            android:id="@+id/pro_tv_btn_item2"
+            style="@style/pro_btn_item_text"
+            android:text="@string/pro_tv_btn_item2" />
+
+        <TextView
+            android:id="@+id/pro_tv_btn_item3"
+            style="@style/pro_btn_item_text"
+            android:text="@string/pro_tv_btn_item3" />
+
+        <TextView
+            android:id="@+id/pro_tv_btn_item4"
+            style="@style/pro_btn_item_text"
+            android:text="@string/pro_tv_btn_item4" />
+
+        <TextView
+            android:id="@+id/pro_tv_btn_item5"
+            style="@style/pro_btn_item_text"
+            android:text="@string/pro_tv_btn_item5" />
+    </LinearLayout>
+</RelativeLayout>
