@@ -79,6 +79,8 @@
             android:label="@string/task" />
         <activity android:name=".activity.Project"
             android:label="@string/project"/>
+        <activity android:name=".activity.NewFolder"
+            android:label="@string/newfolder"/>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@
     <string name="save">保存</string>
     <string name="no_save">不保存</string>
     <string name="check">查看</string>
-    <string name="recompose">修改</string>
+    <string name="edit">修改</string>
 
     <string name="navigation_drawer_open">oprn</string>
     <string name="navigation_drawer_close">close</string>
@@ -108,5 +108,16 @@
     <string name="pro_tv_btn_item3">任务</string>
     <string name="pro_tv_btn_item4">团队</string>
     <string name="pro_tv_btn_item5">文件</string>
+
+
+
+    <string name="pro_item5_tv_nowfile">新文件</string>
+    <string name="pro_item5_tv_nowfiles">新文件夹</string>
+    <string name="pro_item5_title_file">文件</string>
+    <string name="pro_item5_title_folder">文件夹</string>
+
+    <string name="newfolder">添加文件夹</string>
+    <string name="nfd_tv_name">文件夹名</string>
+    <string name="nfd_ts_namenull">文件夹名不能为空</string>
 
 </resources>

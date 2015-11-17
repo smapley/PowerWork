@@ -17,6 +17,11 @@
         <item name="android:windowExitAnimation">@anim/pop_voice_out</item>
     </style>
 
+    <style name="pro_item5_add">
+        <item name="android:windowEnterAnimation">@anim/pro_item5_add_in</item>
+        <item name="android:windowExitAnimation">@anim/pro_item5_ad_out</item>
+    </style>
+
     <style name="setting_item">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

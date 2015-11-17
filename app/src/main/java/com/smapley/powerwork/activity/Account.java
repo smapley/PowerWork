@@ -42,8 +42,10 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
 
     @ViewInject(R.id.title_tv_name)
     private TextView title_tv_name;
-    @ViewInject(R.id.title_tv_right)
-    private TextView title_tv_right;
+    @ViewInject(R.id.title_iv_edit)
+    private ImageView title_iv_edit;
+    @ViewInject(R.id.title_iv_done)
+    private ImageView title_iv_done;
 
     @ViewInject(R.id.acc_iv_pic)
     private ImageView acc_iv_pic;
@@ -64,7 +66,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     @Override
     protected void initParams() {
         title_tv_name.setText(R.string.account);
-        title_tv_right.setText(R.string.recompose);
+        title_iv_edit.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_pic);
         acc_iv_pic.setImageBitmap(DullPolish.doPolish(this, bitmap, 20));
@@ -86,9 +88,11 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         acc_et_name.setEnabled(isEdit);
         acc_et_phone.setEnabled(isEdit);
         acc_tv_birthday.setEnabled(isEdit);
+        acc_bt_exit.setVisibility(isEdit?View.GONE:View.VISIBLE);
+
     }
 
-    @OnClick({R.id.acc_iv_changepic, R.id.acc_bt_exit, R.id.title_iv_back, R.id.title_tv_right, R.id.acc_tv_birthday})
+    @OnClick({R.id.acc_iv_changepic, R.id.acc_bt_exit, R.id.title_iv_back, R.id.title_iv_edit, R.id.acc_tv_birthday, R.id.title_iv_done})
     public void viewOnClick(View view) {
         switch (view.getId()) {
             case R.id.acc_tv_birthday:
@@ -97,10 +101,19 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                 datePickerDialog.setCloseOnSingleTapDay(false);
                 datePickerDialog.show(getSupportFragmentManager(), "data");
                 break;
-            case R.id.title_tv_right:
+            case R.id.title_iv_edit:
                 if (!isEdit) {
                     changeEditState();
-                    acc_bt_exit.setText(R.string.acc_bt_save);
+                    title_iv_edit.setVisibility(View.GONE);
+                    title_iv_done.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.title_iv_done:
+                if (isEdit) {
+                    changeEditState();
+                    title_iv_edit.setVisibility(View.VISIBLE);
+                    title_iv_done.setVisibility(View.GONE);
+                    saveData();
                 }
                 break;
             case R.id.title_iv_back:
@@ -128,13 +141,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                         }).show();
                 break;
             case R.id.acc_bt_exit:
-                if (isEdit) {
-                    changeEditState();
-                    acc_bt_exit.setText(R.string.acc_bt_exit);
-                    saveData();
-                } else {
-                    startActivity(new Intent(Account.this, Login.class));
-                }
+                startActivity(new Intent(Account.this, Login.class));
                 break;
         }
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="40dp"
     android:gravity="center_vertical"
@@ -19,12 +19,46 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_weight="1"
+        android:textSize="18sp"
         android:textColor="@color/cal_text" />
 
-    <TextView
-        android:id="@+id/title_tv_right"
+    <ImageView
+        android:id="@+id/title_iv_done"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:gravity="center"
-        android:textColor="@color/cal_text"/>
+        android:scaleType="center"
+        android:src="@drawable/done_iv_select"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/title_iv_add"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/add_iv_title_select"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/title_iv_edit"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/edit_iv_select"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/title_iv_delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/delete_iv_select"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </LinearLayout>
