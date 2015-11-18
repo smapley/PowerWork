@@ -4,12 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,20 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.utils.ActivityStack;
 import com.smapley.powerwork.utils.DullPolish;
 
-import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.pedant.SweetAlert.OptAnimationLoader;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
@@ -68,7 +58,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         title_tv_name.setText(R.string.account);
         title_iv_edit.setVisibility(View.VISIBLE);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_pic);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
         acc_iv_pic.setImageBitmap(DullPolish.doPolish(this, bitmap, 20));
         acc_et_name.setText(sp_user.getString("name", ""));
         acc_et_phone.setText(sp_user.getString("phone", ""));
@@ -88,7 +78,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         acc_et_name.setEnabled(isEdit);
         acc_et_phone.setEnabled(isEdit);
         acc_tv_birthday.setEnabled(isEdit);
-        acc_bt_exit.setVisibility(isEdit?View.GONE:View.VISIBLE);
+        acc_bt_exit.setVisibility(isEdit ? View.GONE : View.VISIBLE);
 
     }
 
@@ -141,6 +131,10 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                         }).show();
                 break;
             case R.id.acc_bt_exit:
+                SharedPreferences.Editor editor = sp_user.edit();
+                editor.putBoolean("islogin", false);
+                editor.commit();
+                ActivityStack.getInstance().finishAllActivity();
                 startActivity(new Intent(Account.this, Login.class));
                 break;
         }

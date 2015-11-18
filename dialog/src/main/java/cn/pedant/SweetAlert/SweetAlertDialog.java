@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import java.util.List;
 
 public class SweetAlertDialog extends Dialog implements View.OnClickListener {
+    private final int DISMISS = 1;
     private View mDialogView;
     private AnimationSet mModalInAnim;
     private AnimationSet mModalOutAnim;
@@ -58,6 +61,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     private FrameLayout mWarningFrame;
     private OnSweetClickListener onSweetClickListener;
     private EditText meditext;
+    private Context context;
 
     public static final int NORMAL_TYPE = 0;
     public static final int ERROR_TYPE = 1;
@@ -73,6 +77,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
 
     public SweetAlertDialog(Context context) {
         this(context, NORMAL_TYPE);
+        this.context = context;
     }
 
     public SweetAlertDialog(Context context, String title, String content, int[] button, String[] btName, OnSweetClickListener onSweetClickListener) {
@@ -374,6 +379,10 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
+    public SweetAlertDialog setContentText(int id) {
+        return setContentText(context.getString(id));
+    }
+
     public SweetAlertDialog showEditext(boolean isShow) {
         mshowEditext = isShow;
         if (meditext != null) {
@@ -473,6 +482,20 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         playAnimation();
     }
 
+    public void dismiss(final long time) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mhandler.obtainMessage(DISMISS).sendToTarget();
+            }
+        }).start();
+    }
+
     public void dismiss() {
         mConfirmButton.startAnimation(mOverlayOutAnim);
         mDialogView.startAnimation(mModalOutAnim);
@@ -500,4 +523,16 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
             }
         }
     }
+
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case DISMISS:
+                    dismiss();
+                    break;
+            }
+        }
+    };
 }

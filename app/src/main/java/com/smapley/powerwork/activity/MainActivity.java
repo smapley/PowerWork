@@ -18,6 +18,7 @@ import com.smapley.powerwork.fragment.Calendar;
 import com.smapley.powerwork.fragment.Message;
 import com.smapley.powerwork.fragment.Personal;
 import com.smapley.powerwork.fragment.Projects;
+import com.smapley.powerwork.utils.ThreadSleep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,25 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initParams() {
+        if (sp_user.getBoolean("islogin", false)) {
+            //如果登陆 则加载界面
+            initView();
+            //异步加载Viewpage
+            new ThreadSleep().sleep(50, new ThreadSleep.Calback() {
+                @Override
+                public void onCalback(int number) {
+                    initViewPager();
+                }
+            });
 
+        } else {
+            //如果没有登陆 则跳转到登陆界面
+            startActivity(new Intent(MainActivity.this, Login.class));
+            finish();
+        }
+    }
+
+    private void initView() {
         main_add_menu_tv_items = new ArrayList<>();
         main_add_menu_iv_items = new ArrayList<>();
         main_add_menu_tv_items.add(main_add_menu_tv_item1);
@@ -100,9 +119,6 @@ public class MainActivity extends BaseActivity {
         main_add_menu_iv_items.add(main_add_menu_iv_item4);
         main_add_menu_iv_items.add(main_add_menu_iv_item5);
         initAddMenu();
-
-
-        initViewPager();
     }
 
     private void initViewPager() {
@@ -269,4 +285,13 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
+
+        mHomeIntent.addCategory(Intent.CATEGORY_HOME);
+        mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        this.startActivity(mHomeIntent);
+    }
 }

@@ -2,17 +2,12 @@ package com.smapley.powerwork.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 
-import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.PersonalAdapter;
@@ -28,8 +23,6 @@ import com.smapley.powerwork.utils.DullPolish;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import me.nereo.multi_image_selector.bean.Image;
 
 /**
  * Created by smapley on 15/10/25.
@@ -65,7 +58,7 @@ public class Personal extends BaseFragment {
         initRecyclerView();
         initData();
 
-        Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.user_pic);
+        Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.mipmap.logo);
         per_iv_pic.setImageBitmap(DullPolish.doPolish(getActivity(),bitmap,20));
     }
 

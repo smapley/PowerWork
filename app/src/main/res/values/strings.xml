@@ -119,5 +119,10 @@
     <string name="newfolder">添加文件夹</string>
     <string name="nfd_tv_name">文件夹名</string>
     <string name="nfd_ts_namenull">文件夹名不能为空</string>
+    <string name="log_dia_register_ing">注册ing。。。</string>
+    <string name="log_dia_register_suc">注册成功</string>
+    <string name="log_dia_register_fai">注册失败</string>
+    <string name="log_dia_login_ing">登陆ing。。。</string>
+    <string name="log_dia_login_suc">登陆成功</string>
 
 </resources>

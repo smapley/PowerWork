@@ -67,7 +67,8 @@
             android:label="@string/addtask" />
         <activity
             android:name=".activity.Login"
-            android:label="@string/login" />
+            android:label="@string/login"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".activity.Achievement"
             android:label="@string/achievement" />
@@ -77,10 +78,12 @@
         <activity
             android:name=".activity.Task"
             android:label="@string/task" />
-        <activity android:name=".activity.Project"
-            android:label="@string/project"/>
-        <activity android:name=".activity.NewFolder"
-            android:label="@string/newfolder"/>
+        <activity
+            android:name=".activity.Project"
+            android:label="@string/project" />
+        <activity
+            android:name=".activity.NewFolder"
+            android:label="@string/newfolder" />
     </application>
 
 </manifest>

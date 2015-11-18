@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="connect_fai" type="id">网络连接失败</item>
+</resources>
