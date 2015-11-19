@@ -10,6 +10,9 @@ import android.widget.ImageView;
 
 import com.lidroid.xutils.cache.LruDiskCache;
 import com.lidroid.xutils.cache.LruMemoryCache;
+import com.lidroid.xutils.util.LogUtils;
+import com.smapley.powerwork.utils.DullPolish;
+import com.smapley.powerwork.utils.MyData;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,19 +72,27 @@ public class AsyncImageLoader {
 
         try {
             //获取图片缓存路径
-            cacheDir= getDiskCacheDir(context,"bitmap");
-            if(!cacheDir.exists()){
+            cacheDir = getDiskCacheDir(context, "bitmap");
+            if (!cacheDir.exists()) {
                 cacheDir.mkdirs();
             }
             //创建LruDiskCache实例，初始化硬盘缓存
-            diskCache = LruDiskCache.open(cacheDir,getAppVersion(context),1,10*1024*1024);
-        }catch (IOException e){
+            diskCache = LruDiskCache.open(cacheDir, getAppVersion(context), 1, 10 * 1024 * 1024);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadBitmaps(View view, ImageView imageView, String imageUrl){
-        loadBitmaps(view,imageView,imageUrl,0,0);
+    public void loadBitmaps(ImageView imageView, String imageUrl) {
+        loadBitmaps(imageView, imageUrl, 0, 0, false);
+    }
+
+    public void loadBitmaps(ImageView imageView, String imageUrl, boolean isDullPolish) {
+        loadBitmaps(imageView, imageUrl, 0, 0, isDullPolish);
+    }
+
+    public void loadBitmaps(ImageView imageView, String imageUrl, int reqWidth, int reqHeight) {
+        loadBitmaps(imageView, imageUrl, reqWidth, reqHeight, false);
     }
 
     /**
@@ -89,20 +100,23 @@ public class AsyncImageLoader {
      * 如果返回null就会开启异步线程去硬盘缓存中查找
      * 如果还是返回null就回去重新下载图片
      */
-    public void loadBitmaps(View view, ImageView imageView, String imageUrl,int reqWidth,int reqHeight) {
+    public void loadBitmaps(ImageView imageView, String imageUrl, int reqWidth, int reqHeight, boolean isDullPolish) {
+        imageUrl = MyData.URL_PIC + imageUrl;
+        LogUtils.i("load_start" + imageUrl);
         if (imageView != null && loadingBitmap != null) {
             //设置加载中图片
-            imageView.setImageBitmap(loadingBitmap);
+            imageView.setImageBitmap(isDullPolish ? DullPolish.doPolish(context, loadingBitmap) : loadfailBitmap);
         }
         try {
             Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
             if (bitmap == null) {
-                BitmapWorkerTask task = new BitmapWorkerTask(imageLoader, view,reqWidth,reqHeight);
+                BitmapWorkerTask task = new BitmapWorkerTask(imageLoader, imageView, reqWidth, reqHeight, isDullPolish);
                 taskCollection.add(task);
                 task.executeOnExecutor(executor, imageUrl);
             } else {
                 if (imageView != null && bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
+                    imageView.setImageBitmap(isDullPolish ? DullPolish.doPolish(context, bitmap) : bitmap);
+                    LogUtils.i("load_memory" + imageUrl);
                 }
             }
 
@@ -145,14 +159,14 @@ public class AsyncImageLoader {
     /**
      * 使用MD5算法对传入的可以进行加密并返回，避免url命名文件时存在不合法字符
      */
-    public String hashKeyForDisk(String key){
+    public String hashKeyForDisk(String key) {
         String cacheKey;
-        try{
-            final MessageDigest mDigest=MessageDigest.getInstance("MD5");
+        try {
+            final MessageDigest mDigest = MessageDigest.getInstance("MD5");
             mDigest.update(key.getBytes());
-            cacheKey=bytesToHexString(mDigest.digest());
-        }catch (NoSuchAlgorithmException e){
-            cacheKey=String.valueOf(key.hashCode());
+            cacheKey = bytesToHexString(mDigest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            cacheKey = String.valueOf(key.hashCode());
         }
         return cacheKey;
     }
@@ -160,11 +174,11 @@ public class AsyncImageLoader {
     /**
      *
      */
-    private String bytesToHexString(byte[] bytes){
-        StringBuilder sb=new StringBuilder();
-        for(int i=0;i<bytes.length;i++){
-            String hex=Integer.toHexString(0xFF & bytes[i]);
-            if(hex.length()==1){
+    private String bytesToHexString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString(0xFF & bytes[i]);
+            if (hex.length() == 1) {
                 sb.append('0');
             }
             sb.append(hex);
@@ -175,34 +189,34 @@ public class AsyncImageLoader {
     /**
      * 根据传入的uniqueName获取硬盘缓存的路径地址
      */
-    public File getDiskCacheDir(Context context ,String uniqueName){
+    public File getDiskCacheDir(Context context, String uniqueName) {
         String cachePath;
-        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())||!Environment.isExternalStorageEmulated()){
-            cachePath=context.getExternalCacheDir().getPath();
-        }else{
-            cachePath=context.getCacheDir().getPath();
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageEmulated()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
         }
-        return new File(cachePath+File.separator+uniqueName);
+        return new File(cachePath + File.separator + uniqueName);
     }
 
     /**
      * 获取当亲应用程序的版本号
      */
-    public int getAppVersion(Context context){
-        try{
-            PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),0);
+    public int getAppVersion(Context context) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return info.versionCode;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
 
     /**
-     *返回当前缓存文件大小，以byte为单位
+     * 返回当前缓存文件大小，以byte为单位
      */
-    public long getCacheSize(){
-        if(diskCache!=null){
+    public long getCacheSize() {
+        if (diskCache != null) {
             return diskCache.size();
         }
         return 0;
@@ -211,11 +225,11 @@ public class AsyncImageLoader {
     /**
      * 将缓存记录同步到journal文件中
      */
-    public void fluchCache(){
-        if(diskCache!=null){
-            try{
+    public void fluchCache() {
+        if (diskCache != null) {
+            try {
                 diskCache.flush();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -224,13 +238,13 @@ public class AsyncImageLoader {
     /**
      * 清空缓存
      */
-    public void clearCache(){
-        if(diskCache !=null){
-            try{
+    public void clearCache() {
+        if (diskCache != null) {
+            try {
                 diskCache.delete();
                 //回复LruDiskCache实例，初始化硬盘缓存
-                diskCache=LruDiskCache.open(cacheDir,getAppVersion(context),1,20*1024*1024);
-            } catch (IOException e){
+                diskCache = LruDiskCache.open(cacheDir, getAppVersion(context), 1, 20 * 1024 * 1024);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -239,11 +253,11 @@ public class AsyncImageLoader {
     /**
      * 关闭缓存
      */
-    public void closeCache(){
-        if(diskCache!=null){
-            try{
+    public void closeCache() {
+        if (diskCache != null) {
+            try {
                 diskCache.close();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -258,5 +272,9 @@ public class AsyncImageLoader {
                 task.cancel(false);
             }
         }
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

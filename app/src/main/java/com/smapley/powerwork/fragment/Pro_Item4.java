@@ -1,5 +1,7 @@
 package com.smapley.powerwork.fragment;
 
+import android.view.View;
+
 import com.smapley.powerwork.R;
 
 /**
@@ -13,7 +15,7 @@ public class Pro_Item4 extends BaseFragment {
     }
 
     @Override
-    protected void initParams() {
+    protected void initParams(View view) {
 
     }
 }

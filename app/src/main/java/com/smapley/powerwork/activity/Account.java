@@ -16,6 +16,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.utils.ActivityStack;
+import com.smapley.powerwork.utils.DateUtil;
 import com.smapley.powerwork.utils.DullPolish;
 
 import java.util.Calendar;
@@ -58,12 +59,12 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         title_tv_name.setText(R.string.account);
         title_iv_edit.setVisibility(View.VISIBLE);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
-        acc_iv_pic.setImageBitmap(DullPolish.doPolish(this, bitmap, 20));
-        acc_et_name.setText(sp_user.getString("name", ""));
-        acc_et_phone.setText(sp_user.getString("phone", ""));
-        acc_tv_birthday.setText(sp_user.getString("birthday", ""));
-
+        if (user_entity != null) {
+            asyncImageLoader.loadBitmaps(acc_iv_pic, user_entity.getPic_url(), true);
+            acc_et_name.setText(user_entity.getUsername());
+            acc_et_phone.setText(user_entity.getPhone());
+            acc_tv_birthday.setText(DateUtil.getDateString(user_entity.getCre_date(), DateUtil.formatDate));
+        }
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(Account.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
 
@@ -114,19 +115,23 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                 }
                 break;
             case R.id.acc_iv_changepic:
-                new SweetAlertDialog(Account.this, SweetAlertDialog.NORMAL_TYPE,
-                        R.string.acc_dialog_title, 0,
-                        new int[]{1, 1},
-                        new int[]{R.string.cancel, R.string.acc_dialog_ok},
-                        new SweetAlertDialog.OnSweetClickListener() {
+                dialog = new SweetAlertDialog(Account.this);
+                dialog.showText(R.string.acc_dialog_title)
+                        .showCancelButton()
+                        .showConfirmButton(R.string.acc_dialog_ok)
+                        .setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog, int item) {
-                                if (item == 1)
-                                    sweetAlertDialog.dismiss();
-                                if (item == 2) {
-                                    selectPic();
-                                    sweetAlertDialog.dismiss();
-                                }
+                            public void onConfirmClick(SweetAlertDialog dialog) {
+                                selectPic();
+                                dialog.dismiss();
+                            }
+                            @Override
+                            public void onFirstClick(SweetAlertDialog dialog) {
+
+                            }
+                            @Override
+                            public void onCancelClick(SweetAlertDialog dialog) {
+                                dialog.dismiss();
                             }
                         }).show();
                 break;
@@ -169,6 +174,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                 List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 Bitmap bitmap = BitmapFactory.decodeFile(resultList.get(0));
                 acc_iv_pic.setImageBitmap(bitmap);
+
             }
         } catch (Exception e) {
 
@@ -184,17 +190,26 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     }
 
     private void onExit() {
-        new SweetAlertDialog(Account.this, SweetAlertDialog.WARNING_TYPE,
-                R.string.acc_dialog_title2,
-                new int[]{1, 1},
-                new int[]{R.string.no_save, R.string.check},
-                new SweetAlertDialog.OnSweetClickListener() {
+       dialog=new SweetAlertDialog(Account.this,SweetAlertDialog.WARNING_TYPE);
+        dialog.showCancelButton(R.string.no_save)
+                .showConfirmButton(R.string.check)
+                .showText(R.string.acc_dialog_title2)
+                .setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog, int item) {
-                        if (item == 1) {
-                            finish();
-                        }
-                        sweetAlertDialog.dismiss();
+                    public void onConfirmClick(SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFirstClick(SweetAlertDialog dialog) {
+
+                    }
+
+                    @Override
+                    public void onCancelClick(SweetAlertDialog dialog) {
+                        finish();
+                        dialog.dismiss();
+
                     }
                 }).show();
     }

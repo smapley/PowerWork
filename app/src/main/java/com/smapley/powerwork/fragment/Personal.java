@@ -6,11 +6,16 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.activity.BaseActivity;
+import com.smapley.powerwork.activity.MainActivity;
 import com.smapley.powerwork.adapter.PersonalAdapter;
+import com.smapley.powerwork.bitmap.AsyncImageLoader;
+import com.smapley.powerwork.entity.User_Entity;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Per_Group_Mode;
 import com.smapley.powerwork.mode.Per_Not_Pic_Mode;
@@ -20,6 +25,7 @@ import com.smapley.powerwork.mode.Per_Not_Write_Mode;
 import com.smapley.powerwork.mode.Per_Task_Details_Mode;
 import com.smapley.powerwork.mode.Per_Task_Mode;
 import com.smapley.powerwork.utils.DullPolish;
+import com.smapley.powerwork.utils.MyData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +53,7 @@ public class Personal extends BaseFragment {
     }
 
     @Override
-    protected void initParams() {
+    protected void initParams(View view) {
         //使用CollapsingToolbarLayout必须把title设置到CollapsingToolbarLayout上，设置到Toolbar上则不会显示
         per_ct_layout.setTitle(sp_user.getString("nickname", getString(R.string.app_name)));
         per_ct_layout.setExpandedTitleTextAppearance(R.style.per_name_expanded);
@@ -58,8 +64,12 @@ public class Personal extends BaseFragment {
         initRecyclerView();
         initData();
 
-        Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.mipmap.logo);
-        per_iv_pic.setImageBitmap(DullPolish.doPolish(getActivity(),bitmap,20));
+        if (user_entity != null) {
+            asyncImageLoader.loadBitmaps( per_iv_pic, user_entity.getPic_url());
+        }
+
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
+//        per_iv_pic.setImageBitmap(DullPolish.doPolish(getActivity(), bitmap, 20));
     }
 
     private void initRecyclerView() {

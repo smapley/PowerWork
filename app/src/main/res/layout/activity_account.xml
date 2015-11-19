@@ -7,80 +7,74 @@
 
     <include layout="@layout/title" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="110dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/acc_iv_pic"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop" />
+                android:layout_height="175dp">
 
-            <ImageView
-                android:id="@+id/acc_iv_changepic"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="60dp"
-                android:src="@mipmap/ic_launcher" />
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/acc_iv_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop" />
 
-        <TextView
-            style="@style/account_tv_item"
-            android:text="@string/acc_tv_name" />
+                <ImageView
+                    android:id="@+id/acc_iv_changepic"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="60dp"
+                    android:src="@drawable/camera_iv_select" />
+            </RelativeLayout>
 
-        <EditText
-            android:id="@+id/acc_et_name"
-            style="@style/account_et_item"
-            android:inputType="textPersonName" />
+            <TextView
+                style="@style/account_tv_item"
+                android:text="@string/acc_tv_name" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/gray_lin" />
+            <EditText
+                android:id="@+id/acc_et_name"
+                style="@style/account_et_item"
+                android:inputType="textPersonName" />
 
-        <TextView
-            style="@style/account_tv_item"
-            android:text="@string/acc_tv_phone" />
 
-        <EditText
-            android:id="@+id/acc_et_phone"
-            style="@style/account_et_item"
-            android:inputType="phone" />
+            <TextView
+                style="@style/account_tv_item"
+                android:text="@string/acc_tv_phone" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/gray_lin" />
+            <EditText
+                android:id="@+id/acc_et_phone"
+                style="@style/account_et_item"
+                android:inputType="phone" />
 
-        <TextView
-            style="@style/account_tv_item"
-            android:text="@string/acc_tv_birthday" />
 
-        <TextView
-            android:id="@+id/acc_tv_birthday"
-            android:minHeight="40dp"
-            style="@style/account_et_item"
-            android:inputType="date" />
+            <TextView
+                style="@style/account_tv_item"
+                android:text="@string/acc_tv_birthday" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/gray_lin" />
+            <TextView
+                android:id="@+id/acc_tv_birthday"
+                style="@style/account_et_item" />
 
-        <Button
-            android:id="@+id/acc_bt_exit"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="30dp"
-            android:text="@string/acc_bt_exit" />
-    </LinearLayout>
+
+            <Button
+                android:id="@+id/acc_bt_exit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="30dp"
+                android:background="@null"
+                android:text="@string/acc_bt_exit" />
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

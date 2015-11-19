@@ -47,7 +47,7 @@ public class Calendar extends BaseFragment {
     }
 
     @Override
-    protected void initParams() {
+    protected void initParams(View view) {
         //使用CollapsingToolbarLayout必须把title设置到CollapsingToolbarLayout上，设置到Toolbar上则不会显示
         cal_ct_layout.setExpandedTitleGravity(Gravity.BOTTOM);
         cal_ct_layout.setExpandedTitleTextAppearance(R.style.per_name_expanded);

@@ -61,7 +61,7 @@ public class Pro_Item5 extends BaseFragment {
     }
 
     @Override
-    protected void initParams() {
+    protected void initParams(View view) {
         title_tv_name.setText(R.string.pro_tv_btn_item5);
         title_iv_add.setVisibility(View.VISIBLE);
 

@@ -5,6 +5,7 @@ import android.util.DisplayMetrics;
 
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.HttpUtils;
+import com.smapley.powerwork.bitmap.AsyncImageLoader;
 import com.smapley.powerwork.exception.BaseExceptionHandler;
 import com.smapley.powerwork.exception.LocalFileHandler;
 import com.smapley.powerwork.utils.JFileKit;
@@ -19,17 +20,19 @@ public class LocalApplication extends BaseApplication {
 
     private static LocalApplication instance;
 
-    public DbUtils dbUtils=null;
-    public HttpUtils httpUtils=null;
+    public DbUtils dbUtils = null;
+    public HttpUtils httpUtils = null;
+
+    public AsyncImageLoader asyncImageLoader;
 
     //当前屏幕的高宽
-    public int screenW=0;
-    public int screenH=0;
+    public int screenW = 0;
+    public int screenH = 0;
 
     //单例模式中获取唯一的MyApplication实例
-    public static LocalApplication getInstance(){
-        if(instance==null){
-            instance=new LocalApplication();
+    public static LocalApplication getInstance() {
+        if (instance == null) {
+            instance = new LocalApplication();
         }
 
         return instance;
@@ -40,28 +43,31 @@ public class LocalApplication extends BaseApplication {
         super.onCreate();
 
         //初始化数据库
-        dbUtils=DbUtils.create(this);
+        dbUtils = DbUtils.create(this);
 
         //初始化网络模块
-        httpUtils=new HttpUtils();
+        httpUtils = new HttpUtils();
+
+        //初始化图片加载模块
+        asyncImageLoader = AsyncImageLoader.getInstance(this);
 
         //创建log目录
-        File logFolder=new File(JFileKit.getDiskCacheDir(this)+ MyData.File_Log);
-        if(!logFolder.exists()){
+        File logFolder = new File(JFileKit.getDiskCacheDir(this) + MyData.File_Log);
+        if (!logFolder.exists()) {
             logFolder.mkdirs();
         }
         //创建audio目录
-        File audioFolder=new File(JFileKit.getDiskCacheDir(this) + MyData.File_Audio);
-        if(!audioFolder.exists()){
+        File audioFolder = new File(JFileKit.getDiskCacheDir(this) + MyData.File_Audio);
+        if (!audioFolder.exists()) {
             audioFolder.mkdirs();
         }
 
-        instance=this;
+        instance = this;
 
         //得到屏幕的宽度和高度
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        screenW=displayMetrics.widthPixels;
-        screenH=displayMetrics.heightPixels;
+        screenW = displayMetrics.widthPixels;
+        screenH = displayMetrics.heightPixels;
     }
 
     @Override

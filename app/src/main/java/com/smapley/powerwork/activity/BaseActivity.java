@@ -32,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected SharedPreferences sp_set;
     protected SweetAlertDialog dialog;
     protected User_Entity user_entity = null;
+    protected AsyncImageLoader asyncImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         dbUtils = LocalApplication.getInstance().dbUtils;
         sp_user = LocalApplication.getInstance().sp_user;
         sp_set = LocalApplication.getInstance().sp_set;
+        asyncImageLoader = LocalApplication.getInstance().asyncImageLoader;
         try {
             user_entity = dbUtils.findById(User_Entity.class, sp_user.getInt("id", 0));
         } catch (DbException e) {

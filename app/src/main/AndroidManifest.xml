@@ -61,7 +61,8 @@
             android:label="@string/notification" />
         <activity
             android:name=".activity.Account"
-            android:label="@string/account" />
+            android:label="@string/account"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activity.AddTask"
             android:label="@string/addtask" />

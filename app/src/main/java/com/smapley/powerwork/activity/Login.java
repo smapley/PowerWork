@@ -2,15 +2,20 @@ package com.smapley.powerwork.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Scene;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.RequestParams;
@@ -27,6 +32,7 @@ import com.smapley.powerwork.utils.ActivityStack;
 import com.smapley.powerwork.utils.Code;
 import com.smapley.powerwork.utils.MyData;
 import com.smapley.powerwork.utils.ThreadSleep;
+import com.smapley.powerwork.view.CircleImageView;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -39,6 +45,7 @@ public class Login extends BaseActivity {
     @ViewInject(R.id.log_ll_content)
     private ViewGroup log_ll_content;
 
+    private CircleImageView log_ci_pic;
     private EditText log_et_username;
     private EditText log_et_password;
     private EditText reg_et_username;
@@ -81,7 +88,7 @@ public class Login extends BaseActivity {
             @Override
             public void onStart() {
                 dialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                dialog.setContentText(R.string.log_dia_register_ing);
+                dialog.showText(R.string.log_dia_register_ing);
                 dialog.show();
 
             }
@@ -92,32 +99,29 @@ public class Login extends BaseActivity {
                 });
                 LogUtils.i(responseInfo.result);
                 if (MyData.SUCC.equals(result_entity.getFlag())) {
-                    dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                    dialog.setContentText(R.string.log_dia_register_suc);
-                    dialog.dismiss(2000);
+                    dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                            .showText(R.string.log_dia_register_suc)
+                            .commit()
+                            .dismiss(2000);
                     User_Entity user_entity = JSON.parseObject(result_entity.getData(), new TypeReference<User_Entity>() {
                     });
                     afterRegister(user_entity);
 
                 } else {
-                    dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                    dialog.setContentText(result_entity.getDetails());
-                    dialog.showConfirmButton(true);
-                    dialog.setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog, int item) {
-                            dialog.dismiss();
-                        }
-                    });
+                    dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
+                            .showText(result_entity.getDetails())
+                            .showConfirmButton()
+                            .commit();
                 }
 
             }
 
             @Override
             public void onFailure(HttpException error, String msg) {
-                dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                dialog.setContentText(R.id.connect_fai);
-                dialog.dismiss(2000);
+                dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
+                        .showText(R.id.connect_fai)
+                        .commit()
+                        .dismiss(2000);
                 error.printStackTrace();
 
             }
@@ -135,7 +139,7 @@ public class Login extends BaseActivity {
             @Override
             public void onStart() {
                 dialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                dialog.setContentText(R.string.log_dia_login_ing);
+                dialog.showText(R.string.log_dia_login_ing);
                 dialog.show();
 
             }
@@ -145,32 +149,29 @@ public class Login extends BaseActivity {
                 Result_Entity result_entity = JSON.parseObject(responseInfo.result, new TypeReference<Result_Entity>() {
                 });
                 if (MyData.SUCC.equals(result_entity.getFlag())) {
-                    dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                    dialog.setContentText(R.string.log_dia_login_suc);
-                    dialog.dismiss(2000);
+                    dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                            .showText(R.string.log_dia_login_suc)
+                            .commit()
+                            .dismiss(2000);
                     User_Entity user_entity = JSON.parseObject(result_entity.getData(), new TypeReference<User_Entity>() {
                     });
                     afterLogin(user_entity);
 
                 } else {
-                    dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                    dialog.setContentText(result_entity.getDetails());
-                    dialog.showConfirmButton(true);
-                    dialog.setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog, int item) {
-                            dialog.dismiss();
-                        }
-                    });
+                    dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
+                            .showText(result_entity.getDetails())
+                            .showConfirmButton()
+                            .commit();
                 }
             }
 
             @Override
             public void onFailure(HttpException error, String msg) {
                 error.printStackTrace();
-                dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                dialog.setContentText(R.id.connect_fai);
-                dialog.dismiss(2000);
+                dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
+                        .showText(R.id.connect_fai)
+                        .commit()
+                        .dismiss(2000);
 
             }
         });
@@ -214,10 +215,41 @@ public class Login extends BaseActivity {
 
     public void goToScene1(View view) {
         transitionManager.transitionTo(log_sc_login);
+        log_ci_pic = (CircleImageView) log_sc_login.getSceneRoot().findViewById(R.id.log_ci_pic);
         log_et_username = (EditText) log_sc_login.getSceneRoot().findViewById(R.id.log_et_username);
         log_et_password = (EditText) log_sc_login.getSceneRoot().findViewById(R.id.log_et_password);
         log_et_password.setText(log_st_password);
         log_et_username.setText(log_st_usernmae);
+        if (user_entity != null) {
+            asyncImageLoader.loadBitmaps(log_ci_pic, user_entity.getPic_url());
+        }
+        log_et_username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                User_Entity user_entity = null;
+                try {
+                    user_entity = dbUtils.findFirst(Selector.from(User_Entity.class).where("username", "=", log_et_username.getText().toString()));
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+                if (user_entity != null) {
+                    log_et_password.setText(Code.doCode(user_entity.getPassword(), user_entity.getCre_date()));
+                    asyncImageLoader.loadBitmaps( log_ci_pic, user_entity.getPic_url());
+                } else {
+                    log_et_password.setText("");
+                    log_ci_pic.setImageResource(R.mipmap.logo);
+                }
+            }
+        });
     }
 
 

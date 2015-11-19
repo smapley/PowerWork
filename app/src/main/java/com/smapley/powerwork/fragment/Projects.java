@@ -2,6 +2,7 @@ package com.smapley.powerwork.fragment;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
@@ -26,7 +27,7 @@ public class Projects extends BaseFragment {
     private List<BaseMode> pros_lt_data;
 
     @Override
-    protected void initParams() {
+    protected void initParams(View view) {
         pros_rv_list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         pros_lt_data = new ArrayList<>();

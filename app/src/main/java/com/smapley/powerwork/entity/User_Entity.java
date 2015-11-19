@@ -18,7 +18,7 @@ public class User_Entity  {
     private String phone;
     private long birthday;
     private long cre_date;
-    private String key;
+    private String skey;
 
     public int getUse_id() {
         return use_id;
@@ -92,11 +92,11 @@ public class User_Entity  {
         return cre_date;
     }
 
-    public String getKey() {
-        return key;
+    public String getSkey() {
+        return skey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSkey(String skey) {
+        this.skey = skey;
     }
 }

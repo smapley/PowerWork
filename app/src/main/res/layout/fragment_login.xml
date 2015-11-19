@@ -23,7 +23,7 @@
 
     <EditText
         android:id="@+id/log_et_username"
-        style="@style/log_iv"
+        style="@style/log_ev"
         android:layout_below="@+id/log_ci_pic"
         android:hint="@string/log_et_username"
         android:inputType="text" />
@@ -31,7 +31,7 @@
 
     <EditText
         android:id="@+id/log_et_password"
-        style="@style/log_iv"
+        style="@style/log_ev"
         android:layout_below="@+id/log_et_username"
         android:hint="@string/log_et_password"
         android:inputType="textPassword" />

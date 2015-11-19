@@ -38,6 +38,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textSize">@dimen/text_size_item1</item>
         <item name="android:textColor">@color/cal_text</item>
     </style>
 
@@ -45,10 +46,15 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">20dp</item>
-        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
         <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textSize">@dimen/text_size_item2</item>
         <item name="android:textColor">@color/gray_text</item>
         <item name="android:lines">1</item>
+        <item name="android:background">@drawable/edittext_bg_select</item>
         <item name="android:enabled">false</item>
     </style>
 
@@ -170,7 +176,7 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="log_iv">
+    <style name="log_ev">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">45dp</item>
         <item name="android:layout_centerHorizontal">true</item>
