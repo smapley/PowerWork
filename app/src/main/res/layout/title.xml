@@ -10,7 +10,8 @@
         android:id="@+id/title_iv_back"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:scaleType="center"
+        android:scaleType="fitCenter"
+        android:padding="10dp"
         android:src="@drawable/title_back_select" />
 
     <TextView
