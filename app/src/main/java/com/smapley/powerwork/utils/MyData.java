@@ -7,6 +7,8 @@ public class MyData {
 
     public static final String SUCC = "succeed";
     public static final String FAIL = "fail";
+    public static final String OutLogin = "OutLogin";
+
 
     public static final String SP_USER = "user";
     public static final String SP_SET = "set";
@@ -20,5 +22,8 @@ public class MyData {
     public final static String URL_PIC = BASE_URL + "upload/pic/";
     public final static String URL_LOGIN = BASE_URL + "Login";
     public final static String URL_REGISTER = BASE_URL + "Register";
+    public final static String URL_FileUpLoad = BASE_URL + "FileUpLoad";
+    public final static String URL_UserPicUpLoad = BASE_URL + "UserPicUpLoad";
+    public final static String URL_Account = BASE_URL + "Account";
 
 }

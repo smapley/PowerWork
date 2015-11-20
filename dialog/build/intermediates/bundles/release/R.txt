@@ -494,8 +494,8 @@ int id always 0x7f0b001b
 int id beginning 0x7f0b0018
 int id buttonPanel 0x7f0b002e
 int id cancel_action 0x7f0b0065
-int id cancel_button 0x7f0b0061
-int id center_button 0x7f0b0062
+int id cancel_button 0x7f0b0062
+int id center_button 0x7f0b0061
 int id checkbox 0x7f0b003c
 int id chronometer 0x7f0b006b
 int id collapseActionView 0x7f0b001c

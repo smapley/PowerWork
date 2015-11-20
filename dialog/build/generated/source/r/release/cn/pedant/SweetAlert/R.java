@@ -1691,8 +1691,8 @@ containing a value of this type.
         public static int beginning=0x7f0b0018;
         public static int buttonPanel=0x7f0b002e;
         public static int cancel_action=0x7f0b0065;
-        public static int cancel_button=0x7f0b0061;
-        public static int center_button=0x7f0b0062;
+        public static int cancel_button=0x7f0b0062;
+        public static int center_button=0x7f0b0061;
         public static int checkbox=0x7f0b003c;
         public static int chronometer=0x7f0b006b;
         public static int collapseActionView=0x7f0b001c;

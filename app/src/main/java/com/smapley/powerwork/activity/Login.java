@@ -28,6 +28,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.entity.Result_Entity;
 import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.utils.ActivityStack;
 import com.smapley.powerwork.utils.Code;
 import com.smapley.powerwork.utils.MyData;
@@ -80,50 +81,21 @@ public class Login extends BaseActivity {
 
     private void doRegister() {
         dialog = new SweetAlertDialog(this);
+        dialog.showText(R.string.log_dia_register_ing);
         RequestParams params = new RequestParams();
         params.addBodyParameter("username", reg_st_username);
         params.addBodyParameter("password", reg_st_password);
         params.addBodyParameter("phone", reg_st_phone);
-        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_REGISTER, params, new RequestCallBack<String>() {
+        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_REGISTER, params, new HttpCallBack(Login.this, dialog) {
             @Override
-            public void onStart() {
-                dialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                dialog.showText(R.string.log_dia_register_ing);
-                dialog.show();
-
-            }
-
-            @Override
-            public void onSuccess(ResponseInfo<String> responseInfo) {
-                Result_Entity result_entity = JSON.parseObject(responseInfo.result, new TypeReference<Result_Entity>() {
-                });
-                LogUtils.i(responseInfo.result);
-                if (MyData.SUCC.equals(result_entity.getFlag())) {
-                    dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
-                            .showText(R.string.log_dia_register_suc)
-                            .commit()
-                            .dismiss(2000);
-                    User_Entity user_entity = JSON.parseObject(result_entity.getData(), new TypeReference<User_Entity>() {
-                    });
-                    afterRegister(user_entity);
-
-                } else {
-                    dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
-                            .showText(result_entity.getDetails())
-                            .showConfirmButton()
-                            .commit();
-                }
-
-            }
-
-            @Override
-            public void onFailure(HttpException error, String msg) {
-                dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
-                        .showText(R.id.connect_fai)
+            public void onResult(String result) {
+                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                        .showText(R.string.log_dia_register_suc)
                         .commit()
                         .dismiss(2000);
-                error.printStackTrace();
-
+                User_Entity user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                });
+                afterRegister(user_entity);
             }
         });
 
@@ -132,50 +104,23 @@ public class Login extends BaseActivity {
 
     private void doLogin() {
         dialog = new SweetAlertDialog(this);
+        dialog.showText(R.string.log_dia_login_ing);
+
         RequestParams params = new RequestParams();
         params.addBodyParameter("username", log_st_usernmae);
         params.addBodyParameter("password", log_st_password);
-        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_LOGIN, params, new RequestCallBack<String>() {
+        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_LOGIN, params, new HttpCallBack(Login.this, dialog) {
             @Override
-            public void onStart() {
-                dialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                dialog.showText(R.string.log_dia_login_ing);
-                dialog.show();
-
-            }
-
-            @Override
-            public void onSuccess(ResponseInfo<String> responseInfo) {
-                Result_Entity result_entity = JSON.parseObject(responseInfo.result, new TypeReference<Result_Entity>() {
-                });
-                if (MyData.SUCC.equals(result_entity.getFlag())) {
-                    dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
-                            .showText(R.string.log_dia_login_suc)
-                            .commit()
-                            .dismiss(2000);
-                    User_Entity user_entity = JSON.parseObject(result_entity.getData(), new TypeReference<User_Entity>() {
-                    });
-                    afterLogin(user_entity);
-
-                } else {
-                    dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
-                            .showText(result_entity.getDetails())
-                            .showConfirmButton()
-                            .commit();
-                }
-            }
-
-            @Override
-            public void onFailure(HttpException error, String msg) {
-                error.printStackTrace();
-                dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
-                        .showText(R.id.connect_fai)
+            public void onResult(String result) {
+                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                        .showText(R.string.log_dia_login_suc)
                         .commit()
                         .dismiss(2000);
-
+                User_Entity user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                });
+                afterLogin(user_entity);
             }
         });
-
     }
 
     private void afterRegister(User_Entity user_entity) {
@@ -243,7 +188,7 @@ public class Login extends BaseActivity {
                 }
                 if (user_entity != null) {
                     log_et_password.setText(Code.doCode(user_entity.getPassword(), user_entity.getCre_date()));
-                    asyncImageLoader.loadBitmaps( log_ci_pic, user_entity.getPic_url());
+                    asyncImageLoader.loadBitmaps(log_ci_pic, user_entity.getPic_url());
                 } else {
                     log_et_password.setText("");
                     log_ci_pic.setImageResource(R.mipmap.logo);
