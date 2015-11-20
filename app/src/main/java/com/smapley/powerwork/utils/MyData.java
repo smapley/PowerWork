@@ -25,5 +25,6 @@ public class MyData {
     public final static String URL_FileUpLoad = BASE_URL + "FileUpLoad";
     public final static String URL_UserPicUpLoad = BASE_URL + "UserPicUpLoad";
     public final static String URL_Account = BASE_URL + "Account";
+    public final static String URL_Feedback = BASE_URL + "Feedback";
 
 }

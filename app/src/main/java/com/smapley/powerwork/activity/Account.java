@@ -24,6 +24,7 @@ import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.entity.User_Entity;
 import com.smapley.powerwork.http.HttpCallBack;
+import com.smapley.powerwork.http.MyRequstParams;
 import com.smapley.powerwork.utils.ActivityStack;
 import com.smapley.powerwork.utils.DateUtil;
 import com.smapley.powerwork.utils.DullPolish;
@@ -189,11 +190,9 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                 RequestParams params = new RequestParams();
                 params.addBodyParameter("user_id", user_entity.getUse_id() + "");
                 params.addBodyParameter("file", new File(resultList.get(0)));
-                dialog = new SweetAlertDialog(this);
-                dialog.showText(R.string.acc_dialog_uppic);
-                httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_UserPicUpLoad, params, new HttpCallBack(Account.this, dialog) {
+                httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_UserPicUpLoad, params, new HttpCallBack(Account.this, R.string.acc_dialog_uppic) {
                     @Override
-                    public void onResult(String result) {
+                    public void onResult(String result, SweetAlertDialog dialog) {
                         dialog.dismiss();
                         try {
                             user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
@@ -213,17 +212,13 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     }
 
     private void saveData() {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("user_id", user_entity.getUse_id() + "");
-        params.addBodyParameter("skey", user_entity.getSkey());
+        RequestParams params = new MyRequstParams(user_entity);
         params.addBodyParameter("truename", acc_et_name.getText().toString());
         params.addBodyParameter("phone", acc_et_phone.getText().toString());
         params.addBodyParameter("birthday", DateUtil.getDateLong(acc_tv_birthday.getText().toString(), DateUtil.formatDate) + "");
-        dialog = new SweetAlertDialog(Account.this);
-        dialog.showText(R.string.acc_dialog_savedata);
-        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_Account, params, new HttpCallBack(Account.this, dialog) {
+        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_Account, params, new HttpCallBack(Account.this, R.string.acc_dialog_savedata) {
             @Override
-            public void onResult(String result) {
+            public void onResult(String result, SweetAlertDialog dialog) {
                 dialog.dismiss();
                 try {
                     user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {

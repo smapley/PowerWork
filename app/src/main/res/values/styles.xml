@@ -34,6 +34,27 @@
         <item name="android:background">@drawable/edittext_bg_select</item>
     </style>
 
+    <style name="notification_cart">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textSize">@dimen/text_size_item1</item>
+        <item name="android:textColor">@color/cal_text</item>
+    </style>
+
+    <style name="notification_checkbox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:button">@drawable/check_cb_select</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_size_item2</item>
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:background">@drawable/edittext_bg_select</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:paddingStart">10dp</item>
+    </style>
+
+
     <style name="account_tv_item">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

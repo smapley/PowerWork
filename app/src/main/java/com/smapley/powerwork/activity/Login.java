@@ -80,15 +80,13 @@ public class Login extends BaseActivity {
 
 
     private void doRegister() {
-        dialog = new SweetAlertDialog(this);
-        dialog.showText(R.string.log_dia_register_ing);
         RequestParams params = new RequestParams();
         params.addBodyParameter("username", reg_st_username);
         params.addBodyParameter("password", reg_st_password);
         params.addBodyParameter("phone", reg_st_phone);
-        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_REGISTER, params, new HttpCallBack(Login.this, dialog) {
+        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_REGISTER, params, new HttpCallBack(Login.this, R.string.log_dia_register_ing) {
             @Override
-            public void onResult(String result) {
+            public void onResult(String result,SweetAlertDialog dialog) {
                 dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
                         .showText(R.string.log_dia_register_suc)
                         .commit()
@@ -103,15 +101,12 @@ public class Login extends BaseActivity {
     }
 
     private void doLogin() {
-        dialog = new SweetAlertDialog(this);
-        dialog.showText(R.string.log_dia_login_ing);
-
         RequestParams params = new RequestParams();
         params.addBodyParameter("username", log_st_usernmae);
         params.addBodyParameter("password", log_st_password);
-        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_LOGIN, params, new HttpCallBack(Login.this, dialog) {
+        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_LOGIN, params, new HttpCallBack(Login.this, R.string.log_dia_login_ing) {
             @Override
-            public void onResult(String result) {
+            public void onResult(String result,SweetAlertDialog dialog) {
                 dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
                         .showText(R.string.log_dia_login_suc)
                         .commit()

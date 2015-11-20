@@ -49,6 +49,7 @@
             android:label="@string/acc_dialog_ok" />
         <activity
             android:name=".activity.Feedback"
+            android:windowSoftInputMode="stateVisible"
             android:label="@string/feedback" />
         <activity
             android:name=".activity.AboutUs"

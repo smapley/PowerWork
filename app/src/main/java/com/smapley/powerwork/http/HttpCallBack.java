@@ -28,10 +28,11 @@ public abstract class HttpCallBack extends RequestCallBack<String> {
     private SweetAlertDialog dialog;
     private Context context;
 
-    public HttpCallBack(Context context, SweetAlertDialog dialog) {
+    public HttpCallBack(Context context, int id) {
 
         this.context = context;
-        this.dialog = dialog;
+        dialog = new SweetAlertDialog(context);
+        dialog.showText(id);
     }
 
     @Override
@@ -45,7 +46,7 @@ public abstract class HttpCallBack extends RequestCallBack<String> {
         Result_Entity result_entity = JSON.parseObject(responseInfo.result, new TypeReference<Result_Entity>() {
         });
         if (MyData.SUCC.equals(result_entity.getFlag())) {
-            this.onResult(result_entity.getData());
+            this.onResult(result_entity.getData(),dialog);
         } else if (MyData.OutLogin.equals(result_entity.getFlag())) {
             dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
                     .showText(result_entity.getDetails())
@@ -72,7 +73,7 @@ public abstract class HttpCallBack extends RequestCallBack<String> {
                     dialog.dismiss();
                 }
             });
-        }else{
+        } else {
             dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
                     .showText(result_entity.getDetails())
                     .showCancelButton()
@@ -89,5 +90,5 @@ public abstract class HttpCallBack extends RequestCallBack<String> {
                 .dismiss(2000);
     }
 
-    public abstract void onResult(String result);
+    public abstract void onResult(String result,SweetAlertDialog dialog);
 }

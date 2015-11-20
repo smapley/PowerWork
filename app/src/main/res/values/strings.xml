@@ -126,5 +126,7 @@
     <string name="log_dia_login_suc">登陆成功</string>
     <string name="acc_dialog_uppic">正在上传。。。。</string>
     <string name="acc_dialog_savedata">正在保存信息。。。</string>
+    <string name="feedback_ing">正在提交信息。。。。</string>
+    <string name="feedback_done">我们已经收到了您的反馈，我们会尽快解决，感谢您的支持</string>
 
 </resources>
