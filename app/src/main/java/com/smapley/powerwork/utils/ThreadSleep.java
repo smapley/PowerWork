@@ -12,7 +12,7 @@ public class ThreadSleep {
 
     private final int SLEEP = 1;
     private boolean mIsLoops = false;
-    private Calback mcalback;
+    private Callback mcallback;
     private int mNumber = 0;
 
 
@@ -28,8 +28,8 @@ public class ThreadSleep {
         this.mIsLoops = mIsLoops;
     }
 
-    public void sleep(final long time, Calback calback) {
-        mcalback = calback;
+    public void sleep(final long time, Callback callback) {
+        mcallback = callback;
         mNumber = 0;
         new Thread(new Runnable() {
             @Override
@@ -55,13 +55,13 @@ public class ThreadSleep {
             switch (msg.what) {
                 case SLEEP:
                     mNumber++;
-                    mcalback.onCalback(mNumber);
+                    mcallback.onCallback(mNumber);
                     break;
             }
         }
     };
 
-    public interface Calback {
-        void onCalback(int number);
+    public interface Callback {
+        void onCallback(int number);
     }
 }

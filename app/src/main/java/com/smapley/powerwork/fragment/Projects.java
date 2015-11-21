@@ -9,6 +9,7 @@ import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.ProjectsAdapter;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Pro_Item_Mode;
+import com.smapley.powerwork.mode.Pro_AddItem_Mode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class Projects extends BaseFragment {
             pro_item_mode.setName("asdf");
             pros_lt_data.add(pro_item_mode);
         }
+        pros_lt_data.add(new Pro_AddItem_Mode());
         adapter = new ProjectsAdapter(getActivity(), pros_lt_data);
         pros_rv_list.setAdapter(adapter);
 

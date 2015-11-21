@@ -122,9 +122,9 @@ public class Login extends BaseActivity {
         log_st_usernmae = user_entity.getUsername();
         log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCre_date());
         goToScene1(null);
-        new ThreadSleep().sleep(2000, new ThreadSleep.Calback() {
+        new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
             @Override
-            public void onCalback(int number) {
+            public void onCallback(int number) {
                 doLogin();
             }
         });

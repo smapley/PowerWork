@@ -128,5 +128,8 @@
     <string name="acc_dialog_savedata">正在保存信息。。。</string>
     <string name="feedback_ing">正在提交信息。。。。</string>
     <string name="feedback_done">我们已经收到了您的反馈，我们会尽快解决，感谢您的支持</string>
+    <string name="addproject">创建项目</string>
+    <string name="addproject_ing">正在创建项目。。。</string>
+    <string name="addproject_ed">成功创建项目</string>
 
 </resources>

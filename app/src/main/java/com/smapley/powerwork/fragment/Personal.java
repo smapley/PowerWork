@@ -125,13 +125,18 @@ public class Personal extends BaseFragment {
         per_group_mode3.setName("我的成就");
         per_group_mode3.setItem(3);
         per_list.add(per_group_mode3);
+
         Per_Group_Mode per_group_mode4 = new Per_Group_Mode();
         per_group_mode4.setName("设置");
         per_group_mode4.setItem(4);
+
+
+
         per_list.add(per_group_mode4);
 
 
         per_adapter = new PersonalAdapter(getActivity(), per_list);
+        per_adapter.notifyDataSetChanged();
         per_rv_listview.setAdapter(per_adapter);
     }
 

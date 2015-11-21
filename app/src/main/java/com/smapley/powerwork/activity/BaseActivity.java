@@ -26,12 +26,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private boolean isCreate = false;
-    protected HttpUtils httpUtils;
+    public HttpUtils httpUtils;
     protected DbUtils dbUtils;
     protected SharedPreferences sp_user;
     protected SharedPreferences sp_set;
     protected SweetAlertDialog dialog;
-    protected User_Entity user_entity = null;
+    public User_Entity user_entity = null;
     protected AsyncImageLoader asyncImageLoader;
 
     @Override

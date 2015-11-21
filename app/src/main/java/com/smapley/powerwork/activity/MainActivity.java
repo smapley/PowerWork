@@ -91,9 +91,9 @@ public class MainActivity extends BaseActivity {
             //如果登陆 则加载界面
             initView();
             //异步加载Viewpage
-            new ThreadSleep().sleep(50, new ThreadSleep.Calback() {
+            new ThreadSleep().sleep(50, new ThreadSleep.Callback() {
                 @Override
-                public void onCalback(int number) {
+                public void onCallback(int number) {
                     initViewPager();
                 }
             });
