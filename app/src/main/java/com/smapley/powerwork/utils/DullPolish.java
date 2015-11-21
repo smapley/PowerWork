@@ -14,6 +14,10 @@ import android.renderscript.ScriptIntrinsicBlur;
  * 磨砂效果
  */
 public class DullPolish {
+    public static Bitmap doPolish(Context context, Bitmap sentBitmap) {
+        return doPolish(context, sentBitmap, 10);
+    }
+
 
     public static Bitmap doPolish(Context context, Bitmap sentBitmap, int radius) {
         if (Build.VERSION.SDK_INT > 16) {

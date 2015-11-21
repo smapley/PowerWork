@@ -33,12 +33,15 @@ public class BitmapUtil {
      * 根据指定比例缩放图片
      */
     public static Bitmap decodeSampledBitmap(FileDescriptor fileDescriptor, int reqWidth, int reqHeight) {
+
         //第一次解析inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
-        //调用上面定义的方法计算inSamplesize值
-        options.inSampleSize = caculateInSampleSize(options, reqWidth, reqHeight);
+        if (reqWidth != 0) {
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+            //调用上面定义的方法计算inSamplesize值
+            options.inSampleSize = caculateInSampleSize(options, reqWidth, reqHeight);
+        }
         //使用获取到的inSampleSize值在此解析图片
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
@@ -47,10 +50,12 @@ public class BitmapUtil {
     public static Bitmap decodeSampledBitmap(InputStream inputStream, int reqWidth, int reqHeight) throws FileNotFoundException {
         //第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(inputStream, null, options);
-        //调用上面定义的计算inSampleSize值
-        options.inSampleSize = caculateInSampleSize(options, reqWidth, reqHeight);
+        if (reqWidth != 0) {
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(inputStream, null, options);
+            //调用上面定义的计算inSampleSize值
+            options.inSampleSize = caculateInSampleSize(options, reqWidth, reqHeight);
+        }
         //使用获取到的inSampleSize值再次解析图片
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeStream(inputStream, null, options);
@@ -59,10 +64,12 @@ public class BitmapUtil {
     public static Bitmap decodeSampledBitmap(String path, int reqWidth, int reqHeight) throws FileNotFoundException {
         //第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        //调用上面定义的计算inSampleSize值
-        options.inSampleSize = caculateInSampleSize(options, reqWidth, reqHeight);
+        if (reqWidth != 0) {
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, options);
+            //调用上面定义的计算inSampleSize值
+            options.inSampleSize = caculateInSampleSize(options, reqWidth, reqHeight);
+        }
         //使用获取到的inSampleSize值再次解析图片
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(path, options);

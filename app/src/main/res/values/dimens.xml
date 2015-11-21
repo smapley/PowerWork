@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="historyscore_tb">10dp</dimen>
+    <dimen name="text_size_item1">18sp</dimen>
+    <dimen name="text_size_item2">16sp</dimen>
 </resources>

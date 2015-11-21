@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -7,41 +9,59 @@
 
     <include layout="@layout/title" />
 
-    <ImageView
-        android:id="@+id/fee_iv_pic"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:src="@mipmap/ic_launcher" />
-
-    <TextView
-        android:id="@+id/fee_tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="name"
-        android:textColor="@color/gray_text"
-        android:textSize="18sp" />
-
-    <EditText
-        android:id="@+id/fee_et_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:hint="@string/fee_et_content"
-        android:textColor="@color/gray_text" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.smapley.powerwork.view.CircleImageView
+                android:id="@+id/fee_iv_pic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="25dp"
+                android:src="@mipmap/logo"
+                app:border_color="@color/blue"
+                app:border_width="2dp" />
+
+            <TextView
+                android:id="@+id/fee_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/gray_text"
+                android:textSize="18sp"
+                tools:text="name" />
+
+            <EditText
+                android:id="@+id/fee_et_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:enabled="true"
+                android:hint="@string/fee_et_content"
+                android:padding="10dp"
+                android:textColor="@color/cal_text"
+                android:textColorHint="@color/gray_text"
+                android:textSize="@dimen/text_size_item2" />
 
 
-    <Button
-        android:id="@+id/fee_bt_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:text="@string/fee_bt_submit" />
+            <Button
+                android:id="@+id/fee_bt_submit"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@null"
+                android:textSize="@dimen/text_size_item1"
+                android:text="@string/fee_bt_submit" />
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

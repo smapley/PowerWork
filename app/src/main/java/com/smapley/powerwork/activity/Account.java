@@ -4,33 +4,36 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.lidroid.xutils.util.LogUtils;
+import com.lidroid.xutils.exception.DbException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.client.HttpRequest;
+import com.lidroid.xutils.http.client.multipart.MultipartEntity;
+import com.lidroid.xutils.http.client.multipart.content.FileBody;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.application.LocalApplication;
+import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.http.HttpCallBack;
+import com.smapley.powerwork.http.MyRequstParams;
 import com.smapley.powerwork.utils.ActivityStack;
+import com.smapley.powerwork.utils.DateUtil;
 import com.smapley.powerwork.utils.DullPolish;
+import com.smapley.powerwork.utils.MyData;
 
-import java.net.URI;
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.pedant.SweetAlert.OptAnimationLoader;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
@@ -42,8 +45,10 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
 
     @ViewInject(R.id.title_tv_name)
     private TextView title_tv_name;
-    @ViewInject(R.id.title_tv_right)
-    private TextView title_tv_right;
+    @ViewInject(R.id.title_iv_edit)
+    private ImageView title_iv_edit;
+    @ViewInject(R.id.title_iv_done)
+    private ImageView title_iv_done;
 
     @ViewInject(R.id.acc_iv_pic)
     private ImageView acc_iv_pic;
@@ -64,17 +69,22 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     @Override
     protected void initParams() {
         title_tv_name.setText(R.string.account);
-        title_tv_right.setText(R.string.recompose);
+        title_iv_edit.setVisibility(View.VISIBLE);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_pic);
-        acc_iv_pic.setImageBitmap(DullPolish.doPolish(this, bitmap, 20));
-        acc_et_name.setText(sp_user.getString("name", ""));
-        acc_et_phone.setText(sp_user.getString("phone", ""));
-        acc_tv_birthday.setText(sp_user.getString("birthday", ""));
+        initView();
 
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(Account.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
 
+    }
+
+    private void initView() {
+        if (user_entity != null) {
+            asyncImageLoader.loadBitmaps(acc_iv_pic, user_entity.getPic_url());
+            acc_et_name.setText(user_entity.getTruename());
+            acc_et_phone.setText(user_entity.getPhone());
+            acc_tv_birthday.setText(DateUtil.getDateString(user_entity.getCre_date(), DateUtil.formatDate));
+        }
     }
 
 
@@ -86,10 +96,12 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         acc_et_name.setEnabled(isEdit);
         acc_et_phone.setEnabled(isEdit);
         acc_tv_birthday.setEnabled(isEdit);
+        acc_bt_exit.setVisibility(isEdit ? View.GONE : View.VISIBLE);
+
     }
 
-    @OnClick({R.id.acc_iv_changepic, R.id.acc_bt_exit, R.id.title_iv_back, R.id.title_tv_right, R.id.acc_tv_birthday})
-    public void viewOnClick(View view) {
+    @OnClick({R.id.acc_iv_changepic, R.id.acc_bt_exit, R.id.title_iv_back, R.id.title_iv_edit, R.id.acc_tv_birthday, R.id.title_iv_done})
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.acc_tv_birthday:
                 datePickerDialog.setVibrate(false);
@@ -97,11 +109,16 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                 datePickerDialog.setCloseOnSingleTapDay(false);
                 datePickerDialog.show(getSupportFragmentManager(), "data");
                 break;
-            case R.id.title_tv_right:
+            case R.id.title_iv_edit:
                 if (!isEdit) {
                     changeEditState();
-                    acc_bt_exit.setText(R.string.acc_bt_save);
+                    title_iv_edit.setVisibility(View.GONE);
+                    title_iv_done.setVisibility(View.VISIBLE);
                 }
+                break;
+            case R.id.title_iv_done:
+                saveData();
+
                 break;
             case R.id.title_iv_back:
                 if (isEdit) {
@@ -111,30 +128,34 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                 }
                 break;
             case R.id.acc_iv_changepic:
-                new SweetAlertDialog(Account.this, SweetAlertDialog.NORMAL_TYPE,
-                        R.string.acc_dialog_title, 0,
-                        new int[]{1, 1},
-                        new int[]{R.string.cancel, R.string.acc_dialog_ok},
-                        new SweetAlertDialog.OnSweetClickListener() {
+                dialog = new SweetAlertDialog(Account.this);
+                dialog.showText(R.string.acc_dialog_title)
+                        .showCancelButton()
+                        .showConfirmButton(R.string.acc_dialog_ok)
+                        .setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog, int item) {
-                                if (item == 1)
-                                    sweetAlertDialog.dismiss();
-                                if (item == 2) {
-                                    selectPic();
-                                    sweetAlertDialog.dismiss();
-                                }
+                            public void onConfirmClick(SweetAlertDialog dialog) {
+                                selectPic();
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFirstClick(SweetAlertDialog dialog) {
+
+                            }
+
+                            @Override
+                            public void onCancelClick(SweetAlertDialog dialog) {
+                                dialog.dismiss();
                             }
                         }).show();
                 break;
             case R.id.acc_bt_exit:
-                if (isEdit) {
-                    changeEditState();
-                    acc_bt_exit.setText(R.string.acc_bt_exit);
-                    saveData();
-                } else {
-                    startActivity(new Intent(Account.this, Login.class));
-                }
+                SharedPreferences.Editor editor = sp_user.edit();
+                editor.putBoolean("islogin", false);
+                editor.commit();
+                ActivityStack.getInstance().finishAllActivity();
+                startActivity(new Intent(Account.this, Login.class));
                 break;
         }
     }
@@ -166,8 +187,24 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         try {
             if (resultCode == RESULT_OK && requestCode == 0) {
                 List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                Bitmap bitmap = BitmapFactory.decodeFile(resultList.get(0));
-                acc_iv_pic.setImageBitmap(bitmap);
+                RequestParams params = new RequestParams();
+                params.addBodyParameter("user_id", user_entity.getUse_id() + "");
+                params.addBodyParameter("file", new File(resultList.get(0)));
+                httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_UserPicUpLoad, params, new HttpCallBack(Account.this, R.string.acc_dialog_uppic) {
+                    @Override
+                    public void onResult(String result, SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                        try {
+                            user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                            });
+                            dbUtils.update(user_entity, "pic_url");
+                            initView();
+                        } catch (DbException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
             }
         } catch (Exception e) {
 
@@ -175,25 +212,52 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     }
 
     private void saveData() {
-        SharedPreferences.Editor editor = sp_user.edit();
-        editor.putString("name", acc_et_name.getText().toString());
-        editor.putString("phone", acc_et_phone.getText().toString());
-        editor.putString("birthday", acc_tv_birthday.getText().toString());
-        editor.commit();
+        RequestParams params = new MyRequstParams(user_entity);
+        params.addBodyParameter("truename", acc_et_name.getText().toString());
+        params.addBodyParameter("phone", acc_et_phone.getText().toString());
+        params.addBodyParameter("birthday", DateUtil.getDateLong(acc_tv_birthday.getText().toString(), DateUtil.formatDate) + "");
+        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_Account, params, new HttpCallBack(Account.this, R.string.acc_dialog_savedata) {
+            @Override
+            public void onResult(String result, SweetAlertDialog dialog) {
+                dialog.dismiss();
+                try {
+                    user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                    });
+                    dbUtils.update(user_entity, "truename", "phone", "birthday");
+                    if (isEdit) {
+                        changeEditState();
+                        title_iv_edit.setVisibility(View.VISIBLE);
+                        title_iv_done.setVisibility(View.GONE);
+                    }
+                    initView();
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void onExit() {
-        new SweetAlertDialog(Account.this, SweetAlertDialog.WARNING_TYPE,
-                R.string.acc_dialog_title2,
-                new int[]{1, 1},
-                new int[]{R.string.no_save, R.string.check},
-                new SweetAlertDialog.OnSweetClickListener() {
+        dialog = new SweetAlertDialog(Account.this, SweetAlertDialog.WARNING_TYPE);
+        dialog.showCancelButton(R.string.no_save)
+                .showConfirmButton(R.string.check)
+                .showText(R.string.acc_dialog_title2)
+                .setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog, int item) {
-                        if (item == 1) {
-                            finish();
-                        }
-                        sweetAlertDialog.dismiss();
+                    public void onConfirmClick(SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFirstClick(SweetAlertDialog dialog) {
+
+                    }
+
+                    @Override
+                    public void onCancelClick(SweetAlertDialog dialog) {
+                        finish();
+                        dialog.dismiss();
+
                     }
                 }).show();
     }

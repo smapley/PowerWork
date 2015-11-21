@@ -10,7 +10,7 @@
     <string name="save">保存</string>
     <string name="no_save">不保存</string>
     <string name="check">查看</string>
-    <string name="recompose">修改</string>
+    <string name="edit">修改</string>
 
     <string name="navigation_drawer_open">oprn</string>
     <string name="navigation_drawer_close">close</string>
@@ -108,5 +108,28 @@
     <string name="pro_tv_btn_item3">任务</string>
     <string name="pro_tv_btn_item4">团队</string>
     <string name="pro_tv_btn_item5">文件</string>
+
+
+
+    <string name="pro_item5_tv_nowfile">新文件</string>
+    <string name="pro_item5_tv_nowfiles">新文件夹</string>
+    <string name="pro_item5_title_file">文件</string>
+    <string name="pro_item5_title_folder">文件夹</string>
+
+    <string name="newfolder">添加文件夹</string>
+    <string name="nfd_tv_name">文件夹名</string>
+    <string name="nfd_ts_namenull">文件夹名不能为空</string>
+    <string name="log_dia_register_ing">注册ing。。。</string>
+    <string name="log_dia_register_suc">注册成功</string>
+    <string name="log_dia_register_fai">注册失败</string>
+    <string name="log_dia_login_ing">登陆ing。。。</string>
+    <string name="log_dia_login_suc">登陆成功</string>
+    <string name="acc_dialog_uppic">正在上传。。。。</string>
+    <string name="acc_dialog_savedata">正在保存信息。。。</string>
+    <string name="feedback_ing">正在提交信息。。。。</string>
+    <string name="feedback_done">我们已经收到了您的反馈，我们会尽快解决，感谢您的支持</string>
+    <string name="addproject">创建项目</string>
+    <string name="addproject_ing">正在创建项目。。。</string>
+    <string name="addproject_ed">成功创建项目</string>
 
 </resources>

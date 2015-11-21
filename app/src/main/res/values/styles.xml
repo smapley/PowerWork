@@ -17,22 +17,50 @@
         <item name="android:windowExitAnimation">@anim/pop_voice_out</item>
     </style>
 
+    <style name="pro_item5_add">
+        <item name="android:windowEnterAnimation">@anim/pro_item5_add_in</item>
+        <item name="android:windowExitAnimation">@anim/pro_item5_ad_out</item>
+    </style>
+
     <style name="setting_item">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/cal_text</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textSize">@dimen/text_size_item1</item>
+        <item name="android:background">@drawable/edittext_bg_select</item>
     </style>
+
+    <style name="notification_cart">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textSize">@dimen/text_size_item1</item>
+        <item name="android:textColor">@color/cal_text</item>
+    </style>
+
+    <style name="notification_checkbox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:button">@drawable/check_cb_select</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_size_item2</item>
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:background">@drawable/edittext_bg_select</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:paddingStart">10dp</item>
+    </style>
+
 
     <style name="account_tv_item">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textSize">@dimen/text_size_item1</item>
         <item name="android:textColor">@color/cal_text</item>
     </style>
 
@@ -40,10 +68,15 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">20dp</item>
-        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
         <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textSize">@dimen/text_size_item2</item>
         <item name="android:textColor">@color/gray_text</item>
         <item name="android:lines">1</item>
+        <item name="android:background">@drawable/edittext_bg_select</item>
         <item name="android:enabled">false</item>
     </style>
 
@@ -60,6 +93,7 @@
         <item name="android:textSize">15sp</item>
         <item name="android:typeface">normal</item>
     </style>
+
     <style name="pro_name_expanded">
         <item name="android:textSize">20sp</item>
         <item name="android:typeface">normal</item>
@@ -82,6 +116,17 @@
         <item name="android:padding">8dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/text_size_item2</item>
+        <item name="android:textColor">@color/gray_text</item>
+    </style>
+
+    <style name="per_tv_group">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/text_size_item1</item>
         <item name="android:textColor">@color/gray_text</item>
     </style>
 
@@ -162,6 +207,30 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/cal_text</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="log_ev">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginEnd">60dp</item>
+        <item name="android:layout_marginStart">60dp</item>
+        <item name="android:background">@drawable/edittext_bg_select</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLength">20</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:textColorHint">@color/gray_text</item>
+        <item name="android:layout_marginTop">15dp</item>
+    </style>
+
+    <style name="log_bt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>

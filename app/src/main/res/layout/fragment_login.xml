@@ -1,58 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scene"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.bignerdranch.android.transitionexample.TransitionFragment">
 
 
+    <com.smapley.powerwork.view.CircleImageView
+        android:id="@+id/log_ci_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="25dp"
+        android:src="@mipmap/logo"
+        app:border_color="@color/blue"
+        app:border_width="2dp" />
+
     <EditText
         android:id="@+id/log_et_username"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/log_et_password"
-        android:layout_centerHorizontal="true"
+        style="@style/log_ev"
+        android:layout_below="@+id/log_ci_pic"
         android:hint="@string/log_et_username"
-        android:inputType="text"
-        android:maxLength="20"
-        android:minLines="8" />
+        android:inputType="text" />
+
 
     <EditText
         android:id="@+id/log_et_password"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
+        style="@style/log_ev"
+        android:layout_below="@+id/log_et_username"
         android:hint="@string/log_et_password"
-        android:inputType="textPassword"
-        android:maxLength="20"
-        android:minLines="8" />
+        android:inputType="textPassword" />
+
 
     <Button
         android:id="@+id/log_bt_submit"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
+        style="@style/log_bt"
         android:layout_below="@+id/log_et_password"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:onClick="checkLogin"
         android:text="@string/login" />
 
     <Button
         android:id="@+id/log_bt_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/log_bt"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:onClick="goToScene2"
         android:text="@string/log_bt_register" />
 
     <Button
         android:id="@+id/log_bt_forget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/log_bt"
         android:layout_alignParentBottom="true"
         android:text="@string/log_bt_forget" />
 </RelativeLayout>

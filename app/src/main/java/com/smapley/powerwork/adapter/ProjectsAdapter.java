@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.holder.Pro_AddItem_Holder;
 import com.smapley.powerwork.holder.Pro_Item_Holder;
 import com.smapley.powerwork.mode.BaseMode;
+import com.smapley.powerwork.mode.Pro_AddItem_Mode;
 import com.smapley.powerwork.mode.Pro_Item_Mode;
 
 import java.util.List;
@@ -37,6 +39,10 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case 1:
                 view = inflater.inflate(R.layout.adapter_pro_item, parent, false);
                 return new Pro_Item_Holder(view);
+            case 2:
+                view = inflater.inflate(R.layout.adapter_pro_additem, parent, false);
+                return new Pro_AddItem_Holder(view);
+
         }
         return null;
     }
@@ -47,6 +53,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case 1:
                 ((Pro_Item_Holder) holder).setData(context, (Pro_Item_Mode) modeList.get(position));
                 break;
+            case 2:
+                ((Pro_AddItem_Holder) holder).setData(context, (Pro_AddItem_Mode) modeList.get(position));
         }
     }
 

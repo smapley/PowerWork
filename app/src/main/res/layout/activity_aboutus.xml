@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -19,11 +21,17 @@
             android:layout_centerVertical="true"
             android:orientation="vertical">
 
-            <ImageView
+            <com.smapley.powerwork.view.CircleImageView
+                android:id="@+id/fee_iv_pic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_launcher" />
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="25dp"
+                android:src="@mipmap/logo"
+                app:border_color="@color/blue"
+                app:border_width="2dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -33,6 +41,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/app_name"
+                android:textSize="@dimen/text_size_item1"
                 android:textColor="@color/cal_text" />
 
             <TextView
@@ -54,5 +63,6 @@
         android:layout_marginRight="20dp"
         android:gravity="center"
         android:text="@string/abo_bt_good"
+        android:background="@null"
         android:textSize="18sp" />
 </LinearLayout>

@@ -49,6 +49,7 @@
             android:label="@string/acc_dialog_ok" />
         <activity
             android:name=".activity.Feedback"
+            android:windowSoftInputMode="stateVisible"
             android:label="@string/feedback" />
         <activity
             android:name=".activity.AboutUs"
@@ -61,13 +62,15 @@
             android:label="@string/notification" />
         <activity
             android:name=".activity.Account"
-            android:label="@string/account" />
+            android:label="@string/account"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activity.AddTask"
             android:label="@string/addtask" />
         <activity
             android:name=".activity.Login"
-            android:label="@string/login" />
+            android:label="@string/login"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".activity.Achievement"
             android:label="@string/achievement" />
@@ -77,8 +80,12 @@
         <activity
             android:name=".activity.Task"
             android:label="@string/task" />
-        <activity android:name=".activity.Project"
-            android:label="@string/project"/>
+        <activity
+            android:name=".activity.Project"
+            android:label="@string/project" />
+        <activity
+            android:name=".activity.NewFolder"
+            android:label="@string/newfolder" />
     </application>
 
 </manifest>

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import java.util.List;
 
 public class SweetAlertDialog extends Dialog implements View.OnClickListener {
+    private final int DISMISS = 1;
     private View mDialogView;
     private AnimationSet mModalInAnim;
     private AnimationSet mModalOutAnim;
@@ -38,6 +41,8 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     private boolean mShowConfirm;
     private boolean mShowCenter;
     private boolean mshowEditext;
+    private boolean mshowText;
+    private boolean mshowTitle;
     private String mCancelText;
     private String mCenterText;
     private String mConfirmText;
@@ -58,6 +63,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     private FrameLayout mWarningFrame;
     private OnSweetClickListener onSweetClickListener;
     private EditText meditext;
+    private Context context;
 
     public static final int NORMAL_TYPE = 0;
     public static final int ERROR_TYPE = 1;
@@ -67,92 +73,23 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     public static final int EDITEXT_TYPE = 5;
     public static final int PROGRESS_TYPE = 6;
 
-    public static interface OnSweetClickListener {
-        public void onClick(SweetAlertDialog sweetAlertDialog, int item);
+    public interface OnSweetClickListener {
+        void onConfirmClick(SweetAlertDialog dialog);
+
+        void onFirstClick(SweetAlertDialog dialog);
+
+        void onCancelClick(SweetAlertDialog dialog);
     }
 
     public SweetAlertDialog(Context context) {
         this(context, NORMAL_TYPE);
-    }
-
-    public SweetAlertDialog(Context context, String title, String content, int[] button, String[] btName, OnSweetClickListener onSweetClickListener) {
-        this(context, NORMAL_TYPE, title, content, button, btName, onSweetClickListener);
-    }
-
-    public SweetAlertDialog(Context context, int alertType, int title, int[] button, int[] btName, OnSweetClickListener onSweetClickListener) {
-        this(context, alertType, title, 0, button, btName, onSweetClickListener);
-    }
-
-    public SweetAlertDialog(Context context, int alertType, int title, int content, int[] button, int[] btName, OnSweetClickListener onSweetClickListener) {
-        this(context, alertType);
-        if (title != 0) {
-            setTitleText(context.getString(title));
-        }
-        if (content != 0) {
-            setContentText(context.getString(content));
-        }
-        if (button != null) {
-            for (int i = 0; i < button.length; i++) {
-                if (button[i] == 1) {
-                    showButton(i, context.getString(btName[i]));
-                }
-            }
-        }
-        if (onSweetClickListener != null) {
-            setOnSweetClickListener(onSweetClickListener);
-        }
-
-    }
-
-    /**
-     * @param context   上下文
-     * @param alertType 类型
-     * @param title     标题
-     * @param content   内容
-     * @param button    是否显示按钮 1显示 0不显示
-     * @param btName    按钮名字
-     */
-    public SweetAlertDialog(Context context, int alertType, String title, String content, int[] button, String[] btName, OnSweetClickListener onSweetClickListener) {
-        this(context, alertType);
-        if (title != null) {
-            setTitleText(title);
-        }
-        if (content != null) {
-            setContentText(content);
-        }
-        if (button != null) {
-            for (int i = 0; i < button.length; i++) {
-                if (button[i] == 1) {
-                    showButton(i, btName[i]);
-                }
-            }
-        }
-        if (onSweetClickListener != null) {
-            setOnSweetClickListener(onSweetClickListener);
-        }
-    }
-
-    private void showButton(int i, String btName) {
-        switch (i) {
-            case 0:
-                showCancelButton(true);
-                setCancelText(btName);
-                break;
-            case 1:
-                showCenterButton(true);
-                setCenterText(btName);
-                break;
-            case 2:
-                showConfirmButton(true);
-                setConfirmText(btName);
-                break;
-        }
-
+        this.context = context;
     }
 
 
     public SweetAlertDialog(Context context, int alertType) {
         super(context, R.style.alert_dialog);
+        this.context = context;
         setCancelable(true);
         setCanceledOnTouchOutside(false);
         mAlertType = alertType;
@@ -236,17 +173,29 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         mCancelButton.setOnClickListener(this);
         mCenterButton.setOnClickListener(this);
 
-        setTitleText(mTitleText);
-        setContentText(mContentText);
-        showCancelButton(mShowCancel);
-        showCenterButton(mShowCenter);
-        showConfirmButton(mShowConfirm);
-        showEditext(mshowEditext);
-        setCancelText(mCancelText);
-        setCenterText(mCenterText);
-        setConfirmText(mConfirmText);
+        commit();
+
+
         changeAlertType(mAlertType, true);
     }
+
+    public SweetAlertDialog commit() {
+
+        mCancelButton.setVisibility(mShowCancel ? View.VISIBLE : View.GONE);
+        mConfirmButton.setVisibility(mShowConfirm ? View.VISIBLE : View.GONE);
+        mCenterButton.setVisibility(mShowCenter ? View.VISIBLE : View.GONE);
+        meditext.setVisibility(mshowEditext ? View.VISIBLE : View.GONE);
+        mContentTextView.setVisibility(mshowText ? View.VISIBLE : View.GONE);
+        mTitleTextView.setVisibility(mshowTitle ? View.VISIBLE : View.GONE);
+
+        mConfirmButton.setText(mConfirmText == null ? context.getString(R.string.dialog_ok) : mConfirmText);
+        mCancelButton.setText(mCancelText == null ? context.getString(R.string.dialog_cancel) : mCancelText);
+        mContentTextView.setText(mContentText);
+        mTitleTextView.setText(mTitleText);
+
+        return this;
+    }
+
 
     private void restore() {
         mCustomImage.setVisibility(View.GONE);
@@ -314,7 +263,6 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
                     // initial rotate layout of success mask
                     break;
                 case WARNING_TYPE:
-                    mConfirmButton.setBackgroundResource(R.drawable.red_button_background);
                     mWarningFrame.setVisibility(View.VISIBLE);
                     break;
                 case CUSTOM_IMAGE_TYPE:
@@ -331,8 +279,9 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         return mAlertType;
     }
 
-    public void changeAlertType(int alertType) {
+    public SweetAlertDialog changeAlertType(int alertType) {
         changeAlertType(alertType, false);
+        return this;
     }
 
 
@@ -365,20 +314,30 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         return mContentText;
     }
 
-    public SweetAlertDialog setContentText(String text) {
+
+    public SweetAlertDialog showText(String text) {
         mContentText = text;
-        if (mContentTextView != null && mContentText != null) {
-            mContentTextView.setVisibility(View.VISIBLE);
-            mContentTextView.setText(mContentText);
-        }
+        mshowText = true;
         return this;
     }
 
-    public SweetAlertDialog showEditext(boolean isShow) {
-        mshowEditext = isShow;
-        if (meditext != null) {
-            meditext.setVisibility(mshowEditext ? View.VISIBLE : View.GONE);
-        }
+    public SweetAlertDialog showText(int id) {
+        return showText(context.getString(id));
+    }
+
+    public SweetAlertDialog hideText() {
+        mshowText = false;
+        return this;
+    }
+
+
+    public SweetAlertDialog showEditext() {
+        mshowEditext = true;
+        return this;
+    }
+
+    public SweetAlertDialog hideEditext() {
+        mshowEditext = false;
         return this;
     }
 
@@ -401,27 +360,55 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         return mShowCenter;
     }
 
-    public SweetAlertDialog showCancelButton(boolean isShow) {
-        mShowCancel = isShow;
-        if (mCancelButton != null) {
-            mCancelButton.setVisibility(mShowCancel ? View.VISIBLE : View.GONE);
-        }
+    public SweetAlertDialog showCancelButton() {
+        mShowCancel = true;
         return this;
     }
 
-    public SweetAlertDialog showConfirmButton(boolean isShow) {
-        mShowConfirm = isShow;
-        if (mConfirmButton != null) {
-            mConfirmButton.setVisibility(mShowConfirm ? View.VISIBLE : View.GONE);
-        }
+    public SweetAlertDialog showCancelButton(String text) {
+        showCancelButton();
+        mCancelText = text;
         return this;
     }
 
-    public SweetAlertDialog showCenterButton(boolean isShow) {
-        mShowCenter = isShow;
-        if (mCenterButton != null) {
-            mCenterButton.setVisibility(mShowCenter ? View.VISIBLE : View.GONE);
-        }
+    public SweetAlertDialog showCancelButton(int id) {
+        showCancelButton(context.getString(id));
+        return this;
+    }
+
+    public SweetAlertDialog hideCancelButton() {
+        mShowCancel = false;
+        return this;
+    }
+
+    public SweetAlertDialog showConfirmButton() {
+        mShowConfirm = true;
+        return this;
+    }
+
+    public SweetAlertDialog showConfirmButton(String text) {
+        mConfirmText = text;
+        showConfirmButton();
+        return this;
+    }
+
+    public SweetAlertDialog showConfirmButton(int id) {
+        showConfirmButton(context.getString(id));
+        return this;
+    }
+
+    public SweetAlertDialog hideConfirmButton() {
+        mShowConfirm = false;
+        return this;
+    }
+
+    public SweetAlertDialog showCenterButton() {
+        mShowCenter = true;
+        return this;
+    }
+
+    public SweetAlertDialog hideCenterButton() {
+        mShowCenter = false;
         return this;
     }
 
@@ -473,6 +460,20 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         playAnimation();
     }
 
+    public void dismiss(final long time) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mhandler.obtainMessage(DISMISS).sendToTarget();
+            }
+        }).start();
+    }
+
     public void dismiss() {
         mConfirmButton.startAnimation(mOverlayOutAnim);
         mDialogView.startAnimation(mModalOutAnim);
@@ -482,22 +483,34 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.cancel_button) {
             if (onSweetClickListener != null) {
-                onSweetClickListener.onClick(SweetAlertDialog.this, 1);
+                onSweetClickListener.onCancelClick(this);
             } else {
                 dismiss();
             }
         } else if (v.getId() == R.id.center_button) {
             if (onSweetClickListener != null) {
-                onSweetClickListener.onClick(SweetAlertDialog.this, 2);
+                onSweetClickListener.onFirstClick(this);
             } else {
                 dismiss();
             }
         } else if (v.getId() == R.id.confirm_button) {
             if (onSweetClickListener != null) {
-                onSweetClickListener.onClick(SweetAlertDialog.this, 3);
+                onSweetClickListener.onConfirmClick(this);
             } else {
                 dismiss();
             }
         }
     }
+
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case DISMISS:
+                    dismiss();
+                    break;
+            }
+        }
+    };
 }

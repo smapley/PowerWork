@@ -15,6 +15,7 @@ import com.smapley.powerwork.activity.AddTask;
 import com.smapley.powerwork.activity.MainActivity;
 import com.smapley.powerwork.adapter.PersonalAdapter;
 import com.smapley.powerwork.mode.Per_Task_Details_Mode;
+import com.smapley.powerwork.utils.DateUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -57,7 +58,7 @@ public class Per_Task_Details_Holder extends BaseHolder {
         per_iv_task_details_mark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context, AddTask.class);
+                Intent intent = new Intent(context, AddTask.class);
                 context.startActivity(intent);
             }
         });
@@ -78,7 +79,7 @@ public class Per_Task_Details_Holder extends BaseHolder {
                             @Override
                             public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
                                 //构造时间字符串并转换成long 保存到mode中
-                                mode.setWarm(getTimeLong(year + "-" + (month+1) + "-" + day + " " + hourOfDay + ":" + minute));
+                                mode.setWarm(DateUtil.getDateLong(year + "-" + (month + 1) + "-" + day + " " + hourOfDay + ":" + minute, DateUtil.formatDateAndTime));
                             }
                         }, mode.getWarm());
                         timePickerDialog.setVibrate(false);
@@ -94,19 +95,5 @@ public class Per_Task_Details_Holder extends BaseHolder {
         });
     }
 
-    /**
-     * 时间转换
-     * 将字符串转换成long
-     */
-    public static long getTimeLong(String date) {
-        try {
-            String format = "yyyy-MM-dd HH:mm";
-            SimpleDateFormat sf = new SimpleDateFormat(format);
-            return sf.parse(date).getTime();
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return 0l;
-    }
 }

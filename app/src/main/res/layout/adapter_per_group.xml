@@ -11,5 +11,5 @@
 
     <TextView
         android:id="@+id/per_tv_group_name"
-        style="@style/per_tv_name"/>
+        style="@style/per_tv_group"/>
 </LinearLayout>

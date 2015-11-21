@@ -2,6 +2,7 @@ package com.smapley.powerwork.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
@@ -24,7 +25,7 @@ public class Message extends BaseFragment {
     private PersonalAdapter mes_pa_adapter;
 
     @Override
-    protected void initParams() {
+    protected void initParams(View view) {
 
         mes_rv_list.setLayoutManager(new LinearLayoutManager(getActivity()));
 

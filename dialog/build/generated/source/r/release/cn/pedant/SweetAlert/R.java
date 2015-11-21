@@ -1657,16 +1657,17 @@ containing a value of this type.
         public static int abc_textfield_search_default_mtrl_alpha=0x7f020043;
         public static int abc_textfield_search_material=0x7f020044;
         public static int blue_button_background=0x7f020045;
-        public static int dialog_background=0x7f020046;
-        public static int error_center_x=0x7f020047;
-        public static int error_circle=0x7f020048;
-        public static int gray_button_background=0x7f020049;
-        public static int notification_template_icon_bg=0x7f02004f;
-        public static int red_button_background=0x7f02004a;
-        public static int success_bow=0x7f02004b;
-        public static int success_circle=0x7f02004c;
-        public static int warning_circle=0x7f02004d;
-        public static int warning_sigh=0x7f02004e;
+        public static int circle_white=0x7f020046;
+        public static int dialog_background=0x7f020047;
+        public static int error_center_x=0x7f020048;
+        public static int error_circle=0x7f020049;
+        public static int gray_button_background=0x7f02004a;
+        public static int notification_template_icon_bg=0x7f020050;
+        public static int red_button_background=0x7f02004b;
+        public static int success_bow=0x7f02004c;
+        public static int success_circle=0x7f02004d;
+        public static int warning_circle=0x7f02004e;
+        public static int warning_sigh=0x7f02004f;
     }
     public static final class id {
         public static int action0=0x7f0b0064;
@@ -1690,8 +1691,8 @@ containing a value of this type.
         public static int beginning=0x7f0b0018;
         public static int buttonPanel=0x7f0b002e;
         public static int cancel_action=0x7f0b0065;
-        public static int cancel_button=0x7f0b0061;
-        public static int center_button=0x7f0b0062;
+        public static int cancel_button=0x7f0b0062;
+        public static int center_button=0x7f0b0061;
         public static int checkbox=0x7f0b003c;
         public static int chronometer=0x7f0b006b;
         public static int collapseActionView=0x7f0b001c;

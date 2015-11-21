@@ -44,7 +44,7 @@ public class Pro_Item1 extends BaseFragment {
     }
 
     @Override
-    protected void initParams() {
+    protected void initParams(View view) {
         //使用CollapsingToolbarLayout必须把title设置到CollapsingToolbarLayout上，设置到Toolbar上则不会显示
         pro_ct_layout.setExpandedTitleTextAppearance(R.style.pro_name_expanded);
         pro_ct_layout.setCollapsedTitleTextAppearance(R.style.per_name_collapsed);

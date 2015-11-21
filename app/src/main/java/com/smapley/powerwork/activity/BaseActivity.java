@@ -10,11 +10,15 @@ import android.widget.Toast;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.exception.DbException;
 import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.bitmap.AsyncImageLoader;
+import com.smapley.powerwork.entity.User_Entity;
 import com.smapley.powerwork.utils.ActivityStack;
 
 import java.security.KeyStore;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by smapley on 15/10/22.
@@ -22,11 +26,13 @@ import java.security.KeyStore;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private boolean isCreate = false;
-    protected HttpUtils httpUtils;
+    public HttpUtils httpUtils;
     protected DbUtils dbUtils;
     protected SharedPreferences sp_user;
     protected SharedPreferences sp_set;
-
+    protected SweetAlertDialog dialog;
+    public User_Entity user_entity = null;
+    protected AsyncImageLoader asyncImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         dbUtils = LocalApplication.getInstance().dbUtils;
         sp_user = LocalApplication.getInstance().sp_user;
         sp_set = LocalApplication.getInstance().sp_set;
+        asyncImageLoader = LocalApplication.getInstance().asyncImageLoader;
+        try {
+            user_entity = dbUtils.findById(User_Entity.class, sp_user.getInt("id", 0));
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        dialog = new SweetAlertDialog(this);
         isCreate = true;
     }
 
@@ -74,6 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void showToast(int data) {
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
     }
+
     protected void showToast(String data) {
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
     }

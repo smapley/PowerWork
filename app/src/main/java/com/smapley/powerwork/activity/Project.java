@@ -88,7 +88,7 @@ public class Project extends BaseActivity {
 
     }
 
-    @OnClick({ R.id.pro_tv_btn_item1, R.id.pro_tv_btn_item2, R.id.pro_tv_btn_item3, R.id.pro_tv_btn_item4, R.id.pro_tv_btn_item5})
+    @OnClick({R.id.pro_tv_btn_item1, R.id.pro_tv_btn_item2, R.id.pro_tv_btn_item3, R.id.pro_tv_btn_item4, R.id.pro_tv_btn_item5})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pro_tv_btn_item1:
@@ -116,5 +116,17 @@ public class Project extends BaseActivity {
 
         fragmentManager.beginTransaction().replace(R.id.pro_fl_content, pro_lt_fragment.get(position)).commit();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    pro_item5.addFolder(data.getStringExtra("name"));
+                }
+                break;
+        }
     }
 }

@@ -1,19 +1,41 @@
 package com.smapley.powerwork.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Scene;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.lidroid.xutils.db.sqlite.Selector;
+import com.lidroid.xutils.exception.DbException;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
+import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.entity.Result_Entity;
+import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.utils.ActivityStack;
+import com.smapley.powerwork.utils.Code;
+import com.smapley.powerwork.utils.MyData;
+import com.smapley.powerwork.utils.ThreadSleep;
+import com.smapley.powerwork.view.CircleImageView;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by smapley on 15/10/26.
@@ -24,6 +46,7 @@ public class Login extends BaseActivity {
     @ViewInject(R.id.log_ll_content)
     private ViewGroup log_ll_content;
 
+    private CircleImageView log_ci_pic;
     private EditText log_et_username;
     private EditText log_et_password;
     private EditText reg_et_username;
@@ -43,61 +66,138 @@ public class Login extends BaseActivity {
 
     @Override
     protected void initParams() {
-        log_st_usernmae = sp_user.getString("username", "");
-        log_st_password = sp_user.getString("password", "");
-
+        if (user_entity != null) {
+            log_st_usernmae = user_entity.getUsername();
+            log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCre_date());
+        }
         transitionInflater = TransitionInflater.from(this);
         transitionManager = transitionInflater.inflateTransitionManager(R.transition.transition_manager, log_ll_content);
         log_sc_login = Scene.getSceneForLayout(log_ll_content, R.layout.fragment_login, this);
         log_sc_register = Scene.getSceneForLayout(log_ll_content, R.layout.fragment_register, this);
         goToScene1(null);
+
     }
 
-    private void doRegister(){
-        SharedPreferences.Editor editor = sp_user.edit();
-        editor.putString("username", reg_st_username);
-        editor.putString("password", reg_st_password);
-        editor.putString("phone", reg_st_phone);
-        editor.commit();
-        finish();
-        ActivityStack.getInstance().finishToActivity(MainActivity.class, true);
+
+    private void doRegister() {
+        RequestParams params = new RequestParams();
+        params.addBodyParameter("username", reg_st_username);
+        params.addBodyParameter("password", reg_st_password);
+        params.addBodyParameter("phone", reg_st_phone);
+        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_REGISTER, params, new HttpCallBack(Login.this, R.string.log_dia_register_ing) {
+            @Override
+            public void onResult(String result,SweetAlertDialog dialog) {
+                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                        .showText(R.string.log_dia_register_suc)
+                        .commit()
+                        .dismiss(2000);
+                User_Entity user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                });
+                afterRegister(user_entity);
+            }
+        });
+
+
     }
 
     private void doLogin() {
-        SharedPreferences.Editor editor = sp_user.edit();
-        editor.putString("username", log_st_usernmae);
-        editor.putString("password", log_st_password);
-        editor.commit();
+        RequestParams params = new RequestParams();
+        params.addBodyParameter("username", log_st_usernmae);
+        params.addBodyParameter("password", log_st_password);
+        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_LOGIN, params, new HttpCallBack(Login.this, R.string.log_dia_login_ing) {
+            @Override
+            public void onResult(String result,SweetAlertDialog dialog) {
+                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                        .showText(R.string.log_dia_login_suc)
+                        .commit()
+                        .dismiss(2000);
+                User_Entity user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                });
+                afterLogin(user_entity);
+            }
+        });
+    }
+
+    private void afterRegister(User_Entity user_entity) {
+        log_st_usernmae = user_entity.getUsername();
+        log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCre_date());
+        goToScene1(null);
+        new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
+            @Override
+            public void onCallback(int number) {
+                doLogin();
+            }
+        });
+
+    }
+
+    private void afterLogin(User_Entity user_entity) {
+        try {
+            SharedPreferences.Editor editor = sp_user.edit();
+            editor.putInt("id", user_entity.getUse_id());
+            editor.putBoolean("islogin", true);
+            editor.commit();
+            dbUtils.deleteById(User_Entity.class, user_entity.getUse_id());
+            dbUtils.save(user_entity);
+            this.user_entity = user_entity;
+
+            toNextActivity();
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void toNextActivity() {
+        startActivity(new Intent(Login.this, MainActivity.class));
         finish();
-        ActivityStack.getInstance().finishToActivity(MainActivity.class, true);
     }
 
     public void goToScene1(View view) {
         transitionManager.transitionTo(log_sc_login);
-        if(log_et_username==null){
-            log_et_username= (EditText) log_sc_login.getSceneRoot().findViewById(R.id.log_et_username);
+        log_ci_pic = (CircleImageView) log_sc_login.getSceneRoot().findViewById(R.id.log_ci_pic);
+        log_et_username = (EditText) log_sc_login.getSceneRoot().findViewById(R.id.log_et_username);
+        log_et_password = (EditText) log_sc_login.getSceneRoot().findViewById(R.id.log_et_password);
+        log_et_password.setText(log_st_password);
+        log_et_username.setText(log_st_usernmae);
+        if (user_entity != null) {
+            asyncImageLoader.loadBitmaps(log_ci_pic, user_entity.getPic_url());
         }
-        if(log_et_password==null){
-            log_et_password= (EditText) log_sc_login.getSceneRoot().findViewById(R.id.log_et_password);
-        }
-        if(view==null) {
-            log_et_password.setText(log_st_password);
-            log_et_username.setText(log_st_usernmae);
-        }
+        log_et_username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                User_Entity user_entity = null;
+                try {
+                    user_entity = dbUtils.findFirst(Selector.from(User_Entity.class).where("username", "=", log_et_username.getText().toString()));
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+                if (user_entity != null) {
+                    log_et_password.setText(Code.doCode(user_entity.getPassword(), user_entity.getCre_date()));
+                    asyncImageLoader.loadBitmaps(log_ci_pic, user_entity.getPic_url());
+                } else {
+                    log_et_password.setText("");
+                    log_ci_pic.setImageResource(R.mipmap.logo);
+                }
+            }
+        });
     }
 
 
     public void goToScene2(View view) {
         transitionManager.transitionTo(log_sc_register);
-        if(reg_et_username==null){
-            reg_et_username= (EditText) log_sc_register.getSceneRoot().findViewById(R.id.log_et_username);
-        }
-        if(reg_et_password==null){
-            reg_et_password= (EditText) log_sc_register.getSceneRoot().findViewById(R.id.log_et_password);
-        }
-        if(reg_et_phone==null){
-            reg_et_phone= (EditText) log_sc_register.getSceneRoot().findViewById(R.id.log_et_phone);
-        }
+        reg_et_username = (EditText) log_sc_register.getSceneRoot().findViewById(R.id.log_et_username);
+        reg_et_password = (EditText) log_sc_register.getSceneRoot().findViewById(R.id.log_et_password);
+        reg_et_phone = (EditText) log_sc_register.getSceneRoot().findViewById(R.id.log_et_phone);
     }
 
     public void checkLogin(View view) {
@@ -115,9 +215,9 @@ public class Login extends BaseActivity {
     }
 
     public void checkRegister(View view) {
-        reg_st_username=reg_et_username.getText().toString();
-        reg_st_password=reg_et_password.getText().toString();
-        reg_st_phone=reg_et_phone.getText().toString();
+        reg_st_username = reg_et_username.getText().toString();
+        reg_st_password = reg_et_password.getText().toString();
+        reg_st_phone = reg_et_phone.getText().toString();
         if (reg_st_username != null && !reg_st_username.equals("")) {
             if (reg_st_password != null && !reg_st_password.equals("")) {
                 if (reg_st_phone != null && !reg_st_phone.equals("")) {

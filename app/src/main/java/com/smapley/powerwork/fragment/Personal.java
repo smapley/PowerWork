@@ -2,20 +2,20 @@ package com.smapley.powerwork.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 
-import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.activity.BaseActivity;
+import com.smapley.powerwork.activity.MainActivity;
 import com.smapley.powerwork.adapter.PersonalAdapter;
+import com.smapley.powerwork.bitmap.AsyncImageLoader;
+import com.smapley.powerwork.entity.User_Entity;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Per_Group_Mode;
 import com.smapley.powerwork.mode.Per_Not_Pic_Mode;
@@ -25,11 +25,10 @@ import com.smapley.powerwork.mode.Per_Not_Write_Mode;
 import com.smapley.powerwork.mode.Per_Task_Details_Mode;
 import com.smapley.powerwork.mode.Per_Task_Mode;
 import com.smapley.powerwork.utils.DullPolish;
+import com.smapley.powerwork.utils.MyData;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import me.nereo.multi_image_selector.bean.Image;
 
 /**
  * Created by smapley on 15/10/25.
@@ -54,7 +53,7 @@ public class Personal extends BaseFragment {
     }
 
     @Override
-    protected void initParams() {
+    protected void initParams(View view) {
         //使用CollapsingToolbarLayout必须把title设置到CollapsingToolbarLayout上，设置到Toolbar上则不会显示
         per_ct_layout.setTitle(sp_user.getString("nickname", getString(R.string.app_name)));
         per_ct_layout.setExpandedTitleTextAppearance(R.style.per_name_expanded);
@@ -65,8 +64,12 @@ public class Personal extends BaseFragment {
         initRecyclerView();
         initData();
 
-        Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.user_pic);
-        per_iv_pic.setImageBitmap(DullPolish.doPolish(getActivity(),bitmap,20));
+        if (user_entity != null) {
+            asyncImageLoader.loadBitmaps( per_iv_pic, user_entity.getPic_url());
+        }
+
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
+//        per_iv_pic.setImageBitmap(DullPolish.doPolish(getActivity(), bitmap, 20));
     }
 
     private void initRecyclerView() {
@@ -122,13 +125,18 @@ public class Personal extends BaseFragment {
         per_group_mode3.setName("我的成就");
         per_group_mode3.setItem(3);
         per_list.add(per_group_mode3);
+
         Per_Group_Mode per_group_mode4 = new Per_Group_Mode();
         per_group_mode4.setName("设置");
         per_group_mode4.setItem(4);
+
+
+
         per_list.add(per_group_mode4);
 
 
         per_adapter = new PersonalAdapter(getActivity(), per_list);
+        per_adapter.notifyDataSetChanged();
         per_rv_listview.setAdapter(per_adapter);
     }
 
