@@ -1,15 +1,18 @@
 package com.smapley.powerwork.http;
 
-import com.lidroid.xutils.http.RequestParams;
 import com.smapley.powerwork.entity.User_Entity;
 
-/**
- * Created by smapley on 15/11/20.
- */
-public class MyRequstParams extends RequestParams {
+import org.xutils.http.RequestParams;
 
-    public MyRequstParams(User_Entity user_entity) {
+/**
+ * Created by smapley on 15/11/22.
+ */
+public class BaseParams extends RequestParams {
+
+    public BaseParams(String url,User_Entity user_entity){
+        super(url);
         addBodyParameter("user_id", user_entity.getUse_id() + "");
         addBodyParameter("skey", user_entity.getSkey());
     }
+
 }

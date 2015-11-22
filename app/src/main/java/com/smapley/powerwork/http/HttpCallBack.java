@@ -4,26 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.activity.BaseActivity;
 import com.smapley.powerwork.activity.Login;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.Result_Entity;
-import com.smapley.powerwork.entity.User_Entity;
 import com.smapley.powerwork.utils.ActivityStack;
 import com.smapley.powerwork.utils.MyData;
+
+import org.xutils.common.Callback;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by smapley on 15/11/20.
  */
-public abstract class HttpCallBack extends RequestCallBack<String> {
+public abstract class HttpCallBack implements
+        Callback.CommonCallback<MyResponse>,
+        Callback.ProgressCallback<MyResponse> {
 
     private SweetAlertDialog dialog;
     private Context context;
@@ -36,20 +32,18 @@ public abstract class HttpCallBack extends RequestCallBack<String> {
     }
 
     @Override
-    public void onStart() {
+    public void onStarted() {
         dialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
         dialog.show();
     }
 
     @Override
-    public void onSuccess(ResponseInfo<String> responseInfo) {
-        Result_Entity result_entity = JSON.parseObject(responseInfo.result, new TypeReference<Result_Entity>() {
-        });
-        if (MyData.SUCC.equals(result_entity.getFlag())) {
-            this.onResult(result_entity.getData(),dialog);
-        } else if (MyData.OutLogin.equals(result_entity.getFlag())) {
+    public void onSuccess(MyResponse result) {
+        if (MyData.SUCC.equals(result.flag)) {
+            this.onResult(result.data, dialog);
+        } else if (MyData.OutLogin.equals(result.flag)) {
             dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
-                    .showText(result_entity.getDetails())
+                    .showText(result.details)
                     .showConfirmButton(R.string.login)
                     .showCancelButton()
                     .commit().setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -75,20 +69,40 @@ public abstract class HttpCallBack extends RequestCallBack<String> {
             });
         } else {
             dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
-                    .showText(result_entity.getDetails())
+                    .showText(result.details)
                     .showCancelButton()
                     .commit();
         }
     }
 
     @Override
-    public void onFailure(HttpException error, String msg) {
-        error.printStackTrace();
+    public void onError(Throwable ex, boolean isOnCallback) {
+        ex.printStackTrace();
         dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE)
                 .showText(R.id.connect_fai)
                 .commit()
                 .dismiss(2000);
     }
 
-    public abstract void onResult(String result,SweetAlertDialog dialog);
+    @Override
+    public void onCancelled(CancelledException cex) {
+
+    }
+
+    @Override
+    public void onFinished() {
+
+    }
+
+    @Override
+    public void onLoading(long total, long current, boolean isDownloading) {
+
+    }
+
+    @Override
+    public void onWaiting() {
+        
+    }
+
+    public abstract void onResult(String result, SweetAlertDialog dialog);
 }

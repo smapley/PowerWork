@@ -5,14 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.PersonalAdapter;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Cal_Task_Mode;
-import com.smapley.powerwork.mode.Per_Task_Mode;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class Task extends BaseActivity {
 
     }
 
-    @OnClick({R.id.title_iv_back})
+    @Event({R.id.title_iv_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_iv_back:

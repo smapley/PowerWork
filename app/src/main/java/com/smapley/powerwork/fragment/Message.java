@@ -4,11 +4,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.PersonalAdapter;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Cal_Task_Mode;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 /**
  * Created by smapley on 15/10/25.
  */
+@ContentView(R.layout.fragment_message)
 public class Message extends BaseFragment {
 
     @ViewInject(R.id.mes_rv_list)
@@ -43,8 +46,4 @@ public class Message extends BaseFragment {
 
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_message;
-    }
 }

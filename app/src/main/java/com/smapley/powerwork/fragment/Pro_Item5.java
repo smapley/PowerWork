@@ -1,15 +1,12 @@
 package com.smapley.powerwork.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -17,27 +14,23 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.lidroid.xutils.util.LogUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.activity.AddTask;
 import com.smapley.powerwork.activity.NewFolder;
-import com.smapley.powerwork.adapter.AddTaskAdapter;
 import com.smapley.powerwork.adapter.ProItem5Adapter;
-import com.smapley.powerwork.holder.BaseHolder;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Pro_Item5_Folder_Mode;
-import com.smapley.powerwork.mode.Pro_Item5_Title_Mode;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.nereo.multi_image_selector.bean.Folder;
-
 /**
  * Created by smapley on 15/11/16.
  */
+@ContentView(R.layout.fragment_pro_item5)
 public class Pro_Item5 extends BaseFragment {
 
 
@@ -55,10 +48,6 @@ public class Pro_Item5 extends BaseFragment {
 
     private PopupWindow pop_add;
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_pro_item5;
-    }
 
     @Override
     protected void initParams(View view) {
@@ -78,8 +67,8 @@ public class Pro_Item5 extends BaseFragment {
         pro_item5_rv_list.setAdapter(adapter);
     }
 
-    @OnClick({R.id.title_iv_back, R.id.title_iv_add})
-    public void onClick(View view) {
+    @Event({R.id.title_iv_back, R.id.title_iv_add})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_iv_back:
                 getActivity().finish();

@@ -2,20 +2,15 @@ package com.smapley.powerwork.holder;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.lidroid.xutils.BitmapUtils;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.mode.Add_Pic_Mode;
-import com.smapley.powerwork.mode.Add_Text_Mode;
 import com.smapley.powerwork.utils.BitmapUtil;
 
 import java.io.FileNotFoundException;
-
-import me.nereo.multi_image_selector.bean.Image;
 
 /**
  * Created by smapley on 15/10/30.

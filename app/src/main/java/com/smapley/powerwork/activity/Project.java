@@ -2,15 +2,10 @@ package com.smapley.powerwork.activity;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.fragment.BaseFragment;
 import com.smapley.powerwork.fragment.Pro_Item1;
@@ -18,6 +13,10 @@ import com.smapley.powerwork.fragment.Pro_Item2;
 import com.smapley.powerwork.fragment.Pro_Item3;
 import com.smapley.powerwork.fragment.Pro_Item4;
 import com.smapley.powerwork.fragment.Pro_Item5;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +87,8 @@ public class Project extends BaseActivity {
 
     }
 
-    @OnClick({R.id.pro_tv_btn_item1, R.id.pro_tv_btn_item2, R.id.pro_tv_btn_item3, R.id.pro_tv_btn_item4, R.id.pro_tv_btn_item5})
-    public void onClick(View view) {
+    @Event({R.id.pro_tv_btn_item1, R.id.pro_tv_btn_item2, R.id.pro_tv_btn_item3, R.id.pro_tv_btn_item4, R.id.pro_tv_btn_item5})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.pro_tv_btn_item1:
                 transactionTo(0);

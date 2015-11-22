@@ -7,17 +7,17 @@ import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.lidroid.xutils.http.RequestParams;
-import com.lidroid.xutils.http.client.HttpRequest;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.activity.BaseActivity;
 import com.smapley.powerwork.activity.Project;
 import com.smapley.powerwork.entity.Project_Entity;
+import com.smapley.powerwork.http.BaseParams;
 import com.smapley.powerwork.http.HttpCallBack;
-import com.smapley.powerwork.http.MyRequstParams;
 import com.smapley.powerwork.mode.Pro_AddItem_Mode;
 import com.smapley.powerwork.utils.MyData;
 import com.smapley.powerwork.utils.ThreadSleep;
+
+import org.xutils.x;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -71,9 +71,9 @@ public class Pro_AddItem_Holder extends BaseHolder {
     }
 
     private void addProject(final Context context, String data) {
-        RequestParams params = new MyRequstParams(((BaseActivity) context).user_entity);
+        BaseParams params = new BaseParams(MyData.URL_AddProject, ((BaseActivity) context).user_entity);
         params.addBodyParameter("name", data);
-        ((BaseActivity) context).httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_AddProject, params, new HttpCallBack(context, R.string.addproject_ing) {
+        x.http().post(params, new HttpCallBack(context, R.string.addproject_ing) {
             @Override
             public void onResult(String result, SweetAlertDialog dialog) {
                 dialog.showText(R.string.addproject_ed).commit().dismiss(2000);

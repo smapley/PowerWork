@@ -1,23 +1,30 @@
 package com.smapley.powerwork.entity;
 
-import com.lidroid.xutils.db.annotation.Id;
-import com.lidroid.xutils.db.annotation.NoAutoIncrement;
+import org.xutils.db.annotation.Column;
+import org.xutils.db.annotation.Table;
 
-import java.sql.Timestamp;
-
+@Table(name = "user")
 public class User_Entity  {
 
-    @Id
-    @NoAutoIncrement
+    @Column(name = "id",isId = true,autoGen = false)
     private int use_id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
+    @Column(name = "nickname")
     private String nickname;
+    @Column(name = "truename")
     private String truename;
+    @Column(name = "pic_url")
     private String pic_url;
+    @Column(name = "phone")
     private String phone;
+    @Column(name = "birthday")
     private long birthday;
+    @Column(name = "cre_date")
     private long cre_date;
+    @Column(name = "skey")
     private String skey;
 
     public int getUse_id() {

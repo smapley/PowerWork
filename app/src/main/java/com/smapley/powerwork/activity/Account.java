@@ -2,8 +2,6 @@ package com.smapley.powerwork.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,22 +11,19 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.lidroid.xutils.exception.DbException;
-import com.lidroid.xutils.http.RequestParams;
-import com.lidroid.xutils.http.client.HttpRequest;
-import com.lidroid.xutils.http.client.multipart.MultipartEntity;
-import com.lidroid.xutils.http.client.multipart.content.FileBody;
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.http.BaseParams;
 import com.smapley.powerwork.http.HttpCallBack;
-import com.smapley.powerwork.http.MyRequstParams;
 import com.smapley.powerwork.utils.ActivityStack;
 import com.smapley.powerwork.utils.DateUtil;
-import com.smapley.powerwork.utils.DullPolish;
 import com.smapley.powerwork.utils.MyData;
+
+import org.xutils.ex.DbException;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.io.File;
 import java.util.Calendar;
@@ -80,7 +75,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
 
     private void initView() {
         if (user_entity != null) {
-            asyncImageLoader.loadBitmaps(acc_iv_pic, user_entity.getPic_url());
+            x.image().bind(acc_iv_pic, MyData.URL_PIC+user_entity.getPic_url());
             acc_et_name.setText(user_entity.getTruename());
             acc_et_phone.setText(user_entity.getPhone());
             acc_tv_birthday.setText(DateUtil.getDateString(user_entity.getCre_date(), DateUtil.formatDate));
@@ -100,8 +95,8 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
 
     }
 
-    @OnClick({R.id.acc_iv_changepic, R.id.acc_bt_exit, R.id.title_iv_back, R.id.title_iv_edit, R.id.acc_tv_birthday, R.id.title_iv_done})
-    public void onClick(View view) {
+    @Event({R.id.acc_iv_changepic, R.id.acc_bt_exit, R.id.title_iv_back, R.id.title_iv_edit, R.id.acc_tv_birthday, R.id.title_iv_done})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.acc_tv_birthday:
                 datePickerDialog.setVibrate(false);
@@ -187,10 +182,10 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         try {
             if (resultCode == RESULT_OK && requestCode == 0) {
                 List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                RequestParams params = new RequestParams();
-                params.addBodyParameter("user_id", user_entity.getUse_id() + "");
+                BaseParams params = new BaseParams(MyData.URL_UserPicUpLoad,user_entity);
+                params.setMultipart(true);
                 params.addBodyParameter("file", new File(resultList.get(0)));
-                httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_UserPicUpLoad, params, new HttpCallBack(Account.this, R.string.acc_dialog_uppic) {
+                x.http().post(params, new HttpCallBack(Account.this, R.string.acc_dialog_uppic) {
                     @Override
                     public void onResult(String result, SweetAlertDialog dialog) {
                         dialog.dismiss();
@@ -212,11 +207,11 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     }
 
     private void saveData() {
-        RequestParams params = new MyRequstParams(user_entity);
+        BaseParams params = new BaseParams(MyData.URL_Account, user_entity);
         params.addBodyParameter("truename", acc_et_name.getText().toString());
         params.addBodyParameter("phone", acc_et_phone.getText().toString());
         params.addBodyParameter("birthday", DateUtil.getDateLong(acc_tv_birthday.getText().toString(), DateUtil.formatDate) + "");
-        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_Account, params, new HttpCallBack(Account.this, R.string.acc_dialog_savedata) {
+        x.http().post(params, new HttpCallBack(Account.this, R.string.acc_dialog_savedata) {
             @Override
             public void onResult(String result, SweetAlertDialog dialog) {
                 dialog.dismiss();

@@ -1,18 +1,22 @@
 package com.smapley.powerwork.entity;
 
-import com.lidroid.xutils.db.annotation.Id;
-import com.lidroid.xutils.db.annotation.NoAutoIncrement;
+import org.xutils.db.annotation.Column;
+import org.xutils.db.annotation.Table;
 
 import java.sql.Timestamp;
 
+@Table(name = "project")
 public class Project_Entity {
 
-	@Id
-	@NoAutoIncrement
+	@Column(name = "pro_id" ,isId = true,autoGen = false)
 	private int pro_id;
+	@Column(name = "use_id")
 	private int use_id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "pic_url")
 	private String pic_url;
+	@Column(name = "cre_date")
 	private Timestamp cre_date;
 	
 	public int getPro_id() {

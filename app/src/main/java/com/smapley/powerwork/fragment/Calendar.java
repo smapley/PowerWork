@@ -3,19 +3,19 @@ package com.smapley.powerwork.fragment;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.PersonalAdapter;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Cal_Task_Mode;
 import com.smapley.powerwork.view.MyCalendar;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * Created by smapley on 15/10/25.
  */
+@ContentView(R.layout.fragment_calendar)
 public class Calendar extends BaseFragment {
 
     @ViewInject(R.id.cal_ct_layout)
@@ -41,10 +42,6 @@ public class Calendar extends BaseFragment {
     private String[] cal_month;
 
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_calendar;
-    }
 
     @Override
     protected void initParams(View view) {
@@ -62,8 +59,8 @@ public class Calendar extends BaseFragment {
         initRecyclerView();
     }
 
-    @OnClick({R.id.cal_iv_refresh})
-    public void onClick(View view) {
+    @Event({R.id.cal_iv_refresh})
+    private void onClick(View view) {
 
     }
 

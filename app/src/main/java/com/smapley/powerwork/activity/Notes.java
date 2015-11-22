@@ -3,12 +3,8 @@ package com.smapley.powerwork.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.PersonalAdapter;
 import com.smapley.powerwork.mode.BaseMode;
@@ -16,6 +12,10 @@ import com.smapley.powerwork.mode.Per_Not_Pic_Mode;
 import com.smapley.powerwork.mode.Per_Not_Text_Mode;
 import com.smapley.powerwork.mode.Per_Not_Voice_Mode;
 import com.smapley.powerwork.mode.Per_Not_Write_Mode;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,8 +69,8 @@ public class Notes extends BaseActivity {
 
     }
 
-    @OnClick({R.id.title_iv_back})
-    public void onClick(View view) {
+    @Event({R.id.title_iv_back})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_iv_back:
                 finish();

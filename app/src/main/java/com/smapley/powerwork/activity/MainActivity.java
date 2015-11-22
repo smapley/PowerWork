@@ -9,9 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.MainViewPagerAdapter;
 import com.smapley.powerwork.fragment.Calendar;
@@ -19,6 +16,10 @@ import com.smapley.powerwork.fragment.Message;
 import com.smapley.powerwork.fragment.Personal;
 import com.smapley.powerwork.fragment.Projects;
 import com.smapley.powerwork.utils.ThreadSleep;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,8 +155,8 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.main_iv_item1, R.id.main_iv_item2, R.id.main_iv_item3, R.id.main_iv_item4})
-    public void onClick(View view) {
+    @Event({R.id.main_iv_item1, R.id.main_iv_item2, R.id.main_iv_item3, R.id.main_iv_item4})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.main_iv_item1:
                 main_vp_pagers.setCurrentItem(0);

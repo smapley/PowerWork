@@ -1,7 +1,8 @@
 package com.smapley.powerwork.activity;
 
-import com.lidroid.xutils.view.annotation.ContentView;
 import com.smapley.powerwork.R;
+
+import org.xutils.view.annotation.ContentView;
 
 /**
  * Created by smapley on 15/10/28.

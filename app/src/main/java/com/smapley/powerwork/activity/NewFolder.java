@@ -6,10 +6,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 /**
  * Created by smapley on 15/11/17.
@@ -31,8 +32,8 @@ public class NewFolder extends BaseActivity {
         title_iv_done.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.title_iv_back, R.id.title_iv_done})
-    public void onClick(View view) {
+    @Event({R.id.title_iv_back, R.id.title_iv_done})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_iv_back:
                 finish();

@@ -10,16 +10,13 @@
     tools:context="com.bignerdranch.android.transitionexample.TransitionFragment">
 
 
-    <com.smapley.powerwork.view.CircleImageView
+    <ImageView
         android:id="@+id/log_ci_pic"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
-        android:layout_marginTop="25dp"
-        android:src="@mipmap/logo"
-        app:border_color="@color/blue"
-        app:border_width="2dp" />
+        android:layout_marginTop="25dp" />
 
     <EditText
         android:id="@+id/log_et_username"

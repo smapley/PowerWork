@@ -4,12 +4,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.ProjectsAdapter;
 import com.smapley.powerwork.mode.BaseMode;
-import com.smapley.powerwork.mode.Pro_Item_Mode;
 import com.smapley.powerwork.mode.Pro_AddItem_Mode;
+import com.smapley.powerwork.mode.Pro_Item_Mode;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 /**
  * Created by smapley on 15/11/16.
  */
+@ContentView(R.layout.fragment_projects)
 public class Projects extends BaseFragment {
 
 
@@ -44,8 +47,4 @@ public class Projects extends BaseFragment {
 
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_projects;
-    }
 }

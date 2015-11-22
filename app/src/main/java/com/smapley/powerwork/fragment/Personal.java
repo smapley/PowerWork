@@ -1,7 +1,5 @@
 package com.smapley.powerwork.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,13 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.activity.BaseActivity;
-import com.smapley.powerwork.activity.MainActivity;
 import com.smapley.powerwork.adapter.PersonalAdapter;
-import com.smapley.powerwork.bitmap.AsyncImageLoader;
-import com.smapley.powerwork.entity.User_Entity;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Per_Group_Mode;
 import com.smapley.powerwork.mode.Per_Not_Pic_Mode;
@@ -24,8 +17,11 @@ import com.smapley.powerwork.mode.Per_Not_Voice_Mode;
 import com.smapley.powerwork.mode.Per_Not_Write_Mode;
 import com.smapley.powerwork.mode.Per_Task_Details_Mode;
 import com.smapley.powerwork.mode.Per_Task_Mode;
-import com.smapley.powerwork.utils.DullPolish;
 import com.smapley.powerwork.utils.MyData;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +29,7 @@ import java.util.List;
 /**
  * Created by smapley on 15/10/25.
  */
+@ContentView(R.layout.fragment_personal)
 public class Personal extends BaseFragment {
 
     @ViewInject(R.id.per_ct_layout)
@@ -47,10 +44,6 @@ public class Personal extends BaseFragment {
     private List<BaseMode> per_list;
     private PersonalAdapter per_adapter;
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_personal;
-    }
 
     @Override
     protected void initParams(View view) {
@@ -65,7 +58,7 @@ public class Personal extends BaseFragment {
         initData();
 
         if (user_entity != null) {
-            asyncImageLoader.loadBitmaps( per_iv_pic, user_entity.getPic_url());
+            x.image().bind(per_iv_pic, MyData.URL_PIC + user_entity.getPic_url());
         }
 
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);

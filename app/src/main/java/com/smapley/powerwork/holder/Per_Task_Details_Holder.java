@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.lidroid.xutils.util.LogUtils;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.smapley.powerwork.R;
@@ -16,11 +15,6 @@ import com.smapley.powerwork.activity.MainActivity;
 import com.smapley.powerwork.adapter.PersonalAdapter;
 import com.smapley.powerwork.mode.Per_Task_Details_Mode;
 import com.smapley.powerwork.utils.DateUtil;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by smapley on 15/10/26.

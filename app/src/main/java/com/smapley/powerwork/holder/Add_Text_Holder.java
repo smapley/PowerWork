@@ -1,13 +1,13 @@
 package com.smapley.powerwork.holder;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 
-import com.lidroid.xutils.util.LogUtils;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.AddTaskAdapter;
 import com.smapley.powerwork.mode.Add_Text_Mode;
+
+import org.xutils.common.util.LogUtil;
 
 /**
  * Created by smapley on 15/10/30.
@@ -30,7 +30,7 @@ public class Add_Text_Holder extends BaseHolder {
                 mode.setText(add_et_text.getText().toString());
                 if (b) {
                     adapter.focusPosition = position;
-                    LogUtils.i("asdf" + position + add_et_text.getSelectionStart());
+                    LogUtil.i("asdf" + position + add_et_text.getSelectionStart());
                 }
             }
         });

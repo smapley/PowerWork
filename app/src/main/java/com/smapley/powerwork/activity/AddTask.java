@@ -1,22 +1,11 @@
 package com.smapley.powerwork.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.transition.Scene;
-import android.transition.TransitionInflater;
-import android.transition.TransitionManager;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.AddTaskAdapter;
 import com.smapley.powerwork.mode.Add_Menu_Mode;
@@ -24,7 +13,10 @@ import com.smapley.powerwork.mode.Add_Pic_Mode;
 import com.smapley.powerwork.mode.Add_Text_Mode;
 import com.smapley.powerwork.mode.BaseMode;
 
-import java.lang.reflect.Type;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,8 +56,8 @@ public class AddTask extends BaseActivity {
     }
 
 
-    @OnClick({R.id.title_iv_back})
-    public void onClick(View view) {
+    @Event({R.id.title_iv_back})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_iv_back:
                 finish();
