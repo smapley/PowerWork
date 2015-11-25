@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.entity.UserEntity;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -29,7 +29,7 @@ public abstract class BaseFragment extends Fragment {
     protected SharedPreferences sp_user;
     protected SharedPreferences sp_set;
     protected SweetAlertDialog dialog;
-    protected User_Entity user_entity = null;
+    protected UserEntity user_entity = null;
 
     @Override
     public void onAttach(Context context) {
@@ -45,7 +45,7 @@ public abstract class BaseFragment extends Fragment {
         sp_user = LocalApplication.getInstance().sp_user;
         sp_set = LocalApplication.getInstance().sp_set;
         try {
-            user_entity = dbUtils.findById(User_Entity.class, sp_user.getInt("id", 0));
+            user_entity = dbUtils.findById(UserEntity.class, sp_user.getInt("id", 0));
         } catch (DbException e) {
             e.printStackTrace();
         }

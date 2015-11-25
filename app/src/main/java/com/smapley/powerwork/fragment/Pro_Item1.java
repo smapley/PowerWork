@@ -7,7 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.entity.ProjectEntity;
 
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -39,6 +41,8 @@ public class Pro_Item1 extends BaseFragment {
 
     private String name;
     private String number;
+    private ProjectEntity projectEntity;
+    private int pro_id;
 
 
     @Override
@@ -50,21 +54,34 @@ public class Pro_Item1 extends BaseFragment {
         pro_ct_layout.setExpandedTitleColor(getResources().getColor(R.color.cal_text));//设置还没收缩时状态下字体颜色
         pro_ct_layout.setCollapsedTitleTextColor(getResources().getColor(R.color.cal_text));//设置收缩后Toolbar上字体的颜色
 
-        getData();
-
-
-    }
-
-    private void getData() {
-        name = "12软件工程";
-        number = "48成员";
         initData();
+        getData();
+        setView();
+
+
     }
 
     private void initData() {
-        pro_ct_layout.setTitle(name);
-        pro_item1_tv_number.setText(number);
+        pro_id = getArguments().getInt("pro_id");
+        try {
+            projectEntity = dbUtils.findById(ProjectEntity.class,pro_id);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
 
+
+    }
+
+    private void setView() {
+        if(projectEntity!=null) {
+            pro_ct_layout.setTitle(projectEntity.getName());
+        }
+    }
+
+    private void getData() {
+
+        name = "12软件工程";
+        number = "48成员";
     }
 
     @Event(R.id.pro_item1_iv_member5)

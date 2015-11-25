@@ -3,7 +3,7 @@ package com.smapley.powerwork.mode;
 /**
  * Created by smapley on 15/10/26.
  */
-public class Cal_Task_Mode extends BaseMode {
+public class Cal_Task_Mode implements BaseMode {
 
     private boolean check;
 

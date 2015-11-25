@@ -3,7 +3,7 @@ package com.smapley.powerwork.mode;
 /**
  * Created by smapley on 15/10/26.
  */
-public class Per_Group_Mode extends BaseMode {
+public class Per_Group_Mode implements BaseMode {
 
     private String name;
 

@@ -1,6 +1,6 @@
 package com.smapley.powerwork.http;
 
-import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.entity.UserEntity;
 
 import org.xutils.http.RequestParams;
 
@@ -9,9 +9,9 @@ import org.xutils.http.RequestParams;
  */
 public class BaseParams extends RequestParams {
 
-    public BaseParams(String url,User_Entity user_entity){
+    public BaseParams(String url,UserEntity user_entity){
         super(url);
-        addBodyParameter("user_id", user_entity.getUse_id() + "");
+        addBodyParameter("user_id", user_entity.getUseId() + "");
         addBodyParameter("skey", user_entity.getSkey());
     }
 

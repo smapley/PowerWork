@@ -18,7 +18,8 @@ public class JFileKit {
     public static String getDiskCacheDir(Context context) {
         String cachePath;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Environment.isExternalStorageEmulated()) {
-            cachePath = context.getExternalCacheDir().getAbsolutePath();
+            File file = context.getExternalCacheDir();
+            cachePath = file.getAbsolutePath();
         } else {
             cachePath = context.getCacheDir().getAbsolutePath();
         }

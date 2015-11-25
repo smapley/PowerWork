@@ -315,6 +315,21 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
     }
 
 
+    public SweetAlertDialog showTitle(String title) {
+        mTitleText = title;
+        mshowTitle = true;
+        return this;
+    }
+
+    public SweetAlertDialog showTitle(int id) {
+        return showTitle(context.getString(id));
+    }
+
+    public SweetAlertDialog hideTitle() {
+        mshowTitle = false;
+        return this;
+    }
+
     public SweetAlertDialog showText(String text) {
         mContentText = text;
         mshowText = true;

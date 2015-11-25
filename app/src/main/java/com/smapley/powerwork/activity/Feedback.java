@@ -3,13 +3,14 @@ package com.smapley.powerwork.activity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.http.BaseParams;
 import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.utils.MyData;
-import com.smapley.powerwork.view.CircleImageView;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -28,7 +29,7 @@ public class Feedback extends BaseActivity {
     private TextView title_tv_name;
 
     @ViewInject(R.id.fee_iv_pic)
-    private CircleImageView fee_iv_pic;
+    private ImageView fee_iv_pic;
     @ViewInject(R.id.fee_tv_name)
     private TextView fee_tv_name;
     @ViewInject(R.id.fee_et_content)
@@ -41,7 +42,7 @@ public class Feedback extends BaseActivity {
     protected void initParams() {
         title_tv_name.setText(R.string.feedback);
         if (user_entity != null) {
-            x.image().bind(fee_iv_pic,user_entity.getPic_url());
+            x.image().bind(fee_iv_pic, MyData.URL_PIC + user_entity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
             fee_tv_name.setText(user_entity.getUsername());
         }
     }
@@ -66,8 +67,10 @@ public class Feedback extends BaseActivity {
             x.http().post(params, new HttpCallBack(this, R.string.feedback_ing) {
                 @Override
                 public void onResult(String result, SweetAlertDialog dialog) {
-                    dialog.showText(R.string.feedback_done);
-                    dialog.dismiss(3000);
+                    dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                            .showText(R.string.feedback_done)
+                            .commit()
+                            .dismiss(3000);
                 }
             });
         } else {

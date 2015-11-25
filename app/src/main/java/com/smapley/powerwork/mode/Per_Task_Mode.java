@@ -3,7 +3,7 @@ package com.smapley.powerwork.mode;
 /**
  * Created by smapley on 15/10/26.
  */
-public class Per_Task_Mode extends BaseMode {
+public class Per_Task_Mode implements BaseMode {
 
     private final int type = 2;
 

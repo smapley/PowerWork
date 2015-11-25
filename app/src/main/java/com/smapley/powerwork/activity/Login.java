@@ -16,13 +16,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.entity.UserEntity;
 import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.http.UserParams;
 import com.smapley.powerwork.utils.Code;
 import com.smapley.powerwork.utils.MyData;
 import com.smapley.powerwork.utils.ThreadSleep;
 
+import org.xutils.common.util.LogUtil;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -61,7 +62,7 @@ public class Login extends BaseActivity {
     protected void initParams() {
         if (user_entity != null) {
             log_st_usernmae = user_entity.getUsername();
-            log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCre_date());
+            log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCreDate());
         }
         transitionInflater = TransitionInflater.from(this);
         transitionManager = transitionInflater.inflateTransitionManager(R.transition.transition_manager, log_ll_content);
@@ -84,7 +85,7 @@ public class Login extends BaseActivity {
                         .showText(R.string.log_dia_register_suc)
                         .commit()
                         .dismiss(2000);
-                User_Entity user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                UserEntity user_entity = JSON.parseObject(result, new TypeReference<UserEntity>() {
                 });
                 afterRegister(user_entity);
             }
@@ -104,16 +105,17 @@ public class Login extends BaseActivity {
                         .showText(R.string.log_dia_login_suc)
                         .commit()
                         .dismiss(2000);
-                User_Entity user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                LogUtil.d("---"+result);
+                UserEntity user_entity = JSON.parseObject(result, new TypeReference<UserEntity>() {
                 });
                 afterLogin(user_entity);
             }
         });
     }
 
-    private void afterRegister(User_Entity user_entity) {
+    private void afterRegister(UserEntity user_entity) {
         log_st_usernmae = user_entity.getUsername();
-        log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCre_date());
+        log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCreDate());
         goToScene1(null);
         new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
             @Override
@@ -124,13 +126,13 @@ public class Login extends BaseActivity {
 
     }
 
-    private void afterLogin(User_Entity user_entity) {
+    private void afterLogin(UserEntity user_entity) {
         try {
             SharedPreferences.Editor editor = sp_user.edit();
-            editor.putInt("id", user_entity.getUse_id());
+            editor.putInt("id", user_entity.getUseId());
             editor.putBoolean("islogin", true);
             editor.commit();
-            dbUtils.deleteById(User_Entity.class, user_entity.getUse_id());
+            dbUtils.deleteById(UserEntity.class, user_entity.getUseId());
             dbUtils.save(user_entity);
             this.user_entity = user_entity;
 
@@ -154,7 +156,7 @@ public class Login extends BaseActivity {
         log_et_password.setText(log_st_password);
         log_et_username.setText(log_st_usernmae);
         if (user_entity != null) {
-            x.image().bind(log_ci_pic, MyData.URL_PIC + user_entity.getPic_url(), LocalApplication.getInstance().CirtlesImage);
+            x.image().bind(log_ci_pic, MyData.URL_PIC + user_entity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
         }else {
             x.image().bind(log_ci_pic, "assets://logo.jpg", LocalApplication.getInstance().CirtlesImage);
         }
@@ -170,15 +172,15 @@ public class Login extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                User_Entity user_entity = null;
+                UserEntity user_entity = null;
                 try {
-                    user_entity = dbUtils.selector(User_Entity.class).where("username", "=", log_et_username.getText().toString()).findFirst();
+                    user_entity = dbUtils.selector(UserEntity.class).where("username", "=", log_et_username.getText().toString()).findFirst();
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
                 if (user_entity != null) {
-                    log_et_password.setText(Code.doCode(user_entity.getPassword(), user_entity.getCre_date()));
-                    x.image().bind(log_ci_pic, MyData.URL_PIC + user_entity.getPic_url(), LocalApplication.getInstance().CirtlesImage);
+                    log_et_password.setText(Code.doCode(user_entity.getPassword(), user_entity.getCreDate()));
+                    x.image().bind(log_ci_pic, MyData.URL_PIC + user_entity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
                 } else {
                     log_et_password.setText("");
                     x.image().bind(log_ci_pic, "assets://logo.jpg", LocalApplication.getInstance().CirtlesImage);

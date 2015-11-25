@@ -21,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
             android:orientation="vertical">
 
             <ImageView
@@ -156,7 +155,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingStart="25dp">
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp">
 
             <TextView
                 android:id="@+id/title_text"
@@ -174,7 +174,7 @@
                 android:id="@+id/content_editext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_alignParentBottom="true"
                 android:textColor="#797979"
                 android:textSize="14sp"
                 android:visibility="gone"

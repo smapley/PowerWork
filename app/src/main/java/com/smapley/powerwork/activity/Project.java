@@ -1,6 +1,7 @@
 package com.smapley.powerwork.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -52,9 +53,7 @@ public class Project extends BaseActivity {
 
     private FragmentManager fragmentManager;
 
-
-    private String pro_name;
-    private int pro_id;
+    private Bundle bundle;
 
     @Override
     protected void initParams() {
@@ -64,6 +63,7 @@ public class Project extends BaseActivity {
     }
 
     private void initView() {
+
     }
 
     private void initFragment() {
@@ -78,12 +78,14 @@ public class Project extends BaseActivity {
         pro_lt_fragment.add(pro_item3);
         pro_lt_fragment.add(pro_item4);
         pro_lt_fragment.add(pro_item5);
+        for (BaseFragment fragment:pro_lt_fragment){
+            fragment.setArguments(bundle);
+        }
         transactionTo(0);
     }
 
     private void initData() {
-        pro_name = getIntent().getStringExtra("pro_name");
-        pro_id = getIntent().getIntExtra("pro_id", -1);
+        bundle=getIntent().getExtras();
 
     }
 

@@ -2,6 +2,7 @@ package com.smapley.powerwork.holder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -10,13 +11,15 @@ import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.activity.BaseActivity;
 import com.smapley.powerwork.activity.Project;
-import com.smapley.powerwork.entity.Project_Entity;
+import com.smapley.powerwork.application.LocalApplication;
+import com.smapley.powerwork.entity.ProjectEntity;
 import com.smapley.powerwork.http.BaseParams;
 import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.mode.Pro_AddItem_Mode;
 import com.smapley.powerwork.utils.MyData;
 import com.smapley.powerwork.utils.ThreadSleep;
 
+import org.xutils.ex.DbException;
 import org.xutils.x;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -76,15 +79,22 @@ public class Pro_AddItem_Holder extends BaseHolder {
         x.http().post(params, new HttpCallBack(context, R.string.addproject_ing) {
             @Override
             public void onResult(String result, SweetAlertDialog dialog) {
+                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                 dialog.showText(R.string.addproject_ed).commit().dismiss(2000);
-                final Project_Entity project_entity = JSON.parseObject(result, new TypeReference<Project_Entity>() {
+                final ProjectEntity project_entity = JSON.parseObject(result, new TypeReference<ProjectEntity>() {
                 });
+                try {
+                    LocalApplication.getInstance().dbUtils.save(project_entity);
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
                 new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
                     @Override
                     public void onCallback(int number) {
                         Intent intent = new Intent(context, Project.class);
-                        intent.putExtra("pro_id", project_entity.getPro_id());
-                        intent.putExtra("pro_name", project_entity.getName());
+                        Bundle bundle=new Bundle();
+                        bundle.putInt("pro_id",project_entity.getPro_id());
+                        intent.putExtras(bundle);
                         context.startActivity(intent);
                     }
                 });

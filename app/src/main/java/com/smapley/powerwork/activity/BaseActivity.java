@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.entity.UserEntity;
 import com.smapley.powerwork.utils.ActivityStack;
 
 import org.xutils.DbManager;
@@ -25,7 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected SharedPreferences sp_set;
     protected DbManager dbUtils;
     protected SweetAlertDialog dialog;
-    public User_Entity user_entity = null;
+    public UserEntity user_entity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         sp_user = LocalApplication.getInstance().sp_user;
         sp_set = LocalApplication.getInstance().sp_set;
         try {
-            user_entity = dbUtils.findById(User_Entity.class, sp_user.getInt("id", 0));
+            user_entity = dbUtils.findById(UserEntity.class, sp_user.getInt("id", 0));
         } catch (DbException e) {
             e.printStackTrace();
         }

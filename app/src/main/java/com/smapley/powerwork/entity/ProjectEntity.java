@@ -1,12 +1,14 @@
 package com.smapley.powerwork.entity;
 
+import com.smapley.powerwork.mode.BaseMode;
+
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
-import java.sql.Timestamp;
-
 @Table(name = "project")
-public class Project_Entity {
+public class ProjectEntity implements BaseMode{
+
+	private final int type = 1;
 
 	@Column(name = "pro_id" ,isId = true,autoGen = false)
 	private int pro_id;
@@ -17,7 +19,11 @@ public class Project_Entity {
 	@Column(name = "pic_url")
 	private String pic_url;
 	@Column(name = "cre_date")
-	private Timestamp cre_date;
+	private long cre_date;
+	@Column(name = "total")
+	private int total;
+
+
 	
 	public int getPro_id() {
 		return pro_id;
@@ -43,12 +49,25 @@ public class Project_Entity {
 	public void setPic_url(String pic_url) {
 		this.pic_url = pic_url;
 	}
-	public Timestamp getCre_date() {
+
+	public long getCre_date() {
 		return cre_date;
 	}
-	public void setCre_date(Timestamp cre_date) {
+
+	public void setCre_date(long cre_date) {
 		this.cre_date = cre_date;
 	}
-	
-	
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	@Override
+	public int getType() {
+		return type;
+	}
 }

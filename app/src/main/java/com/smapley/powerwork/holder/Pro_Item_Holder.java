@@ -2,13 +2,18 @@ package com.smapley.powerwork.holder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.activity.Project;
-import com.smapley.powerwork.mode.Pro_Item_Mode;
+import com.smapley.powerwork.application.LocalApplication;
+import com.smapley.powerwork.entity.ProjectEntity;
+import com.smapley.powerwork.utils.MyData;
+
+import org.xutils.x;
 
 
 /**
@@ -28,15 +33,17 @@ public class Pro_Item_Holder extends BaseHolder {
 
     }
 
-    public void setData(final Context context, final Pro_Item_Mode mode) {
+    public void setData(final Context context, final ProjectEntity mode) {
         pros_item_tv_name.setText(mode.getName());
+        x.image().bind(pros_item_iv_pic, MyData.URL_PIC + mode.getPic_url(), LocalApplication.getInstance().FilletImage);
 
         pros_item_iv_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, Project.class);
-                intent.putExtra("pro_name", mode.getName());
-                intent.putExtra("pro_id", mode.getPro_id());
+                Bundle bundle=new Bundle();
+                bundle.putInt("pro_id", mode.getPro_id());
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });

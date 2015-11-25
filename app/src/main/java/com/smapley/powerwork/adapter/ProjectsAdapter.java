@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.entity.ProjectEntity;
 import com.smapley.powerwork.holder.Pro_AddItem_Holder;
 import com.smapley.powerwork.holder.Pro_Item_Holder;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Pro_AddItem_Mode;
-import com.smapley.powerwork.mode.Pro_Item_Mode;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by smapley on 15/11/16.
@@ -25,10 +25,18 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private LayoutInflater inflater;
 
-    public ProjectsAdapter(Context context, List<BaseMode> modeList) {
-        this.modeList = modeList;
+    public ProjectsAdapter(Context context) {
         this.context = context;
+        modeList=new ArrayList<>();
         inflater = LayoutInflater.from(context);
+    }
+
+    public void addAll(List<BaseMode> modeList){
+        this.modeList.clear();
+        this.modeList.addAll(modeList);
+        this.modeList.add(new Pro_AddItem_Mode());
+        notifyDataSetChanged();
+
     }
 
     @Override
@@ -51,7 +59,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case 1:
-                ((Pro_Item_Holder) holder).setData(context, (Pro_Item_Mode) modeList.get(position));
+                ((Pro_Item_Holder) holder).setData(context, (ProjectEntity) modeList.get(position));
                 break;
             case 2:
                 ((Pro_AddItem_Holder) holder).setData(context, (Pro_AddItem_Mode) modeList.get(position));

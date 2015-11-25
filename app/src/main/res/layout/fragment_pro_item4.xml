@@ -5,4 +5,8 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <include layout="@layout/title"/>
+
+
+
 </LinearLayout>

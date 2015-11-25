@@ -12,7 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.User_Entity;
+import com.smapley.powerwork.entity.UserEntity;
 import com.smapley.powerwork.http.BaseParams;
 import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.utils.ActivityStack;
@@ -75,10 +75,10 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
 
     private void initView() {
         if (user_entity != null) {
-            x.image().bind(acc_iv_pic, MyData.URL_PIC+user_entity.getPic_url());
+            x.image().bind(acc_iv_pic, MyData.URL_PIC+user_entity.getPicUrl());
             acc_et_name.setText(user_entity.getTruename());
             acc_et_phone.setText(user_entity.getPhone());
-            acc_tv_birthday.setText(DateUtil.getDateString(user_entity.getCre_date(), DateUtil.formatDate));
+            acc_tv_birthday.setText(DateUtil.getDateString(user_entity.getCreDate(), DateUtil.formatDate));
         }
     }
 
@@ -190,7 +190,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                     public void onResult(String result, SweetAlertDialog dialog) {
                         dialog.dismiss();
                         try {
-                            user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                            user_entity = JSON.parseObject(result, new TypeReference<UserEntity>() {
                             });
                             dbUtils.update(user_entity, "pic_url");
                             initView();
@@ -216,7 +216,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
             public void onResult(String result, SweetAlertDialog dialog) {
                 dialog.dismiss();
                 try {
-                    user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                    user_entity = JSON.parseObject(result, new TypeReference<UserEntity>() {
                     });
                     dbUtils.update(user_entity, "truename", "phone", "birthday");
                     if (isEdit) {

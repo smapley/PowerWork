@@ -3,7 +3,7 @@ package com.smapley.powerwork.mode;
 /**
  * Created by smapley on 15/10/30.
  */
-public class Add_Text_Mode extends BaseMode {
+public class Add_Text_Mode implements BaseMode {
 
 
     private final int type = 5;

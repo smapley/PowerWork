@@ -91,7 +91,8 @@
 
     <string name="notes">我的记录</string>
 
-    <string name="task">我的任务</string>
+    <string name="task">任务</string>
+    <string name="my_task">任务</string>
 
     <string name="pop_add_voice_action">点击纪录</string>
     <string name="pop_add_tv_cancel">算了吧</string>
@@ -131,5 +132,8 @@
     <string name="addproject">创建项目</string>
     <string name="addproject_ing">正在创建项目。。。</string>
     <string name="addproject_ed">成功创建项目</string>
+    <string name="loding">加载中。。。</string>
+    <string name="lode_fail">加载失败</string>
+    <string name="team">团队</string>
 
 </resources>

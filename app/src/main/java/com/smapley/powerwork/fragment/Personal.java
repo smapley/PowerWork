@@ -58,7 +58,7 @@ public class Personal extends BaseFragment {
         initData();
 
         if (user_entity != null) {
-            x.image().bind(per_iv_pic, MyData.URL_PIC + user_entity.getPic_url());
+            x.image().bind(per_iv_pic, MyData.URL_PIC + user_entity.getPicUrl());
         }
 
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);

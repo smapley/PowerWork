@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.smapley.powerwork.view.CircleImageView
+            <ImageView
                 android:id="@+id/fee_iv_pic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -26,9 +26,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="25dp"
-                android:src="@mipmap/logo"
-                app:border_color="@color/blue"
-                app:border_width="2dp" />
+                android:src="@mipmap/logo" />
 
             <TextView
                 android:id="@+id/fee_tv_name"

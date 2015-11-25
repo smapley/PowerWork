@@ -3,11 +3,15 @@ package com.smapley.powerwork.entity;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
+/**
+ * UserEntity entity provides the base persistence definition of the User
+ * entity. @author MyEclipse Persistence Tools
+ */
 @Table(name = "user")
-public class User_Entity  {
+public class UserEntity {
 
-    @Column(name = "id",isId = true,autoGen = false)
-    private int use_id;
+    @Column(name = "id", isId = true, autoGen = false)
+    private int useId;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -17,22 +21,24 @@ public class User_Entity  {
     @Column(name = "truename")
     private String truename;
     @Column(name = "pic_url")
-    private String pic_url;
+    private String picUrl;
     @Column(name = "phone")
     private String phone;
     @Column(name = "birthday")
     private long birthday;
     @Column(name = "cre_date")
-    private long cre_date;
+    private long creDate;
     @Column(name = "skey")
     private String skey;
 
-    public int getUse_id() {
-        return use_id;
+
+
+    public int getUseId() {
+        return useId;
     }
 
-    public void setUse_id(int use_id) {
-        this.use_id = use_id;
+    public void setUseId(int useId) {
+        this.useId = useId;
     }
 
     public String getUsername() {
@@ -67,12 +73,12 @@ public class User_Entity  {
         this.truename = truename;
     }
 
-    public String getPic_url() {
-        return pic_url;
+    public String getPicUrl() {
+        return picUrl;
     }
 
-    public void setPic_url(String pic_url) {
-        this.pic_url = pic_url;
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     public String getPhone() {
@@ -83,20 +89,20 @@ public class User_Entity  {
         this.phone = phone;
     }
 
-    public void setBirthday(long birthday) {
-        this.birthday = birthday;
-    }
-
-    public void setCre_date(long cre_date) {
-        this.cre_date = cre_date;
-    }
-
     public long getBirthday() {
         return birthday;
     }
 
-    public long getCre_date() {
-        return cre_date;
+    public void setBirthday(long birthday) {
+        this.birthday = birthday;
+    }
+
+    public long getCreDate() {
+        return creDate;
+    }
+
+    public void setCreDate(long creDate) {
+        this.creDate = creDate;
     }
 
     public String getSkey() {
