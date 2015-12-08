@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.ProjectsAdapter;
+import com.smapley.powerwork.entity.ProUserEntity;
 import com.smapley.powerwork.entity.ProjectEntity;
 import com.smapley.powerwork.http.BaseParams;
 import com.smapley.powerwork.http.MyResponse;
@@ -79,6 +80,7 @@ public class Projects extends BaseFragment {
                     //删除project表
                     try {
                         dbUtils.delete(ProjectEntity.class);
+                        dbUtils.delete(ProUserEntity.class);
                     } catch (DbException e) {
                         e.printStackTrace();
                     }
@@ -86,6 +88,16 @@ public class Projects extends BaseFragment {
                     for (ProjectEntity entity:listData){
                         try {
                             dbUtils.save(entity);
+                            if(entity.getListProUse()!=null&&!entity.getListProUse().isEmpty()){
+                                for(ProUserEntity prouser:entity.getListProUse()){
+                                    try{
+                                        dbUtils.save(prouser);
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
                         } catch (DbException e) {
                             e.printStackTrace();
                         }

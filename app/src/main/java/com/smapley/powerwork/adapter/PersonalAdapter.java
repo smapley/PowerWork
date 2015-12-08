@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.entity.TaskEntity;
 import com.smapley.powerwork.holder.Cal_Task_Holder;
 import com.smapley.powerwork.holder.Per_Group_Holder;
 import com.smapley.powerwork.holder.Per_Not_Pic_Holder;
@@ -16,7 +17,6 @@ import com.smapley.powerwork.holder.Per_Not_Write_Holder;
 import com.smapley.powerwork.holder.Per_Task_Details_Holder;
 import com.smapley.powerwork.holder.Per_Task_Holder;
 import com.smapley.powerwork.mode.BaseMode;
-import com.smapley.powerwork.mode.Cal_Task_Mode;
 import com.smapley.powerwork.mode.Per_Group_Mode;
 import com.smapley.powerwork.mode.Per_Not_Pic_Mode;
 import com.smapley.powerwork.mode.Per_Not_Text_Mode;
@@ -40,6 +40,11 @@ public class PersonalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.list = list;
+    }
+
+    public void addAll(List<BaseMode> list){
+        this.list=list;
+        notifyDataSetChanged();
     }
 
     public void addItem(BaseMode mode, int position) {
@@ -94,7 +99,7 @@ public class PersonalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         switch (getItemViewType(position)) {
             case 0:
-                ((Cal_Task_Holder) holder).setData(context, (Cal_Task_Mode) list.get(position));
+                ((Cal_Task_Holder) holder).setData(context, (TaskEntity) list.get(position));
                 break;
             case 1:
                 ((Per_Group_Holder) holder).setData(context, (Per_Group_Mode) list.get(position));

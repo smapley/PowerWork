@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.PersonalAdapter;
+import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Per_Group_Mode;
 import com.smapley.powerwork.mode.Per_Not_Pic_Mode;
@@ -56,9 +57,9 @@ public class Personal extends BaseFragment {
         per_ct_layout.setCollapsedTitleTextColor(getResources().getColor(R.color.cal_text));//设置收缩后Toolbar上字体的颜色
         initRecyclerView();
         initData();
-
+        getTask();
         if (user_entity != null) {
-            x.image().bind(per_iv_pic, MyData.URL_PIC + user_entity.getPicUrl());
+            x.image().bind(per_iv_pic, MyData.URL_PIC + user_entity.getPicUrl(), LocalApplication.getInstance().FilletImage);
         }
 
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
@@ -133,4 +134,7 @@ public class Personal extends BaseFragment {
         per_rv_listview.setAdapter(per_adapter);
     }
 
+    public void getTask() {
+
+    }
 }

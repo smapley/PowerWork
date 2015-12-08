@@ -10,7 +10,8 @@ import java.text.SimpleDateFormat;
 public class DateUtil {
 
     public static String formatDate = "yyyy-MM-dd";
-    public static String formatDateAndTime = "yyyy-MM-dd HH:mm";
+    public static String formatTime = "MMddHHmm";
+        public static String formatDateAndTime = "yyyy-MM-dd HH:mm";
 
     /**
      * 将String转换成long

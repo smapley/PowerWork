@@ -183,8 +183,8 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
             if (resultCode == RESULT_OK && requestCode == 0) {
                 List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 BaseParams params = new BaseParams(MyData.URL_UserPicUpLoad,user_entity);
-                params.setMultipart(true);
                 params.addBodyParameter("file", new File(resultList.get(0)));
+                params.setMultipart(true);
                 x.http().post(params, new HttpCallBack(Account.this, R.string.acc_dialog_uppic) {
                     @Override
                     public void onResult(String result, SweetAlertDialog dialog) {

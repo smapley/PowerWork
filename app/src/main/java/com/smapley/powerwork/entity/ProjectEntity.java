@@ -5,6 +5,8 @@ import com.smapley.powerwork.mode.BaseMode;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
+import java.util.List;
+
 @Table(name = "project")
 public class ProjectEntity implements BaseMode{
 
@@ -22,6 +24,8 @@ public class ProjectEntity implements BaseMode{
 	private long cre_date;
 	@Column(name = "total")
 	private int total;
+
+	private List<ProUserEntity> listProUse;
 
 
 	
@@ -64,6 +68,14 @@ public class ProjectEntity implements BaseMode{
 
 	public void setTotal(int total) {
 		this.total = total;
+	}
+
+	public List<ProUserEntity> getListProUse() {
+		return listProUse;
+	}
+
+	public void setListProUse(List<ProUserEntity> listProUse) {
+		this.listProUse = listProUse;
 	}
 
 	@Override

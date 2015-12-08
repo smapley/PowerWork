@@ -516,8 +516,8 @@ public final class R {
 		public static final int beginning = 0x7f0b0018;
 		public static final int buttonPanel = 0x7f0b002e;
 		public static final int cancel_action = 0x7f0b0065;
-		public static final int cancel_button = 0x7f0b0061;
-		public static final int center_button = 0x7f0b0062;
+		public static final int cancel_button = 0x7f0b0062;
+		public static final int center_button = 0x7f0b0061;
 		public static final int checkbox = 0x7f0b003c;
 		public static final int chronometer = 0x7f0b006b;
 		public static final int collapseActionView = 0x7f0b001c;
