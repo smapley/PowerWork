@@ -47,16 +47,8 @@ public class LocalApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        //创建log目录
-        File logFolder = new File(JFileKit.getDiskCacheDir(this) + MyData.File_Log);
-        if (!logFolder.exists()) {
-            logFolder.mkdirs();
-        }
-        //创建audio目录
-        File audioFolder = new File(JFileKit.getDiskCacheDir(this) + MyData.File_Audio);
-        if (!audioFolder.exists()) {
-            audioFolder.mkdirs();
-        }
+
+
 
         //初始化xUtils
         x.Ext.init(this);

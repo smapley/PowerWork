@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="horizontal">
 
     <ImageView
+        android:id="@+id/adapter_pro_item1_iv_user_pic"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@mipmap/logo" />
@@ -22,21 +24,27 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/adapter_pro_item1_tv_user_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/cal_text"
                 tools:text="smapley" />
 
             <TextView
+                android:id="@+id/adapter_pro_item1_tv_type"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/cal_text"
                 tools:text="完成任务" />
 
             <TextView
+                android:id="@+id/adapter_pro_item1_tv_cre_date"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@color/cal_text"
                 tools:text="2015-11-20" />
         </LinearLayout>
 
@@ -47,14 +55,17 @@
             android:layout_marginTop="8dp">
 
             <ImageView
+                android:id="@+id/adapter_pro_item1_iv_durl"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@mipmap/logo" />
 
             <TextView
+                android:id="@+id/adapter_pro_item1_tv_dname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:textColor="@color/cal_text"
                 tools:text="人物形象绘制" />
         </LinearLayout>
 
@@ -69,6 +80,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/adapter_pro_item1_ll_praise"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -76,18 +88,22 @@
                 android:padding="8dp">
 
                 <ImageView
+                    android:id="@+id/adapter_pro_item1_iv_praise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/praise_iv" />
 
                 <TextView
+                    android:id="@+id/adapter_pro_item1_tv_praise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/cal_text"
                     android:layout_marginStart="10dp"
                     tools:text="赞（1）" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/adapter_pro_item1_ll_discuss"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -95,14 +111,17 @@
                 android:padding="8dp">
 
                 <ImageView
+                    android:id="@+id/adapter_pro_item1_iv_discuss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/discuss_iv" />
 
                 <TextView
+                    android:id="@+id/adapter_pro_item1_tv_discuss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:textColor="@color/cal_text"
                     tools:text="评论（1）" />
             </LinearLayout>
         </LinearLayout>

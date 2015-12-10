@@ -77,6 +77,10 @@
         <item>十二月</item>
     </string-array>
 
+    <string-array name="dynamic_type">
+        <item>创建了项目</item>
+    </string-array>
+
 
     <string name="achievement">我的成就</string>
     <string name="ach_tv_type1">偶像派</string>

@@ -7,41 +7,44 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.DynamicEntity;
-import com.smapley.powerwork.holder.Pro_Item1_Holder;
+import com.smapley.powerwork.entity.TaskEntity;
+import com.smapley.powerwork.holder.Cal_Task_Holder;
+import com.smapley.powerwork.mode.BaseMode;
 
 import java.util.List;
 
 /**
- * Created by smapley on 15/11/17.
+ * Created by smapley on 15/10/26.
  */
-public class ProItem1Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<DynamicEntity> list;
+    private List<BaseMode> list;
     private LayoutInflater inflater;
 
-
-    public ProItem1Adapter(Context context, List<DynamicEntity> list) {
+    public CalAdapter(Context context, List<BaseMode> list) {
+        inflater = LayoutInflater.from(context);
         this.context = context;
         this.list = list;
-        inflater = LayoutInflater.from(context);
     }
 
-
-    public void addAll(List<DynamicEntity> obj) {
-        list = obj;
+    public void addAll(List<BaseMode> list){
+        this.list=list;
         notifyDataSetChanged();
     }
 
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = null;
         switch (viewType) {
             case 0:
-                view = inflater.inflate(R.layout.adapter_pro_item1_item, parent, false);
-                return new Pro_Item1_Holder(view);
+                view = inflater.inflate(R.layout.adapter_cal_task, parent, false);
+                return new Cal_Task_Holder(view);
+
         }
+
         return null;
     }
 
@@ -50,23 +53,22 @@ public class ProItem1Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         switch (getItemViewType(position)) {
             case 0:
-                ((Pro_Item1_Holder) holder).setData(context, list.get(position));
+                ((Cal_Task_Holder) holder).setData(context, (TaskEntity) list.get(position));
                 break;
 
         }
+
     }
 
     @Override
     public int getItemCount() {
-        if (list == null)
-            return 0;
-        else
-            return list.size();
+        return list.size();
     }
-
 
     @Override
     public int getItemViewType(int position) {
         return list.get(position).getType();
     }
+
+
 }

@@ -22,7 +22,6 @@ public class MyData {
     public final static String URL_PIC = BASE_URL + "upload/pic/";
     public final static String URL_LOGIN = BASE_URL + "Login";
     public final static String URL_REGISTER = BASE_URL + "Register";
-    public final static String URL_FileUpLoad = BASE_URL + "FileUpLoad";
     public final static String URL_UserPicUpLoad = BASE_URL + "UserPicUpLoad";
     public final static String URL_Account = BASE_URL + "Account";
     public final static String URL_Feedback = BASE_URL + "Feedback";
@@ -32,5 +31,7 @@ public class MyData {
     public final static String URL_AddNote = BASE_URL + "AddNote";
     public final static String URL_AddTask = BASE_URL + "AddTask";
     public final static String URL_TaskList = BASE_URL + "TaskList";
+    public final static String URL_NoteList = BASE_URL + "NoteList";
+    public final static String URL_DynamicList = BASE_URL + "DynamicList";
 
 }

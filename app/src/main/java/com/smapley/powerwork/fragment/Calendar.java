@@ -1,5 +1,7 @@
 package com.smapley.powerwork.fragment;
 
+import android.os.*;
+import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +12,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.adapter.PersonalAdapter;
-import com.smapley.powerwork.entity.TasUseEntity;
+import com.smapley.powerwork.adapter.CalAdapter;
 import com.smapley.powerwork.entity.TaskEntity;
 import com.smapley.powerwork.http.BaseParams;
 import com.smapley.powerwork.http.MyResponse;
@@ -37,6 +38,8 @@ import java.util.List;
 @ContentView(R.layout.fragment_calendar)
 public class Calendar extends BaseFragment {
 
+    private static final int SAVEDATA = 1;
+    private static final int GETDATA = 2;
     @ViewInject(R.id.cal_ct_layout)
     private CollapsingToolbarLayout cal_ct_layout;
 
@@ -47,12 +50,13 @@ public class Calendar extends BaseFragment {
     private MyCalendar cal_mc_calendar;
     @ViewInject(R.id.cal_rv_recycler)
     private RecyclerView cal_rv_recycler;
-    private PersonalAdapter per_adapter;
+    private CalAdapter calAdapter;
     private List<BaseMode> cal_list;
 
     private String[] cal_month;
     //当前选择的日期
     private String dateChecked;
+    private List<TaskEntity> listTask;
 
 
     @Override
@@ -72,17 +76,17 @@ public class Calendar extends BaseFragment {
         initRecyclerView();
         //初始化组件
         initView();
-        //显示Task
-        showCal();
+        //从数据库获取数据
+        getDataForDb();
         //网络获取数据
-        getData();
+        getDataForWeb();
     }
 
     @Event({R.id.cal_iv_refresh})
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.cal_iv_refresh:
-                getData();
+                getDataForWeb();
                 LogUtil.d("asdfasdfasdfasdf");
                 break;
         }
@@ -99,44 +103,44 @@ public class Calendar extends BaseFragment {
     private void initRecyclerView() {
         cal_rv_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         cal_list = new ArrayList<>();
-        per_adapter = new PersonalAdapter(getActivity(), cal_list);
-        cal_rv_recycler.setAdapter(per_adapter);
+        calAdapter = new CalAdapter(getActivity(), cal_list);
+        cal_rv_recycler.setAdapter(calAdapter);
 
     }
 
-    public void getData() {
+    public void getDataForWeb() {
         BaseParams params = new BaseParams(MyData.URL_TaskList, user_entity);
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
-            public void onSuccess(MyResponse result) {
-                List<TaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskEntity>>() {
-                });
-                if (listTask != null && !listTask.isEmpty()) {
-                    //删除旧表
-                    try {
-                        dbUtils.delete(TaskEntity.class);
-                        dbUtils.delete(TasUseEntity.class);
-                    } catch (DbException e) {
-                        e.printStackTrace();
-                    }
-                    //添加新表
-                    for (TaskEntity taskEntity : listTask) {
-                        try {
-                            //添加Task
-                            dbUtils.save(taskEntity);
-                        } catch (DbException e) {
-                            e.printStackTrace();
+            public void onSuccess(final MyResponse result) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<TaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskEntity>>() {
+                        });
+                        if (listTask != null && !listTask.isEmpty()) {
+                            //添加新表
+                            for (TaskEntity taskEntity : listTask) {
+                                try {
+                                    //添加Task
+                                    dbUtils.saveOrUpdate(taskEntity);
+                                } catch (DbException e) {
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    //添加TasUse
+                                    dbUtils.saveOrUpdate(taskEntity.getTasUseEntity());
+                                } catch (DbException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            mhandler.obtainMessage(SAVEDATA).sendToTarget();
+
                         }
-                        try {
-                            //添加TasUse
-                            dbUtils.save(taskEntity.getTasUseEntity());
-                        } catch (DbException e) {
-                            e.printStackTrace();
-                        }
                     }
-                    //更新数据
-                    showCal();
-                }
+                }).start();
+
             }
 
             @Override
@@ -207,25 +211,52 @@ public class Calendar extends BaseFragment {
 
     //显示日历&&更新日历
     private void showCal() {
-        //从数据库获取数据更新界面
-        try {
-            List<TaskEntity> listTask = dbUtils.findAll(TaskEntity.class);
-            if (listTask != null && !listTask.isEmpty()) {
-                //设置标记的日期
-                cal_mc_calendar.removeAllMarks();
-                for (TaskEntity taskEntity : listTask) {
-                    cal_mc_calendar.addMark(DateUtil.getDateString(taskEntity.getEnd_date(), DateUtil.formatDate), R.drawable.cal_cc_mark);
-                }
-                //显示当天任务
-                cal_list.clear();
-                for (TaskEntity taskEntity : listTask) {
-                    if (dateChecked.equals(DateUtil.getDateString(taskEntity.getEnd_date(), DateUtil.formatDate)))
-                        cal_list.add(taskEntity);
-                }
-                per_adapter.addAll(cal_list);
-            }
-        } catch (DbException e) {
-            e.printStackTrace();
+        //设置标记的日期
+        cal_mc_calendar.removeAllMarks();
+        for (TaskEntity taskEntity : listTask) {
+            cal_mc_calendar.addMark(DateUtil.getDateString(taskEntity.getEnd_date(), DateUtil.formatDate), R.drawable.cal_cc_mark);
         }
+        //显示当天任务
+        cal_list.clear();
+        for (TaskEntity taskEntity : listTask) {
+            if (dateChecked.equals(DateUtil.getDateString(taskEntity.getEnd_date(), DateUtil.formatDate)))
+                cal_list.add(taskEntity);
+        }
+        calAdapter.addAll(cal_list);
+    }
+
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SAVEDATA:
+                    //更新数据
+                    getDataForDb();
+                    break;
+                case GETDATA:
+                    listTask = (List<TaskEntity>) msg.obj;
+                    showCal();
+                    break;
+
+            }
+        }
+    };
+
+    public void getDataForDb() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //从数据库获取数据更新界面
+                try {
+                    List<TaskEntity> listTask = dbUtils.selector(TaskEntity.class).orderBy("end_date").findAll();
+                    if (listTask != null && !listTask.isEmpty()) {
+                        mhandler.obtainMessage(GETDATA, listTask).sendToTarget();
+                    }
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

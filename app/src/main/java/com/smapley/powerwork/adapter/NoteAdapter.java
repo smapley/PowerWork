@@ -7,41 +7,47 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.DynamicEntity;
-import com.smapley.powerwork.holder.Pro_Item1_Holder;
+import com.smapley.powerwork.entity.NoteEntity;
+import com.smapley.powerwork.holder.Per_Not_Write_Holder;
 
 import java.util.List;
 
 /**
- * Created by smapley on 15/11/17.
+ * Created by smapley on 15/10/26.
  */
-public class ProItem1Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<DynamicEntity> list;
+    private List<NoteEntity> list;
     private LayoutInflater inflater;
 
-
-    public ProItem1Adapter(Context context, List<DynamicEntity> list) {
+    public NoteAdapter(Context context, List<NoteEntity> list) {
+        inflater = LayoutInflater.from(context);
         this.context = context;
         this.list = list;
-        inflater = LayoutInflater.from(context);
     }
 
 
-    public void addAll(List<DynamicEntity> obj) {
-        list = obj;
+
+    public void addAll(List<NoteEntity> listMode){
+        list.clear();
+        list.addAll(listMode);
         notifyDataSetChanged();
     }
 
+
+
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = null;
         switch (viewType) {
-            case 0:
-                view = inflater.inflate(R.layout.adapter_pro_item1_item, parent, false);
-                return new Pro_Item1_Holder(view);
+            case 3:
+                view = inflater.inflate(R.layout.adapter_per_notice_write, parent, false);
+                return new Per_Not_Write_Holder(view);
         }
+
         return null;
     }
 
@@ -49,24 +55,22 @@ public class ProItem1Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         switch (getItemViewType(position)) {
-            case 0:
-                ((Pro_Item1_Holder) holder).setData(context, list.get(position));
+            case 3:
+                ((Per_Not_Write_Holder) holder).setData((NoteEntity) list.get(position));
                 break;
-
         }
+
     }
 
     @Override
     public int getItemCount() {
-        if (list == null)
-            return 0;
-        else
-            return list.size();
+        return list.size();
     }
-
 
     @Override
     public int getItemViewType(int position) {
         return list.get(position).getType();
     }
+
+
 }

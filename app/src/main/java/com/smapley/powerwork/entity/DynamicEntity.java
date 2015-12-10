@@ -2,6 +2,7 @@ package com.smapley.powerwork.entity;
 
 import com.smapley.powerwork.mode.BaseMode;
 
+import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
 /**
@@ -10,21 +11,72 @@ import org.xutils.db.annotation.Table;
 @Table(name = "Dynamic")
 public class DynamicEntity implements BaseMode {
 
-    private final int type = 1;
-
+    @Column(name = "dyn_id",isId = true,autoGen = false)
+    private int dyn_id;
+    @Column(name = "use_id")
+    private int use_id;
+    @Column(name = "tas_id")
+    private int tas_id;
+    @Column(name = "type")
+    private int type;
+    @Column(name = "pro_id")
+    private int pro_id;
+    @Column(name = "pic_url")
     private String pic_url;
+    @Column(name = "use_name")
     private String use_name;
-    private int dType;
+    @Column(name = "cre_date")
     private long cre_date;
+    @Column(name = "dpic_url")
     private String dPic_url;
+    @Column(name = "detai")
     private String detai;
+    @Column(name = "ispraise")
     private boolean isPraise;
+    @Column(name = "praise_num")
     private int praise_num;
+    @Column(name = "isdiscuss")
     private boolean isDiscuss;
+    @Column(name = "discuss_num")
     private int discuss_num;
 
 
+    public int getDyn_id() {
+        return dyn_id;
+    }
 
+    public void setDyn_id(int dyn_id) {
+        this.dyn_id = dyn_id;
+    }
+
+    public int getUse_id() {
+        return use_id;
+    }
+
+    public void setUse_id(int use_id) {
+        this.use_id = use_id;
+    }
+
+    public int getTas_id() {
+        return tas_id;
+    }
+
+    public void setTas_id(int tas_id) {
+        this.tas_id = tas_id;
+    }
+
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getPro_id() {
+        return pro_id;
+    }
+
+    public void setPro_id(int pro_id) {
+        this.pro_id = pro_id;
+    }
 
     public String getPic_url() {
         return pic_url;
@@ -40,14 +92,6 @@ public class DynamicEntity implements BaseMode {
 
     public void setUse_name(String use_name) {
         this.use_name = use_name;
-    }
-
-    public int getdType() {
-        return dType;
-    }
-
-    public void setdType(int dType) {
-        this.dType = dType;
     }
 
     public long getCre_date() {
@@ -78,7 +122,7 @@ public class DynamicEntity implements BaseMode {
         return isPraise;
     }
 
-    public void setIsPraise(boolean isPraise) {
+    public void setPraise(boolean isPraise) {
         this.isPraise = isPraise;
     }
 
@@ -94,7 +138,7 @@ public class DynamicEntity implements BaseMode {
         return isDiscuss;
     }
 
-    public void setIsDiscuss(boolean isDiscuss) {
+    public void setDiscuss(boolean isDiscuss) {
         this.isDiscuss = isDiscuss;
     }
 
@@ -106,8 +150,9 @@ public class DynamicEntity implements BaseMode {
         this.discuss_num = discuss_num;
     }
 
+
     @Override
     public int getType() {
-        return 1;
+        return type;
     }
 }

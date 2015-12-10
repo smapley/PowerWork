@@ -41,6 +41,11 @@ public class JFileKit {
      * 获取编码后的AMR格式音频文件路径
      */
     public static String getAMRFilePath(Context context) {
+        //创建audio目录
+        File audioFolder = new File(JFileKit.getDiskCacheDir(context) + MyData.File_Audio);
+        if (!audioFolder.exists()) {
+            audioFolder.mkdirs();
+        }
 
         AUDIO_AMR_FILEPATH = getDiskCacheDir(context) + MyData.File_Audio + "/" + System.currentTimeMillis() + ".amr";
         return AUDIO_AMR_FILEPATH;

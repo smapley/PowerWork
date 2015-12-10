@@ -7,23 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.entity.NoteEntity;
 import com.smapley.powerwork.entity.TaskEntity;
 import com.smapley.powerwork.holder.Cal_Task_Holder;
 import com.smapley.powerwork.holder.Per_Group_Holder;
-import com.smapley.powerwork.holder.Per_Not_Pic_Holder;
-import com.smapley.powerwork.holder.Per_Not_Text_Holder;
-import com.smapley.powerwork.holder.Per_Not_Voice_Holder;
 import com.smapley.powerwork.holder.Per_Not_Write_Holder;
-import com.smapley.powerwork.holder.Per_Task_Details_Holder;
-import com.smapley.powerwork.holder.Per_Task_Holder;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Per_Group_Mode;
-import com.smapley.powerwork.mode.Per_Not_Pic_Mode;
-import com.smapley.powerwork.mode.Per_Not_Text_Mode;
-import com.smapley.powerwork.mode.Per_Not_Voice_Mode;
-import com.smapley.powerwork.mode.Per_Not_Write_Mode;
-import com.smapley.powerwork.mode.Per_Task_Details_Mode;
-import com.smapley.powerwork.mode.Per_Task_Mode;
 
 import java.util.List;
 
@@ -34,7 +24,12 @@ public class PersonalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Context context;
     private List<BaseMode> list;
+    private List<TaskEntity> listTask;
+    private List<NoteEntity> listNote;
     private LayoutInflater inflater;
+
+    private int taskPosition = 1;
+    private int notePosition = 2;
 
     public PersonalAdapter(Context context, List<BaseMode> list) {
         inflater = LayoutInflater.from(context);
@@ -42,21 +37,36 @@ public class PersonalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.list = list;
     }
 
-    public void addAll(List<BaseMode> list){
-        this.list=list;
-        notifyDataSetChanged();
+    public void addTask(List<TaskEntity> listTask) {
+        this.listTask=listTask;
+        list.addAll(taskPosition, listTask);
+        notifyItemRangeInserted(taskPosition, listTask.size());
+        taskPosition+=listTask.size();
+        notePosition+=listTask.size();
     }
 
-    public void addItem(BaseMode mode, int position) {
-        list.add(position, mode);
-        notifyItemInserted(position);
-        notifyItemRangeChanged(position, getItemCount() - 1);
+    public void addNote(List<NoteEntity> listNote) {
+        this.listNote=listNote;
+        list.addAll(notePosition, listNote);
+        notifyItemRangeInserted(notePosition,listNote.size());
+        notePosition+=listNote.size();
     }
 
-    public void removeItem(int position) {
-        list.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, getItemCount() - 1);
+    public void removeTask(){
+        if(listTask!=null&&!listTask.isEmpty()) {
+            list.removeAll(listTask);
+            notifyItemRangeRemoved(1, listTask.size());
+            notePosition = notePosition - listTask.size();
+            taskPosition = 1;
+        }
+
+    }
+    public void removeNote() {
+        if(listNote!=null&&!listNote.isEmpty()) {
+            list.removeAll(listNote);
+            notifyItemRangeRemoved(taskPosition + 1, listNote.size());
+            notePosition = taskPosition + 1;
+        }
     }
 
 
@@ -71,24 +81,9 @@ public class PersonalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case 1:
                 view = inflater.inflate(R.layout.adapter_per_group, parent, false);
                 return new Per_Group_Holder(view);
-            case 2:
-                view = inflater.inflate(R.layout.adapter_per_task, parent, false);
-                return new Per_Task_Holder(view);
             case 3:
-                view = inflater.inflate(R.layout.adapter_per_notice_voice, parent, false);
-                return new Per_Not_Voice_Holder(view);
-            case 4:
-                view = inflater.inflate(R.layout.adapter_per_notice_text, parent, false);
-                return new Per_Not_Text_Holder(view);
-            case 5:
-                view = inflater.inflate(R.layout.adapter_per_notice_pic, parent, false);
-                return new Per_Not_Pic_Holder(view);
-            case 6:
                 view = inflater.inflate(R.layout.adapter_per_notice_write, parent, false);
                 return new Per_Not_Write_Holder(view);
-            case 7:
-                view = inflater.inflate(R.layout.adapter_per_task_details, parent, false);
-                return new Per_Task_Details_Holder(view);
         }
 
         return null;
@@ -104,23 +99,8 @@ public class PersonalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case 1:
                 ((Per_Group_Holder) holder).setData(context, (Per_Group_Mode) list.get(position));
                 break;
-            case 2:
-                ((Per_Task_Holder) holder).setData(context, this, (Per_Task_Mode) list.get(position), position);
-                break;
             case 3:
-                ((Per_Not_Voice_Holder) holder).setData((Per_Not_Voice_Mode) list.get(position));
-                break;
-            case 4:
-                ((Per_Not_Text_Holder) holder).setData((Per_Not_Text_Mode) list.get(position));
-                break;
-            case 5:
-                ((Per_Not_Pic_Holder) holder).setData((Per_Not_Pic_Mode) list.get(position));
-                break;
-            case 6:
-                ((Per_Not_Write_Holder) holder).setData((Per_Not_Write_Mode) list.get(position));
-                break;
-            case 7:
-                ((Per_Task_Details_Holder) holder).setData(context, this, (Per_Task_Details_Mode) list.get(position), position);
+                ((Per_Not_Write_Holder) holder).setData((NoteEntity) list.get(position));
                 break;
         }
 
