@@ -7,7 +7,7 @@ import org.xutils.db.annotation.Table;
  * UserEntity entity provides the base persistence definition of the User
  * entity. @author MyEclipse Persistence Tools
  */
-@Table(name = "user")
+@Table(name = "User")
 public class UserEntity {
 
     @Column(name = "id", isId = true, autoGen = false)

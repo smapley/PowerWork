@@ -254,7 +254,8 @@ public class PublishTask extends BaseActivity {
                 new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
                     @Override
                     public void onCallback(int number) {
-
+                        ActivityStack.getInstance().finishActivity(PublishTask.class);
+                        ActivityStack.getInstance().finishActivity(AddTask.class);
                     }
                 });
             }

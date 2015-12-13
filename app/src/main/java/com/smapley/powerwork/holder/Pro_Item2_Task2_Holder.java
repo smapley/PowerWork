@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.PTaskEntity;
+import com.smapley.powerwork.entity.OtherTaskEntity;
 import com.smapley.powerwork.utils.DateUtil;
 
 /**
@@ -25,10 +25,10 @@ public class Pro_Item2_Task2_Holder extends BaseHolder {
         pro_item2_task2_iv_image = (ImageView) view.findViewById(R.id.pro_item2_task2_iv_image);
     }
 
-    public void setData(Context context, PTaskEntity mode) {
+    public void setData(Context context, OtherTaskEntity mode) {
 
         pro_item2_task2_tv_name.setText(mode.getName());
-        pro_item2_task2_tv_time.setText(DateUtil.getDateString(mode.getTime(), DateUtil.formatDate));
+        pro_item2_task2_tv_time.setText(DateUtil.getDateString(mode.getEnd_date(), DateUtil.formatDate));
 
 
      //   x.image().bind(pro_item2_task2_iv_image, MyData.URL_PIC + mode.getPic_url(), LocalApplication.getInstance().CirtlesImage);

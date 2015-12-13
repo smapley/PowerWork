@@ -66,7 +66,8 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activity.AddTask"
-            android:label="@string/add" />
+            android:label="@string/add"
+            android:windowSoftInputMode="stateVisible"/>
         <activity android:name=".activity.PublishTask"/>
         <activity
             android:name=".activity.Login"
@@ -86,7 +87,8 @@
             android:label="@string/project" />
         <activity
             android:name=".activity.NewFolder"
-            android:label="@string/newfolder" />
+            android:label="@string/newfolder"
+            android:windowSoftInputMode="stateVisible"/>
     </application>
 
 </manifest>

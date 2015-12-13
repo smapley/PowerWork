@@ -1,12 +1,14 @@
 package com.smapley.powerwork.holder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.activity.AddTask;
 import com.smapley.powerwork.mode.Pro_Item2_Group_Mode;
 
 /**
@@ -27,7 +29,7 @@ public class Pro_Item2_Group_Holder extends BaseHolder {
         pro_item2_group_tv_title = (TextView) view.findViewById(R.id.pro_item2_group_tv_title);
     }
 
-    public void setData(Context context,Pro_Item2_Group_Mode mode) {
+    public void setData(final Context context,Pro_Item2_Group_Mode mode) {
 
         pro_item2_group_tv_title.setText(mode.getName());
         if(mode.isShowAdd()){
@@ -35,7 +37,7 @@ public class Pro_Item2_Group_Holder extends BaseHolder {
             pro_item2_group_ll_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    context.startActivity(new Intent(context, AddTask.class));
                 }
             });
         }else{

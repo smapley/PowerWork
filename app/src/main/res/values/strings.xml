@@ -79,6 +79,8 @@
 
     <string-array name="dynamic_type">
         <item>创建了项目</item>
+        <item>创建了任务</item>
+        <item>上传了文件</item>
     </string-array>
 
 
@@ -115,10 +117,8 @@
 
 
 
-    <string name="pro_item5_tv_nowfile">新文件</string>
-    <string name="pro_item5_tv_nowfiles">新文件夹</string>
-    <string name="pro_item5_title_file">文件</string>
-    <string name="pro_item5_title_folder">文件夹</string>
+    <string name="pro_item3_tv_nowfile">新文件</string>
+    <string name="pro_item3_tv_nowfiles">新文件夹</string>
 
     <string name="newfolder">添加文件夹</string>
     <string name="nfd_tv_name">文件夹名</string>
@@ -156,5 +156,10 @@
     <string name="clear">清除</string>
     <string name="choseall">全选</string>
     <string name="no_man">0人</string>
+    <string name="addfolder_ing">正在创建文件。。。</string>
+    <string name="addfolder_succ" >创建文件成功</string>
+    <string name="pro_item3_tv_item1">图片</string>
+    <string name="pro_item3_tv_item2">录音</string>
+    <string name="pro_item3_tv_item3">文件</string>
 
 </resources>

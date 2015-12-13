@@ -12,6 +12,7 @@ public class Code {
      */
     public static String enCode(String data, long number) {
         String code = new Timestamp(number).toString();
+        code+=code;
         String result = "";
         byte[] bytes1 = data.getBytes();
         byte[] bytes2 = code.getBytes();
@@ -27,6 +28,7 @@ public class Code {
      */
     public static String doCode(String data, long number) {
         String code = new Timestamp(number).toString();
+        code+=code;
         LogUtil.d("---"+number);
         LogUtil.d("---"+code);
         LogUtil.d("---"+data);

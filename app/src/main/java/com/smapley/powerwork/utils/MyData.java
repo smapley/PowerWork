@@ -20,6 +20,7 @@ public class MyData {
 //        private final static String BASE_URL = "http://115.28.213.161:8080/PowerWorkService/";
     private final static String BASE_URL = "http://192.168.2.1:8080/PowerWorkService/";
     public final static String URL_PIC = BASE_URL + "upload/pic/";
+    public final static String URL_File = BASE_URL + "upload/file/";
     public final static String URL_LOGIN = BASE_URL + "Login";
     public final static String URL_REGISTER = BASE_URL + "Register";
     public final static String URL_UserPicUpLoad = BASE_URL + "UserPicUpLoad";
@@ -33,5 +34,10 @@ public class MyData {
     public final static String URL_TaskList = BASE_URL + "TaskList";
     public final static String URL_NoteList = BASE_URL + "NoteList";
     public final static String URL_DynamicList = BASE_URL + "DynamicList";
+    public final static String URL_OtherTaskList = BASE_URL + "OtherTaskList";
+    public final static String URL_FolderList = BASE_URL + "FolderList";
+    public final static String URL_FileList = BASE_URL + "FileList";
+    public final static String URL_AddFolder = BASE_URL + "AddFolder";
+    public final static String URL_AddFile = BASE_URL + "AddFile";
 
 }

@@ -4,8 +4,7 @@
     style="@style/per_ll_layout"
     android:layout_marginBottom="3dp"
     android:layout_marginStart="10dp"
-    android:layout_marginTop="8dp"
-    android:background="@color/white">
+    android:layout_marginTop="8dp">
 
 
     <TextView

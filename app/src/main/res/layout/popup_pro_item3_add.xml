@@ -18,10 +18,10 @@
             android:src="@mipmap/file_iv" />
 
         <TextView
-            android:id="@+id/pro_item5_tv_nowfile"
+            android:id="@+id/pro_item3_tv_nowfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pro_item5_tv_nowfile"
+            android:text="@string/pro_item3_tv_nowfile"
             android:textColor="@color/cal_text"
             android:textSize="16sp" />
     </LinearLayout>
@@ -39,10 +39,10 @@
             android:src="@mipmap/folder_iv" />
 
         <TextView
-            android:id="@+id/pro_item5_tv_nowfiles"
+            android:id="@+id/pro_item3_tv_nowfiles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pro_item5_tv_nowfiles"
+            android:text="@string/pro_item3_tv_nowfiles"
             android:textColor="@color/cal_text"
             android:textSize="16sp" />
     </LinearLayout>

@@ -13,7 +13,6 @@ import com.smapley.powerwork.holder.Pro_Item_Holder;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Pro_AddItem_Mode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,15 +24,15 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private LayoutInflater inflater;
 
-    public ProjectsAdapter(Context context) {
+    public ProjectsAdapter(Context context, List<BaseMode> listProject) {
         this.context = context;
-        modeList=new ArrayList<>();
+        modeList = listProject;
         inflater = LayoutInflater.from(context);
     }
 
-    public void addAll(List<BaseMode> modeList){
+    public void addAll(List<ProjectEntity> listProject) {
         this.modeList.clear();
-        this.modeList.addAll(modeList);
+        this.modeList.addAll(listProject);
         this.modeList.add(new Pro_AddItem_Mode());
         notifyDataSetChanged();
 

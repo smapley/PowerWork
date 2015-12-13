@@ -3,19 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="horizontal">
+    android:background="@drawable/circle_white_10"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="15dp">
 
     <ImageView
         android:id="@+id/adapter_pro_item1_iv_user_pic"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/logo" />
+        android:scaleType="fitCenter"
+        tools:src="@mipmap/load_ing" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -25,18 +31,20 @@
 
             <TextView
                 android:id="@+id/adapter_pro_item1_tv_user_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:textColor="@color/cal_text"
+                android:textSize="@dimen/text_size_item3"
                 tools:text="smapley" />
 
             <TextView
                 android:id="@+id/adapter_pro_item1_tv_type"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:textColor="@color/cal_text"
+                android:textSize="@dimen/text_size_item3"
                 tools:text="完成任务" />
 
             <TextView
@@ -44,35 +52,40 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="end"
                 android:textColor="@color/cal_text"
+                android:textSize="@dimen/text_size_item3"
                 tools:text="2015-11-20" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginTop="8dp">
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp">
 
             <ImageView
                 android:id="@+id/adapter_pro_item1_iv_durl"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@mipmap/logo" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitCenter"
+                tools:src="@mipmap/load_ing" />
 
             <TextView
                 android:id="@+id/adapter_pro_item1_tv_dname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
                 android:textColor="@color/cal_text"
+                android:textSize="@dimen/text_size_item2"
                 tools:text="人物形象绘制" />
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0.3dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:background="@color/gray_lin" />
 
         <LinearLayout
@@ -80,50 +93,45 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/adapter_pro_item1_ll_praise"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/adapter_pro_item1_iv_praise"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/praise_iv" />
+                android:layout_weight="1">
 
                 <TextView
                     android:id="@+id/adapter_pro_item1_tv_praise"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:drawableStart="@drawable/praise_iv_select"
+                    android:gravity="center"
+                    android:text=" 赞（0）"
                     android:textColor="@color/cal_text"
-                    android:layout_marginStart="10dp"
-                    tools:text="赞（1）" />
+                    android:textSize="@dimen/text_size_item3" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/adapter_pro_item1_ll_discuss"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp">
+            <TextView
+                android:layout_width="0.3dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_lin" />
 
-                <ImageView
-                    android:id="@+id/adapter_pro_item1_iv_discuss"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/discuss_iv" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1">
 
                 <TextView
                     android:id="@+id/adapter_pro_item1_tv_discuss"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_height="40dp"
+                    android:drawableStart="@drawable/discuss_iv_select"
+                    android:gravity="center"
+                    android:text=" 评论（0）"
                     android:textColor="@color/cal_text"
-                    tools:text="评论（1）" />
+                    android:textSize="@dimen/text_size_item3" />
             </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

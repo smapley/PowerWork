@@ -132,8 +132,7 @@ public class Login extends BaseActivity {
             editor.putInt("id", user_entity.getUseId());
             editor.putBoolean("islogin", true);
             editor.commit();
-            dbUtils.deleteById(UserEntity.class, user_entity.getUseId());
-            dbUtils.save(user_entity);
+            dbUtils.saveOrUpdate(user_entity);
             this.user_entity = user_entity;
 
             toNextActivity();

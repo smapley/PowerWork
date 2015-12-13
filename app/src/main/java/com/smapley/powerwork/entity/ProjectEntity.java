@@ -7,7 +7,7 @@ import org.xutils.db.annotation.Table;
 
 import java.util.List;
 
-@Table(name = "project")
+@Table(name = "Project")
 public class ProjectEntity implements BaseMode{
 
 	private final int type = 1;

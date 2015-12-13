@@ -39,6 +39,8 @@ public class ProItem1Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         View view = null;
         switch (viewType) {
             case 0:
+            case 1:
+            case 2:
                 view = inflater.inflate(R.layout.adapter_pro_item1_item, parent, false);
                 return new Pro_Item1_Holder(view);
         }
@@ -50,6 +52,8 @@ public class ProItem1Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         switch (getItemViewType(position)) {
             case 0:
+            case 1:
+            case 2:
                 ((Pro_Item1_Holder) holder).setData(context, list.get(position));
                 break;
 

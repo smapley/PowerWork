@@ -67,7 +67,11 @@ public class Pro_Item1 extends BaseFragment {
             @Override
             public void run() {
                 try {
-                    List<DynamicEntity> listDynamic = dbUtils.findAll(DynamicEntity.class);
+                    List<DynamicEntity> listDynamic = dbUtils
+                            .selector(DynamicEntity.class)
+                            .where("pro_id", "=", pro_id + "")
+                            .orderBy("cre_date",true)
+                            .findAll();
                     if (listDynamic != null && !listDynamic.isEmpty()) {
                         mhandler.obtainMessage(GETDATE, listDynamic).sendToTarget();
                     }
@@ -88,9 +92,10 @@ public class Pro_Item1 extends BaseFragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<DynamicEntity> listDynamic= JSON.parseObject(result.data,new TypeReference<List<DynamicEntity>>(){});
-                        if(listDynamic!=null&&!listDynamic.isEmpty()){
-                            for(DynamicEntity dynamicEntity:listDynamic){
+                        List<DynamicEntity> listDynamic = JSON.parseObject(result.data, new TypeReference<List<DynamicEntity>>() {
+                        });
+                        if (listDynamic != null && !listDynamic.isEmpty()) {
+                            for (DynamicEntity dynamicEntity : listDynamic) {
                                 try {
                                     dbUtils.saveOrUpdate(dynamicEntity);
                                 } catch (DbException e) {

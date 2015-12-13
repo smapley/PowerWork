@@ -107,7 +107,7 @@ public class Task extends BaseActivity {
                                 }
                                 try {
                                     //添加TasUse
-                                    dbUtils.saveOrUpdate(taskEntity.getTasUseEntity());
+                                    dbUtils.replace(taskEntity.getTasUseEntity());
                                 } catch (DbException e) {
                                     e.printStackTrace();
                                 }

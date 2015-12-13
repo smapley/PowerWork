@@ -6,7 +6,7 @@ import org.xutils.db.annotation.Table;
 /**
  * Created by smapley on 15/12/1.
  */
-@Table(name = "ProUser")
+@Table(name = "ProUser", onCreated = "CREATE UNIQUE INDEX index_project ON ProUser(use_id,pro_id)")
 public class ProUserEntity {
 
     @Column(name = "id", isId = true)

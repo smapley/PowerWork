@@ -6,7 +6,7 @@ import org.xutils.db.annotation.Table;
 /**
  * Created by smapley on 15/12/7.
  */
-@Table(name = "TasUse")
+@Table(name = "TasUse", onCreated = "CREATE UNIQUE INDEX index_task ON TasUse(use_id,tas_id)")
 public class TasUseEntity {
 
     @Column(name = "id",isId = true)

@@ -230,8 +230,7 @@ public class Personal extends BaseFragment {
                     long time2 = DateUtil.getDateLong(DateUtil.getDateString(System.currentTimeMillis() + DateUtil.onDay, DateUtil.formatDate), DateUtil.formatDate);
                     //今天以前没有完成的任务
                     List<TaskEntity> listTask = dbUtils.selector(TaskEntity.class)
-                            .where("end_date", "between", new String[]{time1 + "", time2 + ""})
-                            .and("progress","<","100").findAll();
+                            .where("progress","<","100").findAll();
                     mhandler.obtainMessage(TASKDATA, listTask).sendToTarget();
 
                 } catch (DbException e) {

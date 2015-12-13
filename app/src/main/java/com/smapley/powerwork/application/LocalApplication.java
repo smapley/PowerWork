@@ -7,15 +7,11 @@ import com.smapley.powerwork.BuildConfig;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.exception.BaseExceptionHandler;
 import com.smapley.powerwork.exception.LocalFileHandler;
-import com.smapley.powerwork.utils.JFileKit;
-import com.smapley.powerwork.utils.MyData;
 
 import org.xutils.DbManager;
 import org.xutils.common.util.DensityUtil;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
-
-import java.io.File;
 
 /**
  * Created by smapley on 15/10/22.
@@ -78,8 +74,8 @@ public class LocalApplication extends BaseApplication {
                         // 加载中或错误图片的ScaleType
                 .setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setLoadingDrawableId(R.mipmap.logo)
-                .setFailureDrawableId(R.mipmap.logo)
+                .setLoadingDrawableId(R.mipmap.load_ing)
+                .setFailureDrawableId(R.mipmap.load_file)
                 .build();
         //初始化圆角图片
         FilletImage=new ImageOptions.Builder()
@@ -89,8 +85,8 @@ public class LocalApplication extends BaseApplication {
                         // 加载中或错误图片的ScaleType
                 .setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setLoadingDrawableId(R.mipmap.logo)
-                .setFailureDrawableId(R.mipmap.logo)
+                .setLoadingDrawableId(R.mipmap.load_ing)
+                .setFailureDrawableId(R.mipmap.load_file)
                 .build();
 
 

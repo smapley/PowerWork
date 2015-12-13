@@ -9,8 +9,9 @@
         android:id="@+id/pros_item_iv_pic"
         android:layout_width="wrap_content"
         android:layout_height="120dp"
+        android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/load_file" />
 
     <ImageView
         android:id="@+id/pros_item_iv_hasnow"

@@ -26,6 +26,8 @@ import org.xutils.view.annotation.ViewInject;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
+
 /**
  * Created by smapley on 15/11/16.
  */
@@ -197,7 +199,14 @@ public class Project extends BaseActivity {
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
-                    pro_item5.addFolder(data.getStringExtra("name"));
+                    pro_item3.addFolder(data.getStringExtra("name"));
+                }
+                break;
+            case 2:
+                //选择图片
+                if (resultCode == RESULT_OK) {
+                    List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                    pro_item3.addFile(1,resultList);
                 }
                 break;
         }

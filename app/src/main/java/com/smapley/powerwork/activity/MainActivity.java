@@ -123,8 +123,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViewPager() {
-
-
         main_lt_pages = new ArrayList<>();
         main_vp_personal = new Personal();
         main_vp_projects = new Projects();

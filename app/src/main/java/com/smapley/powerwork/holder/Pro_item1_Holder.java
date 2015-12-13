@@ -3,7 +3,6 @@ package com.smapley.powerwork.holder;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
@@ -26,11 +25,7 @@ public class Pro_Item1_Holder extends BaseHolder {
     private TextView cre_date;
     private ImageView dynamic_pic;
     private TextView dynamic_name;
-    private LinearLayout praise_layout;
-    private ImageView praise_image;
     private TextView praise_text;
-    private LinearLayout discuss_layout;
-    private ImageView discuss_image;
     private TextView discuss_text;
     private String[] types;
 
@@ -44,11 +39,7 @@ public class Pro_Item1_Holder extends BaseHolder {
         cre_date = (TextView) view.findViewById(R.id.adapter_pro_item1_tv_cre_date);
         dynamic_pic = (ImageView) view.findViewById(R.id.adapter_pro_item1_iv_durl);
         dynamic_name = (TextView) view.findViewById(R.id.adapter_pro_item1_tv_dname);
-        praise_layout = (LinearLayout) view.findViewById(R.id.adapter_pro_item1_ll_praise);
-        praise_image = (ImageView) view.findViewById(R.id.adapter_pro_item1_iv_praise);
         praise_text = (TextView) view.findViewById(R.id.adapter_pro_item1_tv_praise);
-        discuss_layout = (LinearLayout) view.findViewById(R.id.adapter_pro_item1_ll_discuss);
-        discuss_image = (ImageView) view.findViewById(R.id.adapter_pro_item1_iv_discuss);
         discuss_text = (TextView) view.findViewById(R.id.adapter_pro_item1_tv_discuss);
 
     }
@@ -59,8 +50,24 @@ public class Pro_Item1_Holder extends BaseHolder {
         use_name.setText(mode.getUse_name());
         type.setText(types[mode.getType()]);
         cre_date.setText(DateUtil.getDateString(mode.getCre_date(), DateUtil.formatDate));
-        x.image().bind(dynamic_pic, MyData.URL_PIC + mode.getdPic_url(), LocalApplication.getInstance().CirtlesImage);
+        switch (mode.getType()){
+            case 2:
+                x.image().bind(dynamic_pic, MyData.URL_File + mode.getdPic_url(), LocalApplication.getInstance().CirtlesImage);
+                break;
+        }
         dynamic_name.setText(mode.getDetai());
 
+        praise_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        discuss_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 }
