@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.mode.Add_Item_Mode;
+import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 import com.smapley.powerwork.utils.BitmapUtil;
 
 import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ public class Add_Pic_Holder extends BaseHolder {
     }
 
 
-    public void setData(Context context, Add_Item_Mode mode) {
+    public void setData(Context context, NoteDetailsEntity mode) {
         Bitmap bitmap = null;
         try {
             bitmap = BitmapUtil.decodeSampledBitmap(mode.getPath(), LocalApplication.getInstance().screenW-70, 20);

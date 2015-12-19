@@ -10,17 +10,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:background="@color/gray_lin"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nfd_tv_name"
-        android:layout_margin="15dp"
-        android:textColor="@color/gray_text"/>
+        android:background="@color/gray_lin" />
+
     <EditText
-        android:id="@+id/nfd_ev_name"
+        android:id="@+id/sea_ev_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"/>
+        android:layout_marginTop="15dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/sea_rv_list"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

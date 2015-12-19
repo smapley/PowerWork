@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.DynamicEntity;
+import com.smapley.powerwork.db.entity.DynamicEntity;
 import com.smapley.powerwork.utils.DateUtil;
 import com.smapley.powerwork.utils.MyData;
 
@@ -47,15 +47,15 @@ public class Pro_Item1_Holder extends BaseHolder {
     public void setData(Context context, DynamicEntity mode) {
         types = context.getResources().getStringArray(R.array.dynamic_type);
         x.image().bind(use_pic, MyData.URL_PIC + mode.getPic_url(), LocalApplication.getInstance().CirtlesImage);
-        use_name.setText(mode.getUse_name());
+   //     use_name.setText(mode.getUse_name());
         type.setText(types[mode.getType()]);
         cre_date.setText(DateUtil.getDateString(mode.getCre_date(), DateUtil.formatDate));
         switch (mode.getType()){
             case 2:
-                x.image().bind(dynamic_pic, MyData.URL_File + mode.getdPic_url(), LocalApplication.getInstance().CirtlesImage);
+           //     x.image().bind(dynamic_pic, MyData.URL_File + mode.getdPic_url(), LocalApplication.getInstance().CirtlesImage);
                 break;
         }
-        dynamic_name.setText(mode.getDetai());
+      //  dynamic_name.setText(mode.getDetai());
 
         praise_text.setOnClickListener(new View.OnClickListener() {
             @Override

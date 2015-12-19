@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.NoteEntity;
+import com.smapley.powerwork.db.entity.NoteEntity;
 import com.smapley.powerwork.holder.Per_Not_Write_Holder;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         switch (getItemViewType(position)) {
             case 3:
-                ((Per_Not_Write_Holder) holder).setData((NoteEntity) list.get(position));
+                ((Per_Not_Write_Holder) holder).setData(list.get(position));
                 break;
         }
 

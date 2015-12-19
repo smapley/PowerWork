@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.NoteEntity;
-import com.smapley.powerwork.entity.TaskEntity;
+import com.smapley.powerwork.db.entity.NoteEntity;
+import com.smapley.powerwork.db.entity.TaskEntity;
 import com.smapley.powerwork.holder.Cal_Task_Holder;
 import com.smapley.powerwork.holder.Per_Group_Holder;
 import com.smapley.powerwork.holder.Per_Not_Write_Holder;
@@ -94,7 +94,7 @@ public class PersonalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         switch (getItemViewType(position)) {
             case 0:
-                ((Cal_Task_Holder) holder).setData(context, (TaskEntity) list.get(position));
+                ((Cal_Task_Holder) holder).setData(context, (TaskEntity)list.get(position));
                 break;
             case 1:
                 ((Per_Group_Holder) holder).setData(context, (Per_Group_Mode) list.get(position));

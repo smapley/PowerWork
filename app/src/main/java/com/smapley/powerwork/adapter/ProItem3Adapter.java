@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.FileEntity;
-import com.smapley.powerwork.entity.FolderEntity;
+import com.smapley.powerwork.db.entity.FileEntity;
+import com.smapley.powerwork.db.entity.FolderEntity;
 import com.smapley.powerwork.fragment.Pro_Item3;
 import com.smapley.powerwork.holder.Pro_Item3_File_Holder;
 import com.smapley.powerwork.holder.Pro_Item3_Folder_Holder;

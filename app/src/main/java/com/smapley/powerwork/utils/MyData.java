@@ -37,7 +37,9 @@ public class MyData {
     public final static String URL_OtherTaskList = BASE_URL + "OtherTaskList";
     public final static String URL_FolderList = BASE_URL + "FolderList";
     public final static String URL_FileList = BASE_URL + "FileList";
-    public final static String URL_AddFolder = BASE_URL + "AddFolder";
+    public final static String URL_AddFolder = BASE_URL + "Add";
     public final static String URL_AddFile = BASE_URL + "AddFile";
+    public final static String URL_UserAll = BASE_URL + "UserAll";
+    public final static String URL_SearchProject = BASE_URL + "SearchProject";
 
 }

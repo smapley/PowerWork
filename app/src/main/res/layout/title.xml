@@ -34,6 +34,16 @@
         tools:visibility="visible" />
 
     <ImageView
+        android:id="@+id/title_iv_search"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/done_iv_select"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageView
         android:id="@+id/title_iv_add"
         android:layout_width="40dp"
         android:layout_height="40dp"

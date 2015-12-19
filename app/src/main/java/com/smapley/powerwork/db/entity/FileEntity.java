@@ -1,18 +1,14 @@
-package com.smapley.powerwork.entity;
+package com.smapley.powerwork.db.entity;
 
 import com.smapley.powerwork.mode.BaseMode;
 
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
-/**
- * Created by smapley on 15/12/12.
- */
 @Table(name = "File")
 public class FileEntity implements BaseMode{
-
     @Column(name = "fil_id",isId = true,autoGen = false)
-    private int fil_id;
+	private int fil_id;
     @Column(name = "fol_id")
     private int fol_id;
     @Column(name = "name")
@@ -25,7 +21,12 @@ public class FileEntity implements BaseMode{
     private int use_id;
     @Column(name = "cre_date")
     private long cre_date;
+    @Column(name = "refresh")
+    private long refresh;
+    @Column(name = "state")
+	private int state;
 
+    
     public int getFil_id() {
         return fil_id;
     }
@@ -81,4 +82,22 @@ public class FileEntity implements BaseMode{
     public void setCre_date(long cre_date) {
         this.cre_date = cre_date;
     }
+
+	public long getRefresh() {
+		return refresh;
+	}
+
+	public void setRefresh(long refresh) {
+		this.refresh = refresh;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+    
+    
 }

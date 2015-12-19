@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.OtherTaskEntity;
-import com.smapley.powerwork.entity.TaskEntity;
+import com.smapley.powerwork.db.entity.TaskEntity;
 import com.smapley.powerwork.holder.Cal_Task_Holder;
 import com.smapley.powerwork.holder.Pro_Item2_Group_Holder;
 import com.smapley.powerwork.holder.Pro_Item2_Task2_Holder;
@@ -28,7 +27,7 @@ public class ProItem2Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int myTaskPosition=1;
     private int otherTaskPosition=2;
     private List<TaskEntity> myTaskList;
-    private List<OtherTaskEntity> otherTaskList;
+    private List<TaskEntity> otherTaskList;
 
 
     public ProItem2Adapter(Context context, List<BaseMode> list) {
@@ -45,7 +44,7 @@ public class ProItem2Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         otherTaskPosition+=myTaskList.size();
     }
 
-    public void addOtherTask(List<OtherTaskEntity> otherTaskList) {
+    public void addOtherTask(List<TaskEntity> otherTaskList) {
         this.otherTaskList=otherTaskList;
         list.addAll(otherTaskPosition, otherTaskList);
         notifyItemRangeInserted(otherTaskPosition,otherTaskList.size());
@@ -98,7 +97,7 @@ public class ProItem2Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ((Pro_Item2_Group_Holder) holder).setData(context,(Pro_Item2_Group_Mode) list.get(position));
                 break;
             case 2:
-                ((Pro_Item2_Task2_Holder) holder).setData(context, (OtherTaskEntity) list.get(position));
+                ((Pro_Item2_Task2_Holder) holder).setData(context, (TaskEntity) list.get(position));
                 break;
 
         }

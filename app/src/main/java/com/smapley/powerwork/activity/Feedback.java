@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.utils.MyData;
 
@@ -41,9 +41,9 @@ public class Feedback extends BaseActivity {
     @Override
     protected void initParams() {
         title_tv_name.setText(R.string.feedback);
-        if (user_entity != null) {
-            x.image().bind(fee_iv_pic, MyData.URL_PIC + user_entity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
-            fee_tv_name.setText(user_entity.getUsername());
+        if (userEntity != null) {
+            x.image().bind(fee_iv_pic, MyData.URL_PIC + userEntity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
+            fee_tv_name.setText(userEntity.getTruename());
         }
     }
 
@@ -62,7 +62,7 @@ public class Feedback extends BaseActivity {
     private void submit() {
         String details = fee_et_content.getText().toString();
         if (details != null && !details.isEmpty()) {
-            BaseParams params = new BaseParams(MyData.URL_Feedback, user_entity);
+            BaseParams params = new BaseParams(MyData.URL_Feedback, userBaseEntity);
             params.addBodyParameter("details", details);
             x.http().post(params, new HttpCallBack(this, R.string.feedback_ing) {
                 @Override

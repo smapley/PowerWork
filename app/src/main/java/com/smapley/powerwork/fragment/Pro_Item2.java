@@ -10,11 +10,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.ProItem2Adapter;
-import com.smapley.powerwork.entity.OtherTaskEntity;
-import com.smapley.powerwork.entity.TasUseEntity;
-import com.smapley.powerwork.entity.TaskEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.TaskEntity;
 import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Pro_Item2_Group_Mode;
 import com.smapley.powerwork.utils.MyData;
@@ -58,6 +56,11 @@ public class Pro_Item2 extends BaseFragment {
 
     }
 
+    @Override
+    public void refresh() {
+
+    }
+
 
     private void initData() {
         pro_id = getArguments().getInt("pro_id");
@@ -91,13 +94,13 @@ public class Pro_Item2 extends BaseFragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    List<OtherTaskEntity> listTask=dbUtils.selector(OtherTaskEntity.class).where("pro_id","=",pro_id+"").findAll();
-                    if(listTask!=null&&!listTask.isEmpty())
-                        mhandler.obtainMessage(GETOTHERTASK,listTask).sendToTarget();
-                } catch (DbException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    List<OtherTaskEntity> listTask=dbUtils.selector(OtherTaskEntity.class).where("pro_id","=",pro_id+"").findAll();
+//                    if(listTask!=null&&!listTask.isEmpty())
+//                        mhandler.obtainMessage(GETOTHERTASK,listTask).sendToTarget();
+//                } catch (DbException e) {
+//                    e.printStackTrace();
+//                }
 
             }
         }).start();
@@ -121,13 +124,13 @@ public class Pro_Item2 extends BaseFragment {
         }).start();
     }
 
-    private void getDataForWeb() {
+    public void getDataForWeb() {
         getMytaskForWeb();
         getOtherTaskForWeb();
     }
 
     private void getMytaskForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_TaskList, user_entity);
+        BaseParams params = new BaseParams(MyData.URL_TaskList, userBaseEntity);
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(MyResponse result) {
@@ -138,19 +141,14 @@ public class Pro_Item2 extends BaseFragment {
                         @Override
                         public void run() {
                             //添加新表
-                            for (TaskEntity taskEntity : listTask) {
+                            for (TaskEntity taskMode : listTask) {
                                 try {
                                     //添加Task
-                                    dbUtils.saveOrUpdate(taskEntity);
+                                    dbUtils.saveOrUpdate(taskMode);
                                 } catch (DbException e) {
                                     e.printStackTrace();
                                 }
-                                try {
-                                    //添加TasUse
-                                    dbUtils.replace(taskEntity.getTasUseEntity());
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
+
                             }
                             mhandler.obtainMessage(SAVEMYTASK).sendToTarget();
                         }
@@ -178,34 +176,34 @@ public class Pro_Item2 extends BaseFragment {
     }
 
     private void getOtherTaskForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_OtherTaskList, user_entity);
+        BaseParams params = new BaseParams(MyData.URL_OtherTaskList, userBaseEntity);
         params.addBodyParameter("pro_id",pro_id+"");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(MyResponse result) {
-                final List<OtherTaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<OtherTaskEntity>>() {
-                });
-                if (listTask != null && !listTask.isEmpty()) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //添加新表
-                            for (OtherTaskEntity otherTaskEntity : listTask) {
-                                try {
-                                    //添加Task
-                                    dbUtils.saveOrUpdate(otherTaskEntity);
-                                    for(TasUseEntity tasUseEntity:otherTaskEntity.getListTasUse())
-                                        dbUtils.replace(tasUseEntity);
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                            mhandler.obtainMessage(SAVEOTHERTASK).sendToTarget();
-                        }
-                    }).start();
-
-                }
+//                final List<OtherTaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<OtherTaskEntity>>() {
+//                });
+//                if (listTask != null && !listTask.isEmpty()) {
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            //添加新表
+//                            for (OtherTaskEntity otherTaskEntity : listTask) {
+//                                try {
+//                                    //添加Task
+//                                    dbUtils.saveOrUpdate(otherTaskEntity);
+//                                    for(TasUseMode tasUseMode :otherTaskEntity.getListTasUse())
+//                                        dbUtils.replace(tasUseMode);
+//                                } catch (DbException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                            }
+//                            mhandler.obtainMessage(SAVEOTHERTASK).sendToTarget();
+//                        }
+//                    }).start();
+//
+//                }
             }
 
             @Override
@@ -237,7 +235,7 @@ public class Pro_Item2 extends BaseFragment {
                     break;
                 case GETOTHERTASK:
                     adapter.removeOtherTask();
-                    adapter.addOtherTask((List<OtherTaskEntity>) msg.obj);
+//                    adapter.addOtherTask((List<OtherTaskEntity>) msg.obj);
                     break;
                 case SAVEMYTASK:
                     getMyTaskForDb();

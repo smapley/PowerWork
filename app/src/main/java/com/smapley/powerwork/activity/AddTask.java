@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.AddTaskAdapter;
-import com.smapley.powerwork.mode.Add_Item_Mode;
+import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 
 import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ContentView;
@@ -35,7 +35,7 @@ public class AddTask extends BaseActivity {
     @ViewInject(R.id.add_rv_list)
     private RecyclerView add_rv_list;
 
-    private List<Add_Item_Mode> add_lis_data;
+    private List<NoteDetailsEntity> add_lis_data;
     private AddTaskAdapter add_aa_adapter;
 
     private int TYPE_NOW = -1;
@@ -47,8 +47,8 @@ public class AddTask extends BaseActivity {
 
         add_rv_list.setLayoutManager(new LinearLayoutManager(this));
         add_lis_data = new ArrayList<>();
-        add_lis_data.add(new Add_Item_Mode(5));
-        add_lis_data.add(new Add_Item_Mode(0));
+        add_lis_data.add(new NoteDetailsEntity(5));
+        add_lis_data.add(new NoteDetailsEntity(0));
         add_aa_adapter = new AddTaskAdapter(this, add_lis_data);
         add_rv_list.setAdapter(add_aa_adapter);
 
@@ -104,10 +104,10 @@ public class AddTask extends BaseActivity {
                 if (resultCode == RESULT_OK) {
                     List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                     for (int i = 0; i < resultList.size(); i++) {
-                        Add_Item_Mode add_item_mode = new Add_Item_Mode(3);
+                        NoteDetailsEntity add_item_mode = new NoteDetailsEntity(3);
                         add_item_mode.setPath(resultList.get(i));
                         add_aa_adapter.addItem(add_item_mode);
-                        add_aa_adapter.addItem(new Add_Item_Mode(5));
+                        add_aa_adapter.addItem(new NoteDetailsEntity(5));
                     }
                 }
                 break;

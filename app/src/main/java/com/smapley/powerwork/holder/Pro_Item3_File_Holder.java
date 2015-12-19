@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.FileEntity;
+import com.smapley.powerwork.db.entity.FileEntity;
 import com.smapley.powerwork.fragment.Pro_Item3;
 import com.smapley.powerwork.utils.MyData;
 

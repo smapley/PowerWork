@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.ProjectEntity;
+import com.smapley.powerwork.db.entity.ProjectEntity;
 import com.smapley.powerwork.fragment.BaseFragment;
 import com.smapley.powerwork.fragment.Pro_Item1;
 import com.smapley.powerwork.fragment.Pro_Item2;
@@ -71,7 +71,7 @@ public class Project extends BaseActivity {
     private FragmentManager fragmentManager;
 
     private Bundle bundle;
-    private ProjectEntity projectEntity;
+    private ProjectEntity project;
     private int pro_id;
 
     @Override
@@ -88,8 +88,8 @@ public class Project extends BaseActivity {
     }
 
     private void initView() {
-        if (projectEntity != null) {
-            pro_ct_layout.setTitle(projectEntity.getName());
+        if (project != null) {
+            pro_ct_layout.setTitle(project.getName());
         }
     }
 
@@ -115,7 +115,7 @@ public class Project extends BaseActivity {
         bundle = getIntent().getExtras();
         pro_id = bundle.getInt("pro_id");
         try {
-            projectEntity = dbUtils.findById(ProjectEntity.class, pro_id);
+            project = dbUtils.findById(ProjectEntity.class, pro_id);
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -211,4 +211,5 @@ public class Project extends BaseActivity {
                 break;
         }
     }
+
 }

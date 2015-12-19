@@ -1,21 +1,12 @@
-package com.smapley.powerwork.entity;
+package com.smapley.powerwork.db.entity;
 
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
-/**
- * UserEntity entity provides the base persistence definition of the User
- * entity. @author MyEclipse Persistence Tools
- */
 @Table(name = "User")
 public class UserEntity {
-
     @Column(name = "id", isId = true, autoGen = false)
     private int useId;
-    @Column(name = "username")
-    private String username;
-    @Column(name = "password")
-    private String password;
     @Column(name = "nickname")
     private String nickname;
     @Column(name = "truename")
@@ -28,9 +19,10 @@ public class UserEntity {
     private long birthday;
     @Column(name = "cre_date")
     private long creDate;
-    @Column(name = "skey")
-    private String skey;
-
+    @Column(name = "refresh")
+    private long refresh;
+    @Column(name = "state")
+    private int state;
 
 
     public int getUseId() {
@@ -39,22 +31,6 @@ public class UserEntity {
 
     public void setUseId(int useId) {
         this.useId = useId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getNickname() {
@@ -105,11 +81,21 @@ public class UserEntity {
         this.creDate = creDate;
     }
 
-    public String getSkey() {
-        return skey;
+    public long getRefresh() {
+        return refresh;
     }
 
-    public void setSkey(String skey) {
-        this.skey = skey;
+    public void setRefresh(long refresh) {
+        this.refresh = refresh;
     }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+
 }

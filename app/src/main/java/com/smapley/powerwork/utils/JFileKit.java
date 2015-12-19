@@ -48,6 +48,7 @@ public class JFileKit {
         }
 
         AUDIO_AMR_FILEPATH = getDiskCacheDir(context) + MyData.File_Audio + "/" + System.currentTimeMillis() + ".amr";
+
         return AUDIO_AMR_FILEPATH;
     }
 

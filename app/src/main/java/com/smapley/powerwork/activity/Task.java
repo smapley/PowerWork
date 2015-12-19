@@ -11,9 +11,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.CalAdapter;
-import com.smapley.powerwork.entity.TaskEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.TaskEntity;
 import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.utils.MyData;
 
@@ -87,7 +87,7 @@ public class Task extends BaseActivity {
     }
 
     public void getDataForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_TaskList, user_entity);
+        BaseParams params = new BaseParams(MyData.URL_TaskList, userBaseEntity);
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(MyResponse result) {
@@ -98,19 +98,14 @@ public class Task extends BaseActivity {
                         @Override
                         public void run() {
                             //添加新表
-                            for (TaskEntity taskEntity : listTask) {
+                            for (TaskEntity taskMode : listTask) {
                                 try {
                                     //添加Task
-                                    dbUtils.saveOrUpdate(taskEntity);
+                                    dbUtils.saveOrUpdate(taskMode);
                                 } catch (DbException e) {
                                     e.printStackTrace();
                                 }
-                                try {
-                                    //添加TasUse
-                                    dbUtils.replace(taskEntity.getTasUseEntity());
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
+
                             }
                             mhandler.obtainMessage(SAVEDATA).sendToTarget();
                         }

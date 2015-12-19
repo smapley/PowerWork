@@ -44,4 +44,14 @@ public class Message extends BaseFragment {
 
     }
 
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void getDataForWeb() {
+
+    }
+
 }

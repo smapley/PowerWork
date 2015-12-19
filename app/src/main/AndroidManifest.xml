@@ -86,8 +86,12 @@
             android:name=".activity.Project"
             android:label="@string/project" />
         <activity
-            android:name=".activity.NewFolder"
-            android:label="@string/newfolder"
+            android:name=".activity.Add"
+            android:label="@string/add"
+            android:windowSoftInputMode="stateVisible"/>
+        <activity
+            android:name=".activity.Search"
+            android:label="@string/search"
             android:windowSoftInputMode="stateVisible"/>
     </application>
 

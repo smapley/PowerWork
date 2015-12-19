@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.smapley.powerwork.fragment.BaseFragment;
+
 import java.util.List;
 
 /**
@@ -11,20 +13,20 @@ import java.util.List;
  */
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> list ;
+    private List<BaseFragment> list ;
 
-    public MainViewPagerAdapter(FragmentManager fm, List<Fragment> list) {
+    public MainViewPagerAdapter(FragmentManager fm, List<BaseFragment> list) {
         super(fm);
         this.list = list;
     }
-    public void setList(List<Fragment> list){
+    public void setList(List<BaseFragment> list){
         this.list=list;
         notifyDataSetChanged();
 
     }
 
 
-    public void addItem(Fragment fragment){
+    public void addItem(BaseFragment fragment){
         this.list.add(fragment);
         notifyDataSetChanged();
     }

@@ -18,13 +18,13 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.activity.NewFolder;
+import com.smapley.powerwork.activity.Add;
 import com.smapley.powerwork.adapter.ProItem3Adapter;
-import com.smapley.powerwork.entity.FileEntity;
-import com.smapley.powerwork.entity.FolderEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.FileEntity;
+import com.smapley.powerwork.db.entity.FolderEntity;
 import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.utils.MyData;
 
@@ -77,6 +77,11 @@ public class Pro_Item3 extends BaseFragment {
         initView();
         getDataForDb();
         getDataForWeb();
+    }
+
+    @Override
+    public void refresh() {
+
     }
 
     private void initData() {
@@ -197,13 +202,13 @@ public class Pro_Item3 extends BaseFragment {
         }).start();
     }
 
-    private void getDataForWeb() {
+    public void getDataForWeb() {
         getFolderForWeb();
         getFileForWeb();
     }
 
     private void getFolderForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_FolderList, user_entity);
+        BaseParams params = new BaseParams(MyData.URL_FolderList, userBaseEntity);
         params.addBodyParameter("pro_id", pro_id + "");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
@@ -247,7 +252,7 @@ public class Pro_Item3 extends BaseFragment {
     }
 
     private void getFileForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_FileList, user_entity);
+        BaseParams params = new BaseParams(MyData.URL_FileList, userBaseEntity);
         params.addBodyParameter("pro_id", pro_id + "");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
@@ -379,7 +384,9 @@ public class Pro_Item3 extends BaseFragment {
             @Override
             public void onClick(View view) {
                 hitAddPopupWindow();
-                getActivity().startActivityForResult(new Intent(getActivity(), NewFolder.class), 1);
+                Intent intent=new Intent(getActivity(), Add.class);
+                intent.putExtra("src",1);
+                getActivity().startActivityForResult(intent, 1);
             }
         });
     }
@@ -424,7 +431,7 @@ public class Pro_Item3 extends BaseFragment {
         pop_file.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                hitAddPopupWindow();
+                hitFilePopupWindow();
             }
         });
 
@@ -487,7 +494,7 @@ public class Pro_Item3 extends BaseFragment {
      */
     public void addFolder(String name) {
         if (fol_id != -1) {
-            BaseParams params = new BaseParams(MyData.URL_AddFolder, user_entity);
+            BaseParams params = new BaseParams(MyData.URL_AddFolder, userBaseEntity);
             params.addBodyParameter("fol_id", fol_id + "");
             params.addBodyParameter("name", name);
             x.http().post(params, new HttpCallBack(getActivity(), R.string.addfolder_ing) {
@@ -522,7 +529,7 @@ public class Pro_Item3 extends BaseFragment {
      * 新建文件
      */
     public void addFile(int type, List<String> list) {
-        BaseParams params = new BaseParams(MyData.URL_AddFile, user_entity);
+        BaseParams params = new BaseParams(MyData.URL_AddFile, userBaseEntity);
         params.addBodyParameter("pro_id",pro_id+"");
         params.addBodyParameter("fol_id", fol_id + "");
         params.addBodyParameter("size", list.size() + "");
@@ -555,4 +562,6 @@ public class Pro_Item3 extends BaseFragment {
             }
         });
     }
+
+
 }

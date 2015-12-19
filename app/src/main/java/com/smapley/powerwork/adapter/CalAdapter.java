@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.TaskEntity;
+import com.smapley.powerwork.db.entity.TaskEntity;
 import com.smapley.powerwork.holder.Cal_Task_Holder;
 import com.smapley.powerwork.mode.BaseMode;
 
@@ -62,7 +62,10 @@ public class CalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if(list!=null)
+            return list.size();
+        else
+            return 0;
     }
 
     @Override

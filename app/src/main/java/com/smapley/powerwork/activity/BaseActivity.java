@@ -1,12 +1,16 @@
 package com.smapley.powerwork.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.UserEntity;
+import com.smapley.powerwork.db.entity.UserBaseEntity;
+import com.smapley.powerwork.db.entity.UserEntity;
 import com.smapley.powerwork.utils.ActivityStack;
 
 import org.xutils.DbManager;
@@ -25,7 +29,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected SharedPreferences sp_set;
     protected DbManager dbUtils;
     protected SweetAlertDialog dialog;
-    public UserEntity user_entity = null;
+    public UserBaseEntity userBaseEntity=null;
+    protected UserEntity userEntity=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +40,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         dbUtils = LocalApplication.getInstance().dbUtils;
         sp_user = LocalApplication.getInstance().sp_user;
         sp_set = LocalApplication.getInstance().sp_set;
+
         try {
-            user_entity = dbUtils.findById(UserEntity.class, sp_user.getInt("id", 0));
+            userBaseEntity=dbUtils.findById(UserBaseEntity.class,sp_user.getInt("id", 0));
         } catch (DbException e) {
             e.printStackTrace();
         }
+        if(userBaseEntity!=null)
+            try {
+                userEntity=dbUtils.findById(UserEntity.class,userBaseEntity.getUseId());
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
         dialog = new SweetAlertDialog(this);
         isCreate = true;
     }
@@ -78,5 +90,31 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void showToast(String data) {
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
     }
+    protected void showOutLoginDialog(final Context context,String details) {
+        SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE);
+        dialog.showText(details)
+                .showConfirmButton(R.string.login)
+                .showCancelButton()
+                .setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onConfirmClick(SweetAlertDialog dialog) {
+                        SharedPreferences.Editor editor = LocalApplication.getInstance().sp_user.edit();
+                        editor.putBoolean("islogin", false);
+                        editor.commit();
+                        ActivityStack.getInstance().finishAllActivity();
+                        startActivity(new Intent(context, Login.class));
+                        dialog.dismiss();
+                    }
 
+                    @Override
+                    public void onFirstClick(SweetAlertDialog dialog) {
+
+                    }
+
+                    @Override
+                    public void onCancelClick(SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
 }

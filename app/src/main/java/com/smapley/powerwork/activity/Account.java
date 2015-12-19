@@ -12,8 +12,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.UserEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.UserEntity;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.utils.ActivityStack;
 import com.smapley.powerwork.utils.DateUtil;
@@ -74,11 +74,12 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     }
 
     private void initView() {
-        if (user_entity != null) {
-            x.image().bind(acc_iv_pic, MyData.URL_PIC+user_entity.getPicUrl());
-            acc_et_name.setText(user_entity.getTruename());
-            acc_et_phone.setText(user_entity.getPhone());
-            acc_tv_birthday.setText(DateUtil.getDateString(user_entity.getCreDate(), DateUtil.formatDate));
+        if (userEntity != null) {
+            x.image().bind(acc_iv_pic, MyData.URL_PIC + userEntity.getPicUrl());
+            acc_et_name.setText(userEntity.getTruename());
+            acc_et_phone.setText(userEntity.getPhone());
+            acc_tv_birthday.setText(DateUtil.getDateString(userEntity.getCreDate(), DateUtil.formatDate));
+
         }
     }
 
@@ -182,7 +183,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         try {
             if (resultCode == RESULT_OK && requestCode == 0) {
                 List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                BaseParams params = new BaseParams(MyData.URL_UserPicUpLoad,user_entity);
+                BaseParams params = new BaseParams(MyData.URL_UserPicUpLoad, userBaseEntity);
                 params.addBodyParameter("file", new File(resultList.get(0)));
                 params.setMultipart(true);
                 x.http().post(params, new HttpCallBack(Account.this, R.string.acc_dialog_uppic) {
@@ -190,9 +191,9 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                     public void onResult(String result, SweetAlertDialog dialog) {
                         dialog.dismiss();
                         try {
-                            user_entity = JSON.parseObject(result, new TypeReference<UserEntity>() {
+                            userEntity = JSON.parseObject(result, new TypeReference<UserEntity>() {
                             });
-                            dbUtils.update(user_entity, "pic_url");
+                            dbUtils.saveOrUpdate(userEntity);
                             initView();
                         } catch (DbException e) {
                             e.printStackTrace();
@@ -207,7 +208,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     }
 
     private void saveData() {
-        BaseParams params = new BaseParams(MyData.URL_Account, user_entity);
+        BaseParams params = new BaseParams(MyData.URL_Account, userBaseEntity);
         params.addBodyParameter("truename", acc_et_name.getText().toString());
         params.addBodyParameter("phone", acc_et_phone.getText().toString());
         params.addBodyParameter("birthday", DateUtil.getDateLong(acc_tv_birthday.getText().toString(), DateUtil.formatDate) + "");
@@ -216,9 +217,9 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
             public void onResult(String result, SweetAlertDialog dialog) {
                 dialog.dismiss();
                 try {
-                    user_entity = JSON.parseObject(result, new TypeReference<UserEntity>() {
+                    userEntity = JSON.parseObject(result, new TypeReference<UserEntity>() {
                     });
-                    dbUtils.update(user_entity, "truename", "phone", "birthday");
+                    dbUtils.saveOrUpdate(userEntity);
                     if (isEdit) {
                         changeEditState();
                         title_iv_edit.setVisibility(View.VISIBLE);

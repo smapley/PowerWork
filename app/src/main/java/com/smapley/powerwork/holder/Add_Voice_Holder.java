@@ -10,7 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.mode.Add_Item_Mode;
+import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 
 import java.text.SimpleDateFormat;
 
@@ -37,7 +37,7 @@ public class Add_Voice_Holder extends BaseHolder {
     }
 
 
-    public void setData(Context context, final Add_Item_Mode mode) {
+    public void setData(Context context, final NoteDetailsEntity mode) {
         simpleDateFormat = new SimpleDateFormat("mm:ss");
         playlength = mode.getLength();
         add_tv_voice_time.setText(simpleDateFormat.format(mode.getLength()));

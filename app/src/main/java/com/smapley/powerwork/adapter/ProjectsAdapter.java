@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.ProjectEntity;
+import com.smapley.powerwork.db.entity.ProjectEntity;
 import com.smapley.powerwork.holder.Pro_AddItem_Holder;
 import com.smapley.powerwork.holder.Pro_Item_Holder;
 import com.smapley.powerwork.mode.BaseMode;

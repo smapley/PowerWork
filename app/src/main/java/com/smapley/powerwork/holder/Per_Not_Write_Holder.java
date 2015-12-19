@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.NoteEntity;
+import com.smapley.powerwork.db.entity.NoteEntity;
 import com.smapley.powerwork.utils.DateUtil;
 
 /**

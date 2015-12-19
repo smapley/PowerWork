@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.TaskEntity;
+import com.smapley.powerwork.db.entity.TaskEntity;
 import com.smapley.powerwork.utils.DateUtil;
 
 /**

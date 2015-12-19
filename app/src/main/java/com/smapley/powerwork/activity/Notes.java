@@ -11,9 +11,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.NoteAdapter;
-import com.smapley.powerwork.entity.NoteEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.NoteEntity;
+import com.smapley.powerwork.db.mode.NoteMode;
 import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.utils.MyData;
 
 import org.xutils.common.Callback;
@@ -54,18 +55,18 @@ public class Notes extends BaseActivity {
     }
 
     private void getDataForWeb() {
-        BaseParams baseParams=new BaseParams(MyData.URL_NoteList,user_entity);
+        BaseParams baseParams=new BaseParams(MyData.URL_NoteList,userBaseEntity);
         x.http().post(baseParams, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(final MyResponse result) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<NoteEntity> listNote= JSON.parseObject(result.data,new TypeReference<List<NoteEntity>>(){});
+                        List<NoteMode> listNote= JSON.parseObject(result.data,new TypeReference<List<NoteMode>>(){});
                         if(listNote!=null&&!listNote.isEmpty()){
-                            for(NoteEntity noteEntity:listNote){
+                            for(NoteMode noteMode :listNote){
                                 try {
-                                    dbUtils.saveOrUpdate(noteEntity);
+                                    dbUtils.saveOrUpdate(noteMode);
                                 } catch (DbException e) {
                                     e.printStackTrace();
                                 }
@@ -100,7 +101,7 @@ public class Notes extends BaseActivity {
             @Override
             public void run() {
                 try {
-                    List<NoteEntity> listNote = dbUtils.selector(NoteEntity.class).orderBy("cre_date").findAll();
+                    List<NoteMode> listNote = dbUtils.selector(NoteMode.class).orderBy("cre_date").findAll();
                     if (listNote != null && !listNote.isEmpty())
                         mhandler.obtainMessage(GETDATA, listNote).sendToTarget();
                 } catch (DbException e) {

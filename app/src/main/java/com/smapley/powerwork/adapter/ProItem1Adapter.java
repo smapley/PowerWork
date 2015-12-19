@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.DynamicEntity;
+import com.smapley.powerwork.db.entity.DynamicEntity;
 import com.smapley.powerwork.holder.Pro_Item1_Holder;
 
 import java.util.List;

@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 import com.smapley.powerwork.holder.Add_Menu_Holder;
 import com.smapley.powerwork.holder.Add_Pic_Holder;
 import com.smapley.powerwork.holder.Add_Text_Holder;
 import com.smapley.powerwork.holder.Add_Voice_Holder;
-import com.smapley.powerwork.mode.Add_Item_Mode;
 
 import java.util.List;
 
@@ -21,23 +21,23 @@ import java.util.List;
 public class AddTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<Add_Item_Mode> list;
+    private List<NoteDetailsEntity> list;
     private LayoutInflater inflater;
 
   //  public int focusPosition = 0;
 
-    public AddTaskAdapter(Context context, List<Add_Item_Mode> list) {
+    public AddTaskAdapter(Context context, List<NoteDetailsEntity> list) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.list = list;
 
     }
 
-    public List<Add_Item_Mode> getList() {
+    public List<NoteDetailsEntity> getList() {
         return list;
     }
 
-    public void addItem(Add_Item_Mode mode) {
+    public void addItem(NoteDetailsEntity mode) {
         list.add(list.size()-1, mode);
         notifyItemInserted(list.size()-1);
         notifyItemRangeChanged(list.size()-2, list.size());

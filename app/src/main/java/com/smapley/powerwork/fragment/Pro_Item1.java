@@ -10,9 +10,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.ProItem1Adapter;
-import com.smapley.powerwork.entity.DynamicEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.DynamicEntity;
 import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.utils.MyData;
 
 import org.xutils.common.Callback;
@@ -51,6 +51,11 @@ public class Pro_Item1 extends BaseFragment {
 
     }
 
+    @Override
+    public void refresh() {
+
+    }
+
     private void initData() {
         pro_id = getArguments().getInt("pro_id");
     }
@@ -82,9 +87,9 @@ public class Pro_Item1 extends BaseFragment {
         }).start();
     }
 
-    private void getDataForWeb() {
+    public void getDataForWeb() {
 
-        BaseParams baseParams = new BaseParams(MyData.URL_DynamicList, user_entity);
+        BaseParams baseParams = new BaseParams(MyData.URL_DynamicList, userBaseEntity);
         baseParams.addBodyParameter("pro_id", pro_id + "");
         x.http().post(baseParams, new Callback.CommonCallback<MyResponse>() {
             @Override

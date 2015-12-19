@@ -31,6 +31,16 @@ public class Pro_Item4 extends BaseFragment {
         title_iv_edit.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void getDataForWeb() {
+
+    }
+
     @Event({R.id.title_iv_edit,R.id.title_iv_add})
     private void onClick(View view){
         switch (view.getId()){

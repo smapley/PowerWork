@@ -14,10 +14,12 @@ import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.PersonalAdapter;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.NoteEntity;
-import com.smapley.powerwork.entity.TaskEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.NoteEntity;
+import com.smapley.powerwork.db.entity.TaskEntity;
+import com.smapley.powerwork.db.mode.NoteMode;
+import com.smapley.powerwork.db.mode.TaskMode;
 import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Per_Group_Mode;
 import com.smapley.powerwork.utils.DateUtil;
@@ -59,12 +61,16 @@ public class Personal extends BaseFragment {
     protected void initParams(View view) {
         initView();
         initRecyclerView();
-        getDataForDb();
-        getDataForWeb();
+
 
 
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo);
 //        per_iv_pic.setImageBitmap(DullPolish.doPolish(getActivity(), bitmap, 20));
+    }
+
+    @Override
+    public void refresh() {
+        getDataForDb();
     }
 
     private void initView() {
@@ -75,8 +81,8 @@ public class Personal extends BaseFragment {
         //通过CollapsingToolbarLayout修改字体颜色
         per_ct_layout.setExpandedTitleColor(getResources().getColor(R.color.cal_text));//设置还没收缩时状态下字体颜色
         per_ct_layout.setCollapsedTitleTextColor(getResources().getColor(R.color.cal_text));//设置收缩后Toolbar上字体的颜色
-        if (user_entity != null) {
-            x.image().bind(per_iv_pic, MyData.URL_PIC + user_entity.getPicUrl(), LocalApplication.getInstance().FilletImage);
+        if (userEntity != null) {
+            x.image().bind(per_iv_pic, MyData.URL_PIC + userEntity.getPicUrl(), LocalApplication.getInstance().FilletImage);
         }
     }
 
@@ -114,19 +120,19 @@ public class Personal extends BaseFragment {
     }
 
     private void getNote() {
-        BaseParams baseParams = new BaseParams(MyData.URL_NoteList, user_entity);
+        BaseParams baseParams = new BaseParams(MyData.URL_NoteList, userBaseEntity);
         x.http().post(baseParams, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(final MyResponse result) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<NoteEntity> listNote = JSON.parseObject(result.data, new TypeReference<List<NoteEntity>>() {
+                        List<NoteMode> listNote = JSON.parseObject(result.data, new TypeReference<List<NoteMode>>() {
                         });
                         if (listNote != null && !listNote.isEmpty()) {
-                            for (NoteEntity noteEntity : listNote) {
+                            for (NoteMode noteMode : listNote) {
                                 try {
-                                    dbUtils.saveOrUpdate(noteEntity);
+                                    dbUtils.saveOrUpdate(noteMode);
                                 } catch (DbException e) {
                                     e.printStackTrace();
                                 }
@@ -155,19 +161,19 @@ public class Personal extends BaseFragment {
     }
 
     private void getTask() {
-        BaseParams baseParams = new BaseParams(MyData.URL_TaskList, user_entity);
+        BaseParams baseParams = new BaseParams(MyData.URL_TaskList, userBaseEntity);
         x.http().post(baseParams, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(final MyResponse result) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<TaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskEntity>>() {
+                        List<TaskMode> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskMode>>() {
                         });
                         if (listTask != null && !listTask.isEmpty()) {
-                            for (TaskEntity taskEntity : listTask) {
+                            for (TaskMode taskMode : listTask) {
                                 try {
-                                    dbUtils.saveOrUpdate(taskEntity);
+                                    dbUtils.saveOrUpdate(taskMode);
                                 } catch (DbException e) {
                                     e.printStackTrace();
                                 }
@@ -212,9 +218,9 @@ public class Personal extends BaseFragment {
                     long time1 = DateUtil.getDateLong(DateUtil.getDateString(System.currentTimeMillis() - DateUtil.onDay, DateUtil.formatDate), DateUtil.formatDate);
                     long time2 = System.currentTimeMillis();
                     //从昨天到现在创建的Note
-                    List<NoteEntity> listNote = dbUtils.selector(NoteEntity.class).where("cre_date", "between", new String[]{time1 + "", time2 + ""}).findAll();
+                    List<NoteMode> listNote = dbUtils.selector(NoteMode.class).where("cre_date", "between", new String[]{time1 + "", time2 + ""}).findAll();
                     mhandler.obtainMessage(NOTEDATA, listNote).sendToTarget();
-                } catch (DbException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -229,11 +235,11 @@ public class Personal extends BaseFragment {
                     long time1 = 0;
                     long time2 = DateUtil.getDateLong(DateUtil.getDateString(System.currentTimeMillis() + DateUtil.onDay, DateUtil.formatDate), DateUtil.formatDate);
                     //今天以前没有完成的任务
-                    List<TaskEntity> listTask = dbUtils.selector(TaskEntity.class)
+                    List<TaskMode> listTask = dbUtils.selector(TaskMode.class)
                             .where("progress","<","100").findAll();
                     mhandler.obtainMessage(TASKDATA, listTask).sendToTarget();
 
-                } catch (DbException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

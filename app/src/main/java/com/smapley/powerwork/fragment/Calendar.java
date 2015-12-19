@@ -1,6 +1,6 @@
 package com.smapley.powerwork.fragment;
 
-import android.os.*;
+import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +13,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.CalAdapter;
-import com.smapley.powerwork.entity.TaskEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.TaskEntity;
+import com.smapley.powerwork.db.mode.TaskMode;
 import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.utils.DateUtil;
 import com.smapley.powerwork.utils.MyData;
@@ -76,10 +77,13 @@ public class Calendar extends BaseFragment {
         initRecyclerView();
         //初始化组件
         initView();
+
+    }
+
+    @Override
+    public void refresh() {
         //从数据库获取数据
         getDataForDb();
-        //网络获取数据
-        getDataForWeb();
     }
 
     @Event({R.id.cal_iv_refresh})
@@ -95,6 +99,7 @@ public class Calendar extends BaseFragment {
     private void initData() {
         cal_month = getResources().getStringArray(R.array.cal_month);
         dateChecked = DateUtil.getDateString(System.currentTimeMillis(), DateUtil.formatDate);
+        listTask=new ArrayList<>();
     }
 
     /**
@@ -109,7 +114,7 @@ public class Calendar extends BaseFragment {
     }
 
     public void getDataForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_TaskList, user_entity);
+        BaseParams params = new BaseParams(MyData.URL_TaskList, userBaseEntity);
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(final MyResponse result) {
@@ -117,23 +122,18 @@ public class Calendar extends BaseFragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<TaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskEntity>>() {
+                        List<TaskMode> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskMode>>() {
                         });
                         if (listTask != null && !listTask.isEmpty()) {
                             //添加新表
-                            for (TaskEntity taskEntity : listTask) {
+                            for (TaskMode taskMode : listTask) {
                                 try {
                                     //添加Task
-                                    dbUtils.saveOrUpdate(taskEntity);
+                                    dbUtils.saveOrUpdate(taskMode);
                                 } catch (DbException e) {
                                     e.printStackTrace();
                                 }
-                                try {
-                                    //添加TasUse
-                                    dbUtils.replace(taskEntity.getTasUseEntity());
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
+
                             }
                             mhandler.obtainMessage(SAVEDATA).sendToTarget();
 
@@ -213,14 +213,14 @@ public class Calendar extends BaseFragment {
     private void showCal() {
         //设置标记的日期
         cal_mc_calendar.removeAllMarks();
-        for (TaskEntity taskEntity : listTask) {
-            cal_mc_calendar.addMark(DateUtil.getDateString(taskEntity.getEnd_date(), DateUtil.formatDate), R.drawable.cal_cc_mark);
+        for (TaskEntity task : listTask) {
+            cal_mc_calendar.addMark(DateUtil.getDateString(task.getEnd_date(), DateUtil.formatDate), R.drawable.cal_cc_mark);
         }
         //显示当天任务
         cal_list.clear();
-        for (TaskEntity taskEntity : listTask) {
-            if (dateChecked.equals(DateUtil.getDateString(taskEntity.getEnd_date(), DateUtil.formatDate)))
-                cal_list.add(taskEntity);
+        for (TaskEntity task : listTask) {
+            if (dateChecked.equals(DateUtil.getDateString(task.getEnd_date(), DateUtil.formatDate)))
+                cal_list.add(task);
         }
         calAdapter.addAll(cal_list);
     }
@@ -249,7 +249,7 @@ public class Calendar extends BaseFragment {
             public void run() {
                 //从数据库获取数据更新界面
                 try {
-                    List<TaskEntity> listTask = dbUtils.selector(TaskEntity.class).orderBy("end_date").findAll();
+                    List<TaskMode> listTask = dbUtils.selector(TaskMode.class).orderBy("end_date").findAll();
                     if (listTask != null && !listTask.isEmpty()) {
                         mhandler.obtainMessage(GETDATA, listTask).sendToTarget();
                     }

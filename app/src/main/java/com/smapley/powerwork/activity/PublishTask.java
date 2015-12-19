@@ -22,25 +22,28 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.ProUserEntity;
-import com.smapley.powerwork.entity.ProjectEntity;
-import com.smapley.powerwork.entity.TasUseEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.NoteDetailsEntity;
+import com.smapley.powerwork.db.entity.TasUseEntity;
+import com.smapley.powerwork.db.mode.NoteMode;
+import com.smapley.powerwork.db.mode.ProUseMode;
+import com.smapley.powerwork.db.mode.ProjectMode;
+import com.smapley.powerwork.db.mode.TaskMode;
+import com.smapley.powerwork.db.service.NoteService;
+import com.smapley.powerwork.db.service.ProjectService;
+import com.smapley.powerwork.db.service.TaskService;
 import com.smapley.powerwork.http.HttpCallBack;
-import com.smapley.powerwork.mode.Add_Item_Mode;
+import com.smapley.powerwork.http.params.AddNoteParams;
+import com.smapley.powerwork.http.params.AddTaskParams;
 import com.smapley.powerwork.utils.ActivityStack;
 import com.smapley.powerwork.utils.DateUtil;
-import com.smapley.powerwork.utils.MyData;
 import com.smapley.powerwork.utils.ThreadSleep;
 
 import org.xutils.common.util.LogUtil;
-import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,48 +90,52 @@ public class PublishTask extends BaseActivity {
 
     private int type = 0;
 
-    private List<Add_Item_Mode> list;
-    private List<ProjectEntity> listProject;
-    private List<ProUserEntity> listProUse;
+    //Details
+    private List<NoteDetailsEntity> list;
+
+    private List<ProjectMode> projectModes;
+    //参与者集合
+    private List<ProUseMode> listPar;
     //参与者
-    private List<ProUserEntity> listPar;
     private List<TasUseEntity> listTasUse;
     private int pro_id;
     //创建者TasUse
     private TasUseEntity creatTasUse;
     //执行者TasUse
     private TasUseEntity perforTasUse;
+    private int proNum=0;
 
     @Override
     protected void initParams() {
         initData();
-        initView();
+    //    initView();
     }
 
     private void initData() {
         String data = getIntent().getStringExtra("data");
         try {
-            list = JSON.parseObject(data, new TypeReference<List<Add_Item_Mode>>() {
+            list = JSON.parseObject(data, new TypeReference<List<NoteDetailsEntity>>() {
             });
             list.remove(list.size() - 1);
             LogUtil.d("---" + list.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            listProject = dbUtils.findAll(ProjectEntity.class);
-            listProUse = dbUtils.selector(ProUserEntity.class).where("pro_id", "=", listProject.get(0).getPro_id()).findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        projectModes=new ProjectService().findByUseId(userBaseEntity.getUseId());
+
         //初始化创建者和执行者TasUse
-        listTasUse=new ArrayList<>();
-        listPar=new ArrayList<>();
-        creatTasUse=new TasUseEntity();
+        listTasUse = new ArrayList<>();
+
+        //初始化创建者
+        creatTasUse = new TasUseEntity();
         creatTasUse.setRank(0);
-        creatTasUse.setUse_id(user_entity.getUseId());
-        perforTasUse=new TasUseEntity();
+        creatTasUse.setUse_id(userBaseEntity.getUseId());
+        //初始化执行者
+        perforTasUse = new TasUseEntity();
         perforTasUse.setRank(1);
+        //初始化参与者
+        listPar = new ArrayList<>();
     }
 
     private void initView() {
@@ -145,7 +152,7 @@ public class PublishTask extends BaseActivity {
         pub_tv_note_alarm.setText(date);
         pub_tv_task_endtime.setText(date);
         //默认名字
-        String name = list.get(0).getText().toString();
+        String name = list.get(0).getText();
         if (name != null && !name.isEmpty()) {
             pub_et_note_name.setHint(name);
             pub_et_task_name.setHint(name);
@@ -155,20 +162,24 @@ public class PublishTask extends BaseActivity {
             pub_et_task_name.setHint("Task" + name);
         }
         //默认project
-        if (listProject != null && !listProject.isEmpty()) {
-            pub_tv_task_projectname.setText(listProject.get(0).getName());
-            pro_id = listProject.get(0).getPro_id();
+        if (projectModes != null && !projectModes.isEmpty()) {
+            pub_tv_task_projectname.setText(projectModes.get(0).getProjectEntity().getName());
+            pro_id = projectModes.get(0).getProjectEntity().getPro_id();
         }
         //默认performer
-        if (listProUse != null && !listProUse.isEmpty()) {
-            pub_tv_task_performer.setText(listProUse.get(0).getUser_truename());
+        if (projectModes != null && !projectModes.isEmpty()) {
+            //默认执行者名字
+            pub_tv_task_performer.setText(projectModes.get(0).getListProUseModes().get(0).getUserEntity().getTruename());
+            //清空TasUse
             listTasUse.clear();
-            perforTasUse.setUse_id(listProUse.get(0).getUse_id());
+            //默认执行者
+            perforTasUse.setUse_id(projectModes.get(0).getListProUseModes().get(0).getUserEntity().getUseId());
+            //添加默认创建者和默认执行者
             listTasUse.add(creatTasUse);
             listTasUse.add(perforTasUse);
             //更新参与者
             listPar.clear();
-            listPar.addAll(listProUse);
+            listPar.addAll(projectModes.get(0).getListProUseModes());
             listPar.remove(0);
         }
     }
@@ -184,25 +195,15 @@ public class PublishTask extends BaseActivity {
     private void addTask() {
         long endTime = DateUtil.getDateLong(pub_tv_task_endtime.getText().toString(), DateUtil.formatDateAndTime);
         String name = pub_et_task_name.getText().toString();
-        if(name.isEmpty()){
-            name=pub_et_task_name.getHint().toString();
+        if (name.isEmpty()) {
+            name = pub_et_task_name.getHint().toString();
         }
-        BaseParams params = new BaseParams(MyData.URL_AddTask, user_entity);
-        params.addBodyParameter("name", name);
-        params.addBodyParameter("endtime", endTime + "");
-        params.addBodyParameter("pro_id", pro_id + "");
-        params.addBodyParameter("tasuse", JSON.toJSONString(listTasUse));
-        params.addBodyParameter("size", list.size() + "");
-        params.setMultipart(true);
-        for (int i = 0; i < list.size(); i++) {
-            params.addBodyParameter("type" + i, list.get(i).getType() + "");
-            params.addBodyParameter("text" + i, list.get(i).getText());
-            String path = list.get(i).getPath();
-            if (path != null && !path.isEmpty()) {
-                params.addBodyParameter("file" + i, new File(path));
-            }
-            params.addBodyParameter("length" + i, list.get(i).getLength() + "");
-        }
+        AddTaskParams params = new AddTaskParams(userBaseEntity);
+        params.setName(name).
+                setEndtime(endTime).
+                setProId(pro_id).
+                setTasUse(listTasUse).
+                setList(list);
         x.http().post(params, new HttpCallBack(this, R.string.publish_ing) {
             @Override
             public void onResult(String result, SweetAlertDialog dialog) {
@@ -210,6 +211,8 @@ public class PublishTask extends BaseActivity {
                         .showText(R.string.publish_succ)
                         .commit()
                         .dismiss(2000);
+                TaskMode taskMode=JSON.parseObject(result,new TypeReference<TaskMode>(){});
+                new TaskService().save(taskMode);
                 new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
                     @Override
                     public void onCallback(int number) {
@@ -227,23 +230,14 @@ public class PublishTask extends BaseActivity {
         long alarm = isAlarm ? DateUtil.getDateLong(pub_tv_note_alarm.getText().toString(), DateUtil.formatDateAndTime) : 1000;
 
         String name = pub_et_note_name.getText().toString();
-        if(name.isEmpty()){
-            name=pub_et_note_name.getHint().toString();
+        if (name.isEmpty()) {
+            name = pub_et_note_name.getHint().toString();
         }
-        BaseParams params = new BaseParams(MyData.URL_AddNote, user_entity);
-        params.addBodyParameter("name", name);
-        params.addBodyParameter("alarm", alarm + "");
-        params.addBodyParameter("size", list.size() + "");
-        params.setMultipart(true);
-        for (int i = 0; i < list.size(); i++) {
-            params.addBodyParameter("type" + i, list.get(i).getType() + "");
-            params.addBodyParameter("text" + i, list.get(i).getText());
-            String path = list.get(i).getPath();
-            if (path != null && !path.isEmpty()) {
-                params.addBodyParameter("file" + i, new File(path));
-            }
-            params.addBodyParameter("length" + i, list.get(i).getLength() + "");
-        }
+
+        AddNoteParams params = new AddNoteParams(userBaseEntity);
+        params.setName(name).
+                setAlarm(alarm).
+                setList(list);
         x.http().post(params, new HttpCallBack(this, R.string.publish_ing) {
             @Override
             public void onResult(String result, SweetAlertDialog dialog) {
@@ -251,6 +245,10 @@ public class PublishTask extends BaseActivity {
                         .showText(R.string.publish_succ)
                         .commit()
                         .dismiss(2000);
+                NoteMode noteMode = JSON.parseObject(result, new TypeReference<NoteMode>() {
+                });
+                new NoteService().save(noteMode);
+
                 new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
                     @Override
                     public void onCallback(int number) {
@@ -273,7 +271,10 @@ public class PublishTask extends BaseActivity {
                 upData();
                 break;
             case R.id.pub_tv_task:
-                changeType(0);
+                if (projectModes != null && !projectModes.isEmpty())
+                    changeType(0);
+                else
+                    showToast(R.string.noProject);
                 break;
             case R.id.pub_tv_note:
                 changeType(1);
@@ -313,8 +314,7 @@ public class PublishTask extends BaseActivity {
         for (int i = 0; i < listPar.size(); i++) {
             CheckBox checkBox = new CheckBox(this);
             checkBox.setId(2000 + i);
-            checkBox.setText(listPar.get(i).getUser_truename());
-            LogUtil.d("---" + listPar.get(i).getUser_truename());
+            checkBox.setText(listPar.get(i).getUserEntity().getTruename());
             checkBox.setTextColor(getResources().getColor(R.color.white));
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
             radioGroup.addView(checkBox, params);
@@ -322,7 +322,7 @@ public class PublishTask extends BaseActivity {
             //默认选中
             if (!listTasUse.isEmpty()) {
                 for (int j = 0; j < listTasUse.size(); j++) {
-                    if (listPar.get(i).getUse_id() == listTasUse.get(j).getUse_id()) {
+                    if (listPar.get(i).getUserEntity().getUseId() == listTasUse.get(j).getUse_id()) {
                         checkBox.setChecked(true);
                     }
                 }
@@ -369,9 +369,9 @@ public class PublishTask extends BaseActivity {
                 listTasUse.add(perforTasUse);
                 for (int i = 0; i < listCheckBox.size(); i++) {
                     if (listCheckBox.get(i).isChecked()) {
-                        TasUseEntity tasUseEntity=new TasUseEntity();
+                        TasUseEntity tasUseEntity = new TasUseEntity();
                         tasUseEntity.setRank(2);
-                        tasUseEntity.setUse_id(listPar.get(i).getUse_id());
+                        tasUseEntity.setUse_id(listPar.get(i).getUserEntity().getUseId());
                         listTasUse.add(tasUseEntity);
                     }
                 }
@@ -393,11 +393,10 @@ public class PublishTask extends BaseActivity {
         //设置popwindow出现和消失动画
         popupWindow.setAnimationStyle(R.style.pop_voice);
         final RadioGroup radioGroup = (RadioGroup) popView.findViewById(R.id.pub_choseproject_rg);
-        for (int i = 0; i < listProUse.size(); i++) {
+        for (int i = 0; i < projectModes.get(proNum).getListProUseModes().size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setId(1000 + i);
-            radioButton.setText(listProUse.get(i).getUser_truename());
-            LogUtil.d("---" + listProUse.get(i).getUser_truename());
+            radioButton.setText(projectModes.get(proNum).getListProUseModes().get(i).getUserEntity().getTruename());
             radioButton.setTextColor(getResources().getColor(R.color.white));
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
             radioGroup.addView(radioButton, params);
@@ -422,17 +421,17 @@ public class PublishTask extends BaseActivity {
             public void onClick(View view) {
                 hintPop(popupWindow);
                 int num = radioGroup.getCheckedRadioButtonId() - 1000;
-                pub_tv_task_performer.setText(listProUse.get(num).getUser_truename());
+                pub_tv_task_performer.setText(projectModes.get(proNum).getListProUseModes().get(num).getUserEntity().getTruename());
                 //重置参与者
                 pub_tv_task_participation.setText(R.string.no_man);
                 //添加执行者到list
                 listTasUse.clear();
-                perforTasUse.setUse_id(listProUse.get(num).getUse_id());
+                perforTasUse.setUse_id(projectModes.get(proNum).getListProUseModes().get(num).getUserEntity().getUseId());
                 listTasUse.add(creatTasUse);
                 listTasUse.add(perforTasUse);
                 //更新参与者
                 listPar.clear();
-                listPar.addAll(listProUse);
+                listPar.addAll(projectModes.get(proNum).getListProUseModes());
                 listPar.remove(num);
             }
         });
@@ -451,11 +450,10 @@ public class PublishTask extends BaseActivity {
         //设置popwindow出现和消失动画
         popupWindow.setAnimationStyle(R.style.pop_voice);
         final RadioGroup radioGroup = (RadioGroup) popView.findViewById(R.id.pub_choseproject_rg);
-        for (int i = 0; i < listProject.size(); i++) {
+        for (int i = 0; i < projectModes.size(); i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setId(1000 + i);
-            radioButton.setText(listProject.get(i).getName());
-            LogUtil.d("---" + listProject.get(i).getName());
+            radioButton.setText(projectModes.get(i).getProjectEntity().getName());
             radioButton.setTextColor(getResources().getColor(R.color.white));
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
             radioGroup.addView(radioButton, params);
@@ -479,25 +477,21 @@ public class PublishTask extends BaseActivity {
             @Override
             public void onClick(View view) {
                 hintPop(popupWindow);
-                int num = radioGroup.getCheckedRadioButtonId() - 1000;
-                pub_tv_task_projectname.setText(listProject.get(num).getName());
-                pro_id = listProject.get(num).getPro_id();
-                try {
-                    listProUse = dbUtils.selector(ProUserEntity.class).where("pro_id", "=", pro_id).findAll();
-                } catch (DbException e) {
-                    e.printStackTrace();
-                }
+                proNum = radioGroup.getCheckedRadioButtonId() - 1000;
+                //更新项目任务和项目id
+                pub_tv_task_projectname.setText(projectModes.get(proNum).getProjectEntity().getName());
+                pro_id = projectModes.get(proNum).getProjectEntity().getPro_id();
                 //改变项目时 重置执行者和参与者
-                pub_tv_task_performer.setText(listProUse.get(0).getUser_truename());
+                pub_tv_task_performer.setText(projectModes.get(proNum).getListProUseModes().get(0).getUserEntity().getTruename());
                 pub_tv_task_participation.setText(R.string.no_man);
                 //添加执行者到list
                 listTasUse.clear();
-                perforTasUse.setUse_id(listProUse.get(0).getUse_id());
+                perforTasUse.setUse_id(projectModes.get(proNum).getListProUseModes().get(0).getUserEntity().getUseId());
                 listTasUse.add(creatTasUse);
                 listTasUse.add(perforTasUse);
                 //更新参与者
                 listPar.clear();
-                listPar.addAll(listProUse);
+                listPar.addAll(projectModes.get(proNum).getListProUseModes());
                 listPar.remove(0);
             }
         });

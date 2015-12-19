@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.FolderEntity;
+import com.smapley.powerwork.db.entity.FolderEntity;
 import com.smapley.powerwork.fragment.Pro_Item3;
 
 /**

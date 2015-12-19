@@ -1,5 +1,7 @@
 package com.smapley.powerwork.fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,13 +11,18 @@ import android.view.View;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.activity.Project;
 import com.smapley.powerwork.adapter.ProjectsAdapter;
-import com.smapley.powerwork.entity.ProUserEntity;
-import com.smapley.powerwork.entity.ProjectEntity;
-import com.smapley.powerwork.http.BaseParams;
+import com.smapley.powerwork.db.entity.ProjectEntity;
+import com.smapley.powerwork.db.mode.ProjectMode;
+import com.smapley.powerwork.db.service.ProjectService;
+import com.smapley.powerwork.http.HttpCallBack;
 import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.mode.BaseMode;
+import com.smapley.powerwork.mode.Pro_AddItem_Mode;
 import com.smapley.powerwork.utils.MyData;
+import com.smapley.powerwork.utils.ThreadSleep;
 
 import org.xutils.common.Callback;
 import org.xutils.ex.DbException;
@@ -25,6 +32,8 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by smapley on 15/11/16.
@@ -46,15 +55,17 @@ public class Projects extends BaseFragment {
     @Override
     protected void initParams(View view) {
         initView();
+    }
+
+    @Override
+    public void refresh() {
         getDataForDb();
-        getDataForWeb();
-
-
     }
 
     private void initView() {
         pros_rv_list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         listProject = new ArrayList<>();
+        listProject.add(new Pro_AddItem_Mode());
         adapter = new ProjectsAdapter(getActivity(), listProject);
         pros_rv_list.setAdapter(adapter);
     }
@@ -66,7 +77,7 @@ public class Projects extends BaseFragment {
                 try {
                     //加载数据库缓存的project
                     List<ProjectEntity> listProject = dbUtils.selector(ProjectEntity.class).orderBy("cre_date", true).findAll();
-                    if(listProject!=null&&!listProject.isEmpty())
+                    if(listProject!=null)
                         mhandler.obtainMessage(GETDATA,listProject).sendToTarget();
                 } catch (DbException e) {
                     e.printStackTrace();
@@ -75,8 +86,34 @@ public class Projects extends BaseFragment {
         }).start();
     }
 
-    private void getDataForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_ProjectList, user_entity);
+    public void addProject( String data) {
+        BaseParams params = new BaseParams(MyData.URL_AddProject, userBaseEntity);
+        params.addBodyParameter("name", data);
+        x.http().post(params, new HttpCallBack(getActivity(), R.string.addproject_ing) {
+            @Override
+            public void onResult(String result, SweetAlertDialog dialog) {
+                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                dialog.showText(R.string.addproject_ed).commit().dismiss(2000);
+                final ProjectMode projectMode = JSON.parseObject(result, new TypeReference<ProjectMode>() {
+                });
+                new ProjectService().save(projectMode);
+                refresh();
+                new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
+                    @Override
+                    public void onCallback(int number) {
+                        Intent intent = new Intent(getActivity(), Project.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("pro_id", projectMode.getProjectEntity().getPro_id());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+    }
+
+    public void getDataForWeb() {
+        BaseParams params = new BaseParams(MyData.URL_ProjectList, userBaseEntity);
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
 
             @Override
@@ -87,25 +124,19 @@ public class Projects extends BaseFragment {
                         if (result.flag.equals(MyData.SUCC)) {
                             List<ProjectEntity> listData = JSON.parseObject(result.data, new TypeReference<List<ProjectEntity>>() {
                             });
-                            //添加新获取的表
-                            for (ProjectEntity entity : listData) {
-                                try {
-                                    dbUtils.saveOrUpdate(entity);
-                                    if (entity.getListProUse() != null && !entity.getListProUse().isEmpty()) {
-                                        for (ProUserEntity prouser : entity.getListProUse()) {
-                                            try {
-                                                dbUtils.replace(prouser);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }
+                            if(listData!=null) {
+                                //添加新获取的表
+                                for (ProjectEntity entity : listData) {
+                                    try {
+                                        dbUtils.saveOrUpdate(entity);
 
-                                } catch (DbException e) {
-                                    e.printStackTrace();
+
+                                    } catch (DbException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
+                                mhandler.obtainMessage(SAVEDATA).sendToTarget();
                             }
-                            mhandler.obtainMessage(SAVEDATA).sendToTarget();
                         }
                     }
                 }).start();

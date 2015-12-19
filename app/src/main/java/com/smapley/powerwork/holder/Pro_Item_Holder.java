@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.activity.Project;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.entity.ProjectEntity;
+import com.smapley.powerwork.db.entity.ProjectEntity;
 import com.smapley.powerwork.utils.MyData;
 
 import org.xutils.x;
