@@ -30,22 +30,22 @@ public class DynamicService {
             } catch (DbException e) {
                 e.printStackTrace();
             }
-            for (DiscussEntity discussEntity : dynamicMode.getListDiscussEntities()) {
-                try {
-                    if (discussEntity != null)
+            if (dynamicMode.getListDiscussEntities() != null && !dynamicMode.getListDiscussEntities().isEmpty())
+                for (DiscussEntity discussEntity : dynamicMode.getListDiscussEntities()) {
+                    try {
                         dbUtils.saveOrUpdate(discussEntity);
-                } catch (DbException e) {
-                    e.printStackTrace();
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            for (PraiseEntity praiseEntity : dynamicMode.getListPraiseEntities()) {
-                try {
-                    if (praiseEntity != null)
+            if (dynamicMode.getListPraiseEntities() != null && !dynamicMode.getListPraiseEntities().isEmpty())
+                for (PraiseEntity praiseEntity : dynamicMode.getListPraiseEntities()) {
+                    try {
                         dbUtils.saveOrUpdate(praiseEntity);
-                } catch (DbException e) {
-                    e.printStackTrace();
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
         }
     }
 
@@ -77,7 +77,6 @@ public class DynamicService {
 
     public List<DynamicMode> findByProId(int proId) {
         List<DynamicMode> list = new ArrayList<>();
-
         List<DynamicEntity> dynamicEntities = null;
         try {
             dynamicEntities = dbUtils.selector(DynamicEntity.class).where("pro_id", "=", proId).findAll();
@@ -85,9 +84,10 @@ public class DynamicService {
             e.printStackTrace();
         }
 
-        for (DynamicEntity dynamicEntity : dynamicEntities) {
-            list.add(findById(dynamicEntity.getDyn_id()));
-        }
+        if (dynamicEntities != null && !dynamicEntities.isEmpty())
+            for (DynamicEntity dynamicEntity : dynamicEntities) {
+                list.add(findById(dynamicEntity.getDyn_id()));
+            }
 
         return list;
 

@@ -16,9 +16,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
+import com.smapley.powerwork.db.Refresh;
 import com.smapley.powerwork.db.entity.UserBaseEntity;
 import com.smapley.powerwork.db.entity.UserEntity;
-import com.smapley.powerwork.http.HttpCallBack;
+import com.smapley.powerwork.db.modes.UserMode;
+import com.smapley.powerwork.db.services.UserService;
+import com.smapley.powerwork.http.callback.HttpCallBack;
 import com.smapley.powerwork.http.UserParams;
 import com.smapley.powerwork.utils.Code;
 import com.smapley.powerwork.utils.MyData;
@@ -85,8 +88,9 @@ public class Login extends BaseActivity {
                         .showText(R.string.log_dia_register_suc)
                         .commit()
                         .dismiss(2000);
-                UserBaseEntity userBaseEntity= JSON.parseObject(result,new TypeReference<UserBaseEntity>(){});
-                afterLogin(userBaseEntity);
+                UserMode userMode = JSON.parseObject(result, new TypeReference<UserMode>() {
+                });
+                afterLogin(userMode);
             }
         });
 
@@ -104,21 +108,26 @@ public class Login extends BaseActivity {
                         .showText(R.string.log_dia_login_suc)
                         .commit()
                         .dismiss(2000);
-                UserBaseEntity userBaseEntity= JSON.parseObject(result,new TypeReference<UserBaseEntity>(){});
-                afterLogin(userBaseEntity);
+                UserMode userMode = JSON.parseObject(result, new TypeReference<UserMode>() {
+                });
+                afterLogin(userMode);
             }
         });
     }
 
-    private void afterLogin(UserBaseEntity userBaseEntity) {
+    private void afterLogin(UserMode userMode) {
         try {
             SharedPreferences.Editor editor = sp_user.edit();
-            editor.putInt("id", userBaseEntity.getUseId());
+            editor.putInt("id", userMode.getUserEntity().getUseId());
             editor.putBoolean("islogin", true);
             editor.commit();
-            userBaseEntity.setRefresh(0);
-            dbUtils.saveOrUpdate(userBaseEntity);
-            this.userBaseEntity = userBaseEntity;
+            new UserService().save(userMode);
+            //新建刷新表
+            Refresh refresh = new Refresh();
+            refresh.setUse_id(userMode.getUserEntity().getUseId());
+            dbUtils.saveOrUpdate(refresh);
+            this.userBaseEntity = userMode.getUserBaseEntity();
+            this.userEntity = userMode.getUserEntity();
 
             toNextActivity();
 
@@ -164,7 +173,7 @@ public class Login extends BaseActivity {
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
-                if(userBaseEntity!=null)
+                if (userBaseEntity != null)
                     try {
                         userEntity = dbUtils.findById(UserEntity.class, userBaseEntity.getUseId());
                     } catch (DbException e) {

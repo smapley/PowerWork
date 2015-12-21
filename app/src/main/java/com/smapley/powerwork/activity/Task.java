@@ -7,22 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.CalAdapter;
 import com.smapley.powerwork.db.entity.TaskEntity;
-import com.smapley.powerwork.http.MyResponse;
-import com.smapley.powerwork.http.params.BaseParams;
+import com.smapley.powerwork.db.service.TaskService;
+import com.smapley.powerwork.http.service.TaskListService;
 import com.smapley.powerwork.mode.BaseMode;
-import com.smapley.powerwork.utils.MyData;
 
-import org.xutils.common.Callback;
-import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +37,13 @@ public class Task extends BaseActivity {
 
     private List<BaseMode> tas_lis_data;
     private CalAdapter calAdapter;
+
+    private TaskListService taskListService=new TaskListService() {
+        @Override
+        public void onSucceed() {
+            getDataForDb();
+        }
+    };
 
     @Override
     protected void initParams() {
@@ -75,61 +76,15 @@ public class Task extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    List<TaskEntity> listTask = dbUtils.selector(TaskEntity.class).orderBy("end_date").findAll();
+                    List<TaskEntity> listTask = TaskService.findByUseId(userBaseEntity.getUseId());
                     mhandler.obtainMessage(GETDATA, listTask).sendToTarget();
-                } catch (DbException e) {
-                    e.printStackTrace();
-                }
 
             }
         }).start();
     }
 
     public void getDataForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_TaskList, userBaseEntity);
-        x.http().post(params, new Callback.CommonCallback<MyResponse>() {
-            @Override
-            public void onSuccess(MyResponse result) {
-                final List<TaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskEntity>>() {
-                });
-                if (listTask != null && !listTask.isEmpty()) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //添加新表
-                            for (TaskEntity taskMode : listTask) {
-                                try {
-                                    //添加Task
-                                    dbUtils.saveOrUpdate(taskMode);
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                            mhandler.obtainMessage(SAVEDATA).sendToTarget();
-                        }
-                    }).start();
-
-                }
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-
+        taskListService.load(userBaseEntity);
     }
 
     private Handler mhandler = new Handler() {

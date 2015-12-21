@@ -29,14 +29,14 @@ public class FolderService {
             } catch (DbException e) {
                 e.printStackTrace();
             }
-            for (FileEntity fileEntity : folderMode.getListFileEntities()) {
-                try {
-                    if (fileEntity != null)
+            if (folderMode.getListFileEntities() != null && !folderMode.getListFileEntities().isEmpty())
+                for (FileEntity fileEntity : folderMode.getListFileEntities()) {
+                    try {
                         dbUtils.saveOrUpdate(fileEntity);
-                } catch (DbException e) {
-                    e.printStackTrace();
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
         }
     }
 
@@ -67,9 +67,10 @@ public class FolderService {
         } catch (DbException e) {
             e.printStackTrace();
         }
-        for (FolderEntity folderEntity : folderEntities) {
-            list.add(findById(folderEntity.getFol_id()));
-        }
+        if (folderEntities != null && !folderEntities.isEmpty())
+            for (FolderEntity folderEntity : folderEntities) {
+                list.add(findById(folderEntity.getFol_id()));
+            }
 
         return list;
     }

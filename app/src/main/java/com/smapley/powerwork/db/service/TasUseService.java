@@ -50,7 +50,8 @@ public class TasUseService {
 
         //添加UserEntity
         try {
-            tasUseMode.setUserEntity(dbUtils.findById(UserEntity.class, tasUseMode.getTasUseEntity().getUse_id()));
+            if (tasUseMode.getTasUseEntity() != null)
+                tasUseMode.setUserEntity(dbUtils.findById(UserEntity.class, tasUseMode.getTasUseEntity().getUse_id()));
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -67,10 +68,10 @@ public class TasUseService {
             e.printStackTrace();
         }
 
-        for (TasUseEntity tasUseEntity : tasUseEntities) {
-
-            list.add(findById(tasUseEntity.getId()));
-        }
+        if (tasUseEntities != null && !tasUseEntities.isEmpty())
+            for (TasUseEntity tasUseEntity : tasUseEntities) {
+                list.add(findById(tasUseEntity.getId()));
+            }
 
         return list;
 

@@ -14,7 +14,6 @@ public class BaseParams extends RequestParams {
         super(url);
         if (userBaseEntity != null) {
             addHeader("cookie", "JSESSIONID=" + Code.doCode(userBaseEntity.getSkey()));
-            addBodyParameter("time", userBaseEntity.getRefresh() + "");
         }
     }
 

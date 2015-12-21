@@ -11,15 +11,8 @@
         android:layout_height="120dp"
         android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/load_file" />
+        android:src="@mipmap/project"/>
 
-    <ImageView
-        android:id="@+id/pros_item_iv_hasnow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/pros_item_iv_pic"
-        android:padding="5dp"
-        android:src="@mipmap/close_iv" />
 
     <TextView
         android:id="@+id/pros_item_tv_name"

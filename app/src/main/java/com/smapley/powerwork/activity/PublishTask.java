@@ -24,14 +24,14 @@ import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 import com.smapley.powerwork.db.entity.TasUseEntity;
-import com.smapley.powerwork.db.mode.NoteMode;
-import com.smapley.powerwork.db.mode.ProUseMode;
-import com.smapley.powerwork.db.mode.ProjectMode;
-import com.smapley.powerwork.db.mode.TaskMode;
+import com.smapley.powerwork.db.modes.NoteMode;
+import com.smapley.powerwork.db.modes.ProUseMode;
+import com.smapley.powerwork.db.modes.ProjectMode;
+import com.smapley.powerwork.db.modes.TaskMode;
 import com.smapley.powerwork.db.service.NoteService;
 import com.smapley.powerwork.db.service.ProjectService;
 import com.smapley.powerwork.db.service.TaskService;
-import com.smapley.powerwork.http.HttpCallBack;
+import com.smapley.powerwork.http.callback.HttpCallBack;
 import com.smapley.powerwork.http.params.AddNoteParams;
 import com.smapley.powerwork.http.params.AddTaskParams;
 import com.smapley.powerwork.utils.ActivityStack;
@@ -99,16 +99,14 @@ public class PublishTask extends BaseActivity {
     //参与者
     private List<TasUseEntity> listTasUse;
     private int pro_id;
-    //创建者TasUse
-    private TasUseEntity creatTasUse;
     //执行者TasUse
     private TasUseEntity perforTasUse;
-    private int proNum=0;
+    private int proNum = 0;
 
     @Override
     protected void initParams() {
         initData();
-    //    initView();
+        initView();
     }
 
     private void initData() {
@@ -122,18 +120,14 @@ public class PublishTask extends BaseActivity {
             e.printStackTrace();
         }
 
-        projectModes=new ProjectService().findByUseId(userBaseEntity.getUseId());
+        projectModes = new ProjectService().findByUseId(userBaseEntity.getUseId());
 
         //初始化创建者和执行者TasUse
         listTasUse = new ArrayList<>();
 
-        //初始化创建者
-        creatTasUse = new TasUseEntity();
-        creatTasUse.setRank(0);
-        creatTasUse.setUse_id(userBaseEntity.getUseId());
         //初始化执行者
         perforTasUse = new TasUseEntity();
-        perforTasUse.setRank(1);
+        perforTasUse.setRank(2);
         //初始化参与者
         listPar = new ArrayList<>();
     }
@@ -175,7 +169,6 @@ public class PublishTask extends BaseActivity {
             //默认执行者
             perforTasUse.setUse_id(projectModes.get(0).getListProUseModes().get(0).getUserEntity().getUseId());
             //添加默认创建者和默认执行者
-            listTasUse.add(creatTasUse);
             listTasUse.add(perforTasUse);
             //更新参与者
             listPar.clear();
@@ -198,6 +191,20 @@ public class PublishTask extends BaseActivity {
         if (name.isEmpty()) {
             name = pub_et_task_name.getHint().toString();
         }
+        //去除TasUse重复
+        boolean hasCreat = false;
+        for (TasUseEntity tasUseEntity : listTasUse) {
+            if (tasUseEntity.getUse_id() == userBaseEntity.getUseId()) {
+                hasCreat = true;
+                tasUseEntity.setRank(tasUseEntity.getRank() + 3);
+            }
+        }
+        if(!hasCreat){
+            TasUseEntity creatTasUse=new TasUseEntity();
+            creatTasUse.setUse_id(userBaseEntity.getUseId());
+            creatTasUse.setRank(3);
+            listTasUse.add(creatTasUse);
+        }
         AddTaskParams params = new AddTaskParams(userBaseEntity);
         params.setName(name).
                 setEndtime(endTime).
@@ -211,8 +218,9 @@ public class PublishTask extends BaseActivity {
                         .showText(R.string.publish_succ)
                         .commit()
                         .dismiss(2000);
-                TaskMode taskMode=JSON.parseObject(result,new TypeReference<TaskMode>(){});
-                new TaskService().save(taskMode);
+                TaskMode taskMode = JSON.parseObject(result, new TypeReference<TaskMode>() {
+                });
+                TaskService.save(taskMode);
                 new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
                     @Override
                     public void onCallback(int number) {
@@ -247,7 +255,7 @@ public class PublishTask extends BaseActivity {
                         .dismiss(2000);
                 NoteMode noteMode = JSON.parseObject(result, new TypeReference<NoteMode>() {
                 });
-                new NoteService().save(noteMode);
+                NoteService.save(noteMode);
 
                 new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
                     @Override
@@ -365,12 +373,11 @@ public class PublishTask extends BaseActivity {
             public void onClick(View view) {
                 hintPop(popupWindow);
                 listTasUse.clear();
-                listTasUse.add(creatTasUse);
                 listTasUse.add(perforTasUse);
                 for (int i = 0; i < listCheckBox.size(); i++) {
                     if (listCheckBox.get(i).isChecked()) {
                         TasUseEntity tasUseEntity = new TasUseEntity();
-                        tasUseEntity.setRank(2);
+                        tasUseEntity.setRank(1);
                         tasUseEntity.setUse_id(listPar.get(i).getUserEntity().getUseId());
                         listTasUse.add(tasUseEntity);
                     }
@@ -427,7 +434,6 @@ public class PublishTask extends BaseActivity {
                 //添加执行者到list
                 listTasUse.clear();
                 perforTasUse.setUse_id(projectModes.get(proNum).getListProUseModes().get(num).getUserEntity().getUseId());
-                listTasUse.add(creatTasUse);
                 listTasUse.add(perforTasUse);
                 //更新参与者
                 listPar.clear();
@@ -487,7 +493,6 @@ public class PublishTask extends BaseActivity {
                 //添加执行者到list
                 listTasUse.clear();
                 perforTasUse.setUse_id(projectModes.get(proNum).getListProUseModes().get(0).getUserEntity().getUseId());
-                listTasUse.add(creatTasUse);
                 listTasUse.add(perforTasUse);
                 //更新参与者
                 listPar.clear();

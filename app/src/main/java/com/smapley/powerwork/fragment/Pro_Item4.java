@@ -32,9 +32,10 @@ public class Pro_Item4 extends BaseFragment {
     }
 
     @Override
-    public void refresh() {
+    public void getDataForDb() {
 
     }
+
 
     @Override
     public void getDataForWeb() {

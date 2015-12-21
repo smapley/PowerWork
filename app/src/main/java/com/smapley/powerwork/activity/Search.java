@@ -14,7 +14,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.SearchAdapter;
 import com.smapley.powerwork.db.entity.ProjectEntity;
-import com.smapley.powerwork.http.HttpCallBack;
+import com.smapley.powerwork.http.callback.HttpCallBack;
 import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.utils.MyData;
 

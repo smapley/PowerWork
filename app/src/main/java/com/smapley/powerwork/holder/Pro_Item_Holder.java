@@ -9,11 +9,7 @@ import android.widget.TextView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.activity.Project;
-import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.db.entity.ProjectEntity;
-import com.smapley.powerwork.utils.MyData;
-
-import org.xutils.x;
 
 
 /**
@@ -23,19 +19,17 @@ public class Pro_Item_Holder extends BaseHolder {
 
     private ImageView pros_item_iv_pic;
     private TextView pros_item_tv_name;
-    private ImageView pros_item_iv_hasnow;
 
     public Pro_Item_Holder(View view) {
         super(view);
         pros_item_iv_pic = (ImageView) view.findViewById(R.id.pros_item_iv_pic);
         pros_item_tv_name = (TextView) view.findViewById(R.id.pros_item_tv_name);
-        pros_item_iv_hasnow = (ImageView) view.findViewById(R.id.pros_item_iv_hasnow);
 
     }
 
     public void setData(final Context context, final ProjectEntity mode) {
         pros_item_tv_name.setText(mode.getName());
-        x.image().bind(pros_item_iv_pic, MyData.URL_PIC + mode.getPic_url(), LocalApplication.getInstance().FilletImage);
+       // x.image().bind(pros_item_iv_pic, MyData.URL_PIC + mode.getPic_url(), LocalApplication.getInstance().FilletImage);
 
         pros_item_iv_pic.setOnClickListener(new View.OnClickListener() {
             @Override

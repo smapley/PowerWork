@@ -10,6 +10,7 @@ public class FolderMode {
 
 	private FolderEntity folderEntity;
 	private List<FileEntity> listFileEntities;
+	private List<FolderMode> folderModes;
 
 
 	public FolderEntity getFolderEntity() {
@@ -27,5 +28,12 @@ public class FolderMode {
 	public void setListFileEntities(List<FileEntity> listFileEntities) {
 		this.listFileEntities = listFileEntities;
 	}
-	
+
+	public List<FolderMode> getFolderModes() {
+		return folderModes;
+	}
+
+	public void setFolderModes(List<FolderMode> folderModes) {
+		this.folderModes = folderModes;
+	}
 }

@@ -6,21 +6,16 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.MainViewPagerAdapter;
-import com.smapley.powerwork.db.entity.UserEntity;
 import com.smapley.powerwork.fragment.BaseFragment;
 import com.smapley.powerwork.fragment.Calendar;
 import com.smapley.powerwork.fragment.Message;
 import com.smapley.powerwork.fragment.Personal;
 import com.smapley.powerwork.fragment.Projects;
-import com.smapley.powerwork.http.service.UserAll;
-import com.smapley.powerwork.utils.MyData;
 
-import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -32,9 +27,6 @@ import java.util.List;
 public class MainActivity extends BaseActivity {
 
 
-    private static final int SAVEDATA = 1;
-    @ViewInject(R.id.main_ll_loding)
-    private LinearLayout main_ll_loding;
 
     @ViewInject(R.id.main_add_menu_fab)
     private FloatingActionButton main_add_menu_fab;
@@ -97,8 +89,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initParams() {
         if (sp_user.getBoolean("islogin", false)) {
-            //加载数据
-            getDataForWeb();
             //如果登陆 则加载界面
             initView();
             //异步加载Viewpage
@@ -110,53 +100,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void getDataForWeb() {
-        final long time =System.currentTimeMillis();
-        new UserAll() {
-            @Override
-            public void onFailed() {
-                refresh();
-                showToast(R.id.connect_fai);
-            }
-            @Override
-            public void onError(String flag, String details) {
-                refresh();
-                if (MyData.OutLogin.equals(flag)) {
-                    showOutLoginDialog(MainActivity.this,details);
-                } else {
-                    showToast(details);
-                }
-            }
-            @Override
-            public void onSucceed(UserEntity entity) {
-                refresh();
-                //更新刷新时间
-                userBaseEntity.setRefresh(time);
-                try {
-                    dbUtils.saveOrUpdate(userBaseEntity);
-                } catch (DbException e) {
-                    e.printStackTrace();
-                }
-                //更新userEntity
-                if(entity!=null) {
-                    userEntity = entity;
-                    try {
-                        dbUtils.saveOrUpdate(userEntity);
-                    } catch (DbException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.load(userBaseEntity);
-    }
-
-
-    private void refresh() {
-        main_ll_loding.setVisibility(View.GONE);
-        for (int i = 0; i < main_lt_pages.size(); i++) {
-            main_lt_pages.get(i).refresh();
-        }
-    }
 
     private void initView() {
         main_add_menu_tv_items = new ArrayList<>();
@@ -250,8 +193,6 @@ public class MainActivity extends BaseActivity {
                 main_iv_item4.setImageResource(R.mipmap.main_iv_item4_press);
                 break;
         }
-        main_lt_pages.get(position).refresh();
-
     }
 
     /**

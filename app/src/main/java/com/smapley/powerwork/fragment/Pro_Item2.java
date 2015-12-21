@@ -56,11 +56,6 @@ public class Pro_Item2 extends BaseFragment {
 
     }
 
-    @Override
-    public void refresh() {
-
-    }
-
 
     private void initData() {
         pro_id = getArguments().getInt("pro_id");
@@ -83,7 +78,7 @@ public class Pro_Item2 extends BaseFragment {
         pro_item2_rv_list.setAdapter(adapter);
     }
 
-    private void getDataForDb() {
+    public void getDataForDb() {
         getMyTaskForDb();
         getOtherTaskForDb();
 

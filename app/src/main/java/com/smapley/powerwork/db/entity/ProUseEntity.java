@@ -3,10 +3,10 @@ package com.smapley.powerwork.db.entity;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
-@Table(name = "ProUser", onCreated = "CREATE UNIQUE INDEX index_project ON ProUser(use_id,pro_id)")
+@Table(name = "ProUser")
 public class ProUseEntity {
 
-	@Column(name = "id", isId = true,autoGen = true)
+	@Column(name = "id", isId = true,autoGen = false)
 	private int id;
 	@Column(name = "use_id")
 	private int use_id;

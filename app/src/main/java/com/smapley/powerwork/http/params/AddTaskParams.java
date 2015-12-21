@@ -24,7 +24,7 @@ public class AddTaskParams extends BaseParams {
         return this;
     }
     public AddTaskParams setEndtime(Long endtime){
-        addBodyParameter("name", endtime+"");
+        addBodyParameter("endtime", endtime+"");
         return this;
     }
     public AddTaskParams setProId(int pro_id){

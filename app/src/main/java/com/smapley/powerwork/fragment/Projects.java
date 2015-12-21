@@ -14,18 +14,16 @@ import com.smapley.powerwork.R;
 import com.smapley.powerwork.activity.Project;
 import com.smapley.powerwork.adapter.ProjectsAdapter;
 import com.smapley.powerwork.db.entity.ProjectEntity;
-import com.smapley.powerwork.db.mode.ProjectMode;
+import com.smapley.powerwork.db.modes.ProjectMode;
 import com.smapley.powerwork.db.service.ProjectService;
-import com.smapley.powerwork.http.HttpCallBack;
-import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.callback.HttpCallBack;
 import com.smapley.powerwork.http.params.BaseParams;
+import com.smapley.powerwork.http.service.ProjectListService;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.mode.Pro_AddItem_Mode;
 import com.smapley.powerwork.utils.MyData;
 import com.smapley.powerwork.utils.ThreadSleep;
 
-import org.xutils.common.Callback;
-import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -43,7 +41,6 @@ public class Projects extends BaseFragment {
 
 
     private static final int GETDATA = 1;
-    private static final int SAVEDATA = 2;
     @ViewInject(R.id.pros_rv_list)
     private RecyclerView pros_rv_list;
 
@@ -52,15 +49,20 @@ public class Projects extends BaseFragment {
 
     private List<BaseMode> listProject;
 
+    private ProjectListService projectListService = new ProjectListService() {
+        @Override
+        public void onSucceed() {
+            getDataForDb();
+        }
+    };
+
     @Override
     protected void initParams(View view) {
         initView();
+        getDataForDb();
+        getDataForWeb();
     }
 
-    @Override
-    public void refresh() {
-        getDataForDb();
-    }
 
     private void initView() {
         pros_rv_list.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -70,23 +72,19 @@ public class Projects extends BaseFragment {
         pros_rv_list.setAdapter(adapter);
     }
 
-    private void getDataForDb() {
+    public void getDataForDb() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    //加载数据库缓存的project
-                    List<ProjectEntity> listProject = dbUtils.selector(ProjectEntity.class).orderBy("cre_date", true).findAll();
-                    if(listProject!=null)
-                        mhandler.obtainMessage(GETDATA,listProject).sendToTarget();
-                } catch (DbException e) {
-                    e.printStackTrace();
-                }
+                //加载数据库缓存的project
+                List<ProjectEntity> listProject = ProjectService.findEntityByUseId(userBaseEntity.getUseId());
+                if (listProject != null)
+                    mhandler.obtainMessage(GETDATA, listProject).sendToTarget();
             }
         }).start();
     }
 
-    public void addProject( String data) {
+    public void addProject(String data) {
         BaseParams params = new BaseParams(MyData.URL_AddProject, userBaseEntity);
         params.addBodyParameter("name", data);
         x.http().post(params, new HttpCallBack(getActivity(), R.string.addproject_ing) {
@@ -97,7 +95,7 @@ public class Projects extends BaseFragment {
                 final ProjectMode projectMode = JSON.parseObject(result, new TypeReference<ProjectMode>() {
                 });
                 new ProjectService().save(projectMode);
-                refresh();
+                getDataForDb();
                 new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
                     @Override
                     public void onCallback(int number) {
@@ -113,52 +111,7 @@ public class Projects extends BaseFragment {
     }
 
     public void getDataForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_ProjectList, userBaseEntity);
-        x.http().post(params, new Callback.CommonCallback<MyResponse>() {
-
-            @Override
-            public void onSuccess(final MyResponse result) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (result.flag.equals(MyData.SUCC)) {
-                            List<ProjectEntity> listData = JSON.parseObject(result.data, new TypeReference<List<ProjectEntity>>() {
-                            });
-                            if(listData!=null) {
-                                //添加新获取的表
-                                for (ProjectEntity entity : listData) {
-                                    try {
-                                        dbUtils.saveOrUpdate(entity);
-
-
-                                    } catch (DbException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                mhandler.obtainMessage(SAVEDATA).sendToTarget();
-                            }
-                        }
-                    }
-                }).start();
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-
-
-        });
+        projectListService.load(userBaseEntity);
     }
 
 
@@ -166,12 +119,9 @@ public class Projects extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case GETDATA:
                     adapter.addAll((List<ProjectEntity>) msg.obj);
-                    break;
-                case SAVEDATA:
-                    getDataForDb();
                     break;
             }
         }

@@ -83,7 +83,7 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract void initParams(View view);
 
-    public abstract void refresh();
+    public abstract void getDataForDb();
     public abstract void getDataForWeb();
 
     protected void showToast(int data) {

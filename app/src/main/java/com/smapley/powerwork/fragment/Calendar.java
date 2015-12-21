@@ -9,26 +9,19 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.CalAdapter;
 import com.smapley.powerwork.db.entity.TaskEntity;
-import com.smapley.powerwork.db.mode.TaskMode;
-import com.smapley.powerwork.http.MyResponse;
-import com.smapley.powerwork.http.params.BaseParams;
+import com.smapley.powerwork.db.service.TaskService;
+import com.smapley.powerwork.http.service.TaskListService;
 import com.smapley.powerwork.mode.BaseMode;
 import com.smapley.powerwork.utils.DateUtil;
-import com.smapley.powerwork.utils.MyData;
 import com.smapley.powerwork.view.MyCalendar;
 
-import org.xutils.common.Callback;
 import org.xutils.common.util.LogUtil;
-import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +50,14 @@ public class Calendar extends BaseFragment {
     private String[] cal_month;
     //当前选择的日期
     private String dateChecked;
-    private List<TaskEntity> listTask;
+    private List<TaskEntity> taskList;
+
+    private TaskListService taskListService = new TaskListService() {
+        @Override
+        public void onSucceed() {
+            getDataForDb();
+        }
+    };
 
 
     @Override
@@ -77,13 +77,10 @@ public class Calendar extends BaseFragment {
         initRecyclerView();
         //初始化组件
         initView();
-
-    }
-
-    @Override
-    public void refresh() {
         //从数据库获取数据
         getDataForDb();
+        //从网络获取数据
+        getDataForWeb();
     }
 
     @Event({R.id.cal_iv_refresh})
@@ -99,7 +96,8 @@ public class Calendar extends BaseFragment {
     private void initData() {
         cal_month = getResources().getStringArray(R.array.cal_month);
         dateChecked = DateUtil.getDateString(System.currentTimeMillis(), DateUtil.formatDate);
-        listTask=new ArrayList<>();
+        taskList = new ArrayList<>();
+
     }
 
     /**
@@ -114,50 +112,7 @@ public class Calendar extends BaseFragment {
     }
 
     public void getDataForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_TaskList, userBaseEntity);
-        x.http().post(params, new Callback.CommonCallback<MyResponse>() {
-            @Override
-            public void onSuccess(final MyResponse result) {
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        List<TaskMode> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskMode>>() {
-                        });
-                        if (listTask != null && !listTask.isEmpty()) {
-                            //添加新表
-                            for (TaskMode taskMode : listTask) {
-                                try {
-                                    //添加Task
-                                    dbUtils.saveOrUpdate(taskMode);
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                            mhandler.obtainMessage(SAVEDATA).sendToTarget();
-
-                        }
-                    }
-                }).start();
-
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
+        taskListService.load(userBaseEntity);
     }
 
 
@@ -211,18 +166,21 @@ public class Calendar extends BaseFragment {
 
     //显示日历&&更新日历
     private void showCal() {
-        //设置标记的日期
-        cal_mc_calendar.removeAllMarks();
-        for (TaskEntity task : listTask) {
-            cal_mc_calendar.addMark(DateUtil.getDateString(task.getEnd_date(), DateUtil.formatDate), R.drawable.cal_cc_mark);
+        if (taskList != null && !taskList.isEmpty()) {
+
+            //设置标记的日期
+            cal_mc_calendar.removeAllMarks();
+            for (TaskEntity task : taskList) {
+                cal_mc_calendar.addMark(DateUtil.getDateString(task.getEnd_date(), DateUtil.formatDate), R.drawable.cal_cc_mark);
+            }
+            //显示当天任务
+            cal_list.clear();
+            for (TaskEntity task : taskList) {
+                if (dateChecked.equals(DateUtil.getDateString(task.getEnd_date(), DateUtil.formatDate)))
+                    cal_list.add(task);
+            }
+            calAdapter.addAll(cal_list);
         }
-        //显示当天任务
-        cal_list.clear();
-        for (TaskEntity task : listTask) {
-            if (dateChecked.equals(DateUtil.getDateString(task.getEnd_date(), DateUtil.formatDate)))
-                cal_list.add(task);
-        }
-        calAdapter.addAll(cal_list);
     }
 
     private Handler mhandler = new Handler() {
@@ -235,7 +193,7 @@ public class Calendar extends BaseFragment {
                     getDataForDb();
                     break;
                 case GETDATA:
-                    listTask = (List<TaskEntity>) msg.obj;
+                    taskList = (List<TaskEntity>) msg.obj;
                     showCal();
                     break;
 
@@ -248,14 +206,9 @@ public class Calendar extends BaseFragment {
             @Override
             public void run() {
                 //从数据库获取数据更新界面
-                try {
-                    List<TaskMode> listTask = dbUtils.selector(TaskMode.class).orderBy("end_date").findAll();
-                    if (listTask != null && !listTask.isEmpty()) {
-                        mhandler.obtainMessage(GETDATA, listTask).sendToTarget();
-                    }
-                } catch (DbException e) {
-                    e.printStackTrace();
-                }
+                List<TaskEntity> list = new TaskService().findByUseId(userBaseEntity.getUseId());
+                if (list != null && !list.isEmpty())
+                    mhandler.obtainMessage(GETDATA, list).sendToTarget();
             }
         }).start();
     }

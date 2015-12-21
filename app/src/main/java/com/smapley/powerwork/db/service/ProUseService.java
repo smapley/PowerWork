@@ -3,7 +3,7 @@ package com.smapley.powerwork.db.service;
 import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.db.entity.ProUseEntity;
 import com.smapley.powerwork.db.entity.UserEntity;
-import com.smapley.powerwork.db.mode.ProUseMode;
+import com.smapley.powerwork.db.modes.ProUseMode;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -15,11 +15,8 @@ import java.util.List;
  * Created by smapley on 15/12/18.
  */
 public class ProUseService {
-    private DbManager dbUtils;
+    private static DbManager dbUtils= LocalApplication.getInstance().dbUtils;
 
-    public ProUseService() {
-        dbUtils = LocalApplication.getInstance().dbUtils;
-    }
 
     public void save(ProUseMode proUseMode) {
         if (proUseMode != null) {
@@ -50,7 +47,8 @@ public class ProUseService {
 
         //添加UserEntity
         try {
-            proUseMode.setUserEntity(dbUtils.findById(UserEntity.class, proUseMode.getProUseEntity().getUse_id()));
+            if (proUseMode.getProUseEntity() != null)
+                proUseMode.setUserEntity(dbUtils.findById(UserEntity.class, proUseMode.getProUseEntity().getUse_id()));
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -67,10 +65,21 @@ public class ProUseService {
             e.printStackTrace();
         }
 
-        for (ProUseEntity proUseEntity : proUseEntityList) {
-            list.add(findById(proUseEntity.getId()));
-        }
+        if (proUseEntityList != null && !proUseEntityList.isEmpty())
+            for (ProUseEntity proUseEntity : proUseEntityList) {
+                list.add(findById(proUseEntity.getId()));
+            }
 
         return list;
     }
+
+    public static  List<ProUseEntity> findEntityByUseId(int useId){
+        try {
+            return dbUtils.selector(ProUseEntity.class).where("use_id","=",useId).findAll();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

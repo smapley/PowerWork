@@ -8,17 +8,19 @@ import org.xutils.common.Callback;
 /**
  * Created by smapley on 15/12/18.
  */
-public abstract class SimpleCallback implements Callback.CommonCallback<MyResponse> {
+public abstract class NormalCallback implements Callback.CommonCallback<MyResponse> {
     @Override
     public void onSuccess(MyResponse result) {
         if(result.flag.equals(MyData.SUCC)){
             onSuccess(result.data);
+        }else{
+            onError(result.flag,result.details);
         }
     }
 
     @Override
     public void onError(Throwable ex, boolean isOnCallback) {
-
+        onFail();
     }
 
     @Override
@@ -31,6 +33,9 @@ public abstract class SimpleCallback implements Callback.CommonCallback<MyRespon
 
     }
 
+    public abstract void onFail();
+
+    public abstract void onError(String flag,String details);
 
     public abstract void onSuccess(String data);
 }

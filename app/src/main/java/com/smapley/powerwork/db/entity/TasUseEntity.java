@@ -3,10 +3,10 @@ package com.smapley.powerwork.db.entity;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
-@Table(name = "TasUse", onCreated = "CREATE UNIQUE INDEX index_task ON TasUse(use_id,tas_id,rank)")
+@Table(name = "TasUse")
 public class TasUseEntity {
 
-	@Column(name = "id",isId = true)
+	@Column(name = "id",isId = true,autoGen = false)
 	private int id;
 	@Column(name = "use_id")
 	private int use_id;
@@ -18,6 +18,7 @@ public class TasUseEntity {
 	private long refresh;
 	@Column(name = "state")
 	private int state;
+
 
 	public int getId() {
 		return id;

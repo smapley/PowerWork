@@ -52,28 +52,6 @@
     <include layout="@layout/activity_main_add_menu" />
 
 
-    <LinearLayout
-        android:id="@+id/main_ll_loding"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <com.smapley.powerwork.view.CircleImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="150dp"
-            android:src="@mipmap/logo" />
-
-        <ProgressBar
-            android:id="@+id/main_pb_loding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
-            android:minWidth="150dp" />
-    </LinearLayout>
 
 
 </RelativeLayout>

@@ -12,7 +12,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.NoteAdapter;
 import com.smapley.powerwork.db.entity.NoteEntity;
-import com.smapley.powerwork.db.mode.NoteMode;
+import com.smapley.powerwork.db.modes.NoteMode;
 import com.smapley.powerwork.http.MyResponse;
 import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.utils.MyData;

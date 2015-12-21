@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.http.params.BaseParams;
-import com.smapley.powerwork.http.HttpCallBack;
+import com.smapley.powerwork.http.callback.HttpCallBack;
 import com.smapley.powerwork.utils.MyData;
 
 import org.xutils.view.annotation.ContentView;

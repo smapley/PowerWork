@@ -22,7 +22,7 @@ import com.smapley.powerwork.activity.Add;
 import com.smapley.powerwork.adapter.ProItem3Adapter;
 import com.smapley.powerwork.db.entity.FileEntity;
 import com.smapley.powerwork.db.entity.FolderEntity;
-import com.smapley.powerwork.http.HttpCallBack;
+import com.smapley.powerwork.http.callback.HttpCallBack;
 import com.smapley.powerwork.http.MyResponse;
 import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.mode.BaseMode;
@@ -79,10 +79,7 @@ public class Pro_Item3 extends BaseFragment {
         getDataForWeb();
     }
 
-    @Override
-    public void refresh() {
 
-    }
 
     private void initData() {
         pro_id = getArguments().getInt("pro_id");
@@ -117,7 +114,7 @@ public class Pro_Item3 extends BaseFragment {
         }
     }
 
-    private void getDataForDb() {
+    public void getDataForDb() {
         getFolderForDb();
         getFileForDb();
     }

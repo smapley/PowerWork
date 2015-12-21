@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.PersonalAdapter;
+import com.smapley.powerwork.http.service.MessageListService;
 import com.smapley.powerwork.mode.BaseMode;
 
 import org.xutils.view.annotation.ContentView;
@@ -25,8 +26,17 @@ public class Message extends BaseFragment {
     private List<BaseMode> mes_lis_data;
     private PersonalAdapter mes_pa_adapter;
 
+    private MessageListService messageListService=new MessageListService() {
+        @Override
+        public void onSucceed() {
+
+        }
+    };
+
     @Override
     protected void initParams(View view) {
+
+        getDataForWeb();
 
         mes_rv_list.setLayoutManager(new LinearLayoutManager(getActivity()));
 //
@@ -45,13 +55,14 @@ public class Message extends BaseFragment {
     }
 
     @Override
-    public void refresh() {
+    public void getDataForDb() {
 
     }
 
+
     @Override
     public void getDataForWeb() {
-
+        messageListService.load(userBaseEntity);
     }
 
 }

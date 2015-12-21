@@ -21,12 +21,14 @@ public class Pro_Item5 extends BaseFragment {
 
     @Override
     protected void initParams(View view) {
+
     }
 
     @Override
-    public void refresh() {
+    public void getDataForDb() {
 
     }
+
 
     @Override
     public void getDataForWeb() {
