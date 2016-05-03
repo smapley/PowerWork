@@ -4,9 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.smapley.powerwork.utils.MyData;
 import com.smapley.powerwork.exception.BaseExceptionHandler;
-import com.smapley.powerwork.exception.LocalFileHandler;
+import com.smapley.powerwork.utils.MyData;
 
 /**
  * Created by smapley on 15/10/22.
@@ -23,11 +22,12 @@ public abstract class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         applicationContext = getApplicationContext();
-        if(getDefaultUncaughtExceptionHandler()==null){
-            Thread.setDefaultUncaughtExceptionHandler(new LocalFileHandler(applicationContext));
-        }else{
-            Thread.setDefaultUncaughtExceptionHandler(getDefaultUncaughtExceptionHandler());
-        }
+        //异常拦截
+//        if(getDefaultUncaughtExceptionHandler()==null){
+//            Thread.setDefaultUncaughtExceptionHandler(new LocalFileHandler(applicationContext));
+//        }else{
+//            Thread.setDefaultUncaughtExceptionHandler(getDefaultUncaughtExceptionHandler());
+//        }
 
         //初始化键值对存储
         sp_user = getSharedPreferences(MyData.SP_USER, MODE_PRIVATE);

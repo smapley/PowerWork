@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
 
 import java.util.Calendar;

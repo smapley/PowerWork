@@ -1,13 +1,11 @@
 package com.smapley.powerwork.holder;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 
-import com.lidroid.xutils.util.LogUtils;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.AddTaskAdapter;
-import com.smapley.powerwork.mode.Add_Text_Mode;
+import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 
 /**
  * Created by smapley on 15/10/30.
@@ -22,18 +20,35 @@ public class Add_Text_Holder extends BaseHolder {
     }
 
 
-    public void setData(final AddTaskAdapter adapter, final Add_Text_Mode mode, final int position) {
+    public void setData(final AddTaskAdapter adapter, final NoteDetailsEntity mode, final int position) {
         add_et_text.setText(mode.getText());
         add_et_text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 mode.setText(add_et_text.getText().toString());
-                if (b) {
-                    adapter.focusPosition = position;
-                    LogUtils.i("asdf" + position + add_et_text.getSelectionStart());
-                }
             }
         });
+//        add_et_text.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                if (add_et_text.isFocused()){
+//                    LogUtil.d("---" + position);
+//                    mode.setText(add_et_text.getText().toString());
+//                }
+//
+//            }
+//        });
+
 
     }
 }

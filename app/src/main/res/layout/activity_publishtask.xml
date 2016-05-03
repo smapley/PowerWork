@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/gray_lin" />
+
+    <LinearLayout
+        android:layout_width="125dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:background="@drawable/circle_blue"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_white_10"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/pub_tv_task"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/circle_blue_5"
+                android:gravity="center"
+                android:text="@string/task"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_item1" />
+
+            <TextView
+                android:id="@+id/pub_tv_note"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/note"
+                android:textColor="@color/cal_text"
+                android:textSize="@dimen/text_size_item1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:id="@+id/pub_ll_note"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/pub_ll">
+
+                <TextView
+                    style="@style/pub_tv"
+                    android:text="@string/pub_notename" />
+
+                <EditText
+                    android:id="@+id/pub_et_note_name"
+                    style="@style/pub_tv_right"
+                    android:textColorHint="@color/gray_text" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/gray_lin" />
+
+            <LinearLayout style="@style/pub_ll">
+
+                <TextView
+                    style="@style/pub_tv"
+                    android:text="@string/pub_addalarm" />
+
+                <Switch
+                    android:id="@+id/pub_sh_note_alarm"
+                    style="@style/pub_image"
+                    android:src="@mipmap/logo" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/gray_lin" />
+
+            <LinearLayout
+                android:id="@+id/pub_ll_note_alarm"
+                style="@style/pub_ll"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/pub_tv"
+                    android:text="@string/pub_alarmtime" />
+
+                <TextView
+                    android:id="@+id/pub_tv_note_alarm"
+                    style="@style/pub_tv_right"
+                    android:text="11-29 23:00" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/gray_lin" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pub_ll_task"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/pub_ll">
+
+                <TextView
+                    style="@style/pub_tv"
+                    android:text="@string/pub_taskname" />
+
+                <EditText
+                    android:id="@+id/pub_et_task_name"
+                    style="@style/pub_tv_right"
+                    android:textColorHint="@color/gray_text" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/gray_lin" />
+
+            <LinearLayout style="@style/pub_ll">
+
+                <TextView
+                    style="@style/pub_tv"
+                    android:text="@string/pub_project_name" />
+
+                <TextView
+                    android:id="@+id/pub_tv_task_projectname"
+                    style="@style/pub_tv_right" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/gray_lin" />
+
+            <LinearLayout style="@style/pub_ll">
+
+                <TextView
+                    style="@style/pub_tv"
+                    android:text="@string/pub_performer" />
+
+                <TextView
+                    android:id="@+id/pub_tv_task_performer"
+                    style="@style/pub_tv_right" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/gray_lin" />
+
+            <LinearLayout style="@style/pub_ll">
+
+                <TextView
+                    style="@style/pub_tv"
+                    android:text="@string/pub_participation" />
+
+                <TextView
+                    android:id="@+id/pub_tv_task_participation"
+                    style="@style/pub_tv_right"
+                    android:text="@string/no_man"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/gray_lin" />
+
+            <LinearLayout style="@style/pub_ll">
+
+                <TextView
+                    style="@style/pub_tv"
+                    android:text="@string/pub_endtime" />
+
+                <TextView
+                    android:id="@+id/pub_tv_task_endtime"
+                    style="@style/pub_tv_right" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/gray_lin" />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

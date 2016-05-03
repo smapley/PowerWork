@@ -4,7 +4,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.mode.Per_Not_Write_Mode;
+import com.smapley.powerwork.db.entity.NoteEntity;
+import com.smapley.powerwork.utils.DateUtil;
 
 /**
  * Created by smapley on 15/10/26.
@@ -23,8 +24,8 @@ public class Per_Not_Write_Holder extends BaseHolder {
     }
 
 
-    public void setData(Per_Not_Write_Mode mode) {
+    public void setData(NoteEntity mode) {
         per_tv_notice_wri_name.setText(mode.getName());
-        per_tv_notice_wri_time.setText(mode.getTime());
+        per_tv_notice_wri_time.setText(DateUtil.getDateString(mode.getCre_date(),DateUtil.formatDate));
     }
 }

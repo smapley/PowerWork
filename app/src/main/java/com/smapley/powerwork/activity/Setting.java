@@ -1,15 +1,14 @@
 package com.smapley.powerwork.activity;
 
 import android.content.Intent;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 /**
  * Created by smapley on 15/10/24.
@@ -36,8 +35,8 @@ public class Setting extends BaseActivity {
 
     }
 
-    @OnClick({ R.id.set_tv_account, R.id.set_tv_info, R.id.set_tv_feedback, R.id.set_tv_aboutus,R.id.title_iv_back})
-    public void viewOnClick(View view) {
+    @Event({ R.id.set_tv_account, R.id.set_tv_info, R.id.set_tv_feedback, R.id.set_tv_aboutus,R.id.title_iv_back})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_iv_back:
                 finish();

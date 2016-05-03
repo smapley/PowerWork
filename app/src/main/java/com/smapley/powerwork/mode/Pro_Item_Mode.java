@@ -3,7 +3,7 @@ package com.smapley.powerwork.mode;
 /**
  * Created by smapley on 15/10/26.
  */
-public class Pro_Item_Mode extends BaseMode {
+public class Pro_Item_Mode implements BaseMode {
 
     private final int type = 1;
 

@@ -2,29 +2,30 @@ package com.smapley.powerwork.activity;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.MainViewPagerAdapter;
+import com.smapley.powerwork.fragment.BaseFragment;
 import com.smapley.powerwork.fragment.Calendar;
 import com.smapley.powerwork.fragment.Message;
 import com.smapley.powerwork.fragment.Personal;
 import com.smapley.powerwork.fragment.Projects;
-import com.smapley.powerwork.utils.ThreadSleep;
+
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ContentView(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
+
 
 
     @ViewInject(R.id.main_add_menu_fab)
@@ -78,7 +79,7 @@ public class MainActivity extends BaseActivity {
     @ViewInject(R.id.main_iv_item4)
     private ImageView main_iv_item4;
 
-    private List<Fragment> main_lt_pages;
+    private List<BaseFragment> main_lt_pages;
     private MainViewPagerAdapter main_vp_adapter;
     private Personal main_vp_personal;
     private Projects main_vp_projects;
@@ -91,19 +92,14 @@ public class MainActivity extends BaseActivity {
             //如果登陆 则加载界面
             initView();
             //异步加载Viewpage
-            new ThreadSleep().sleep(50, new ThreadSleep.Callback() {
-                @Override
-                public void onCallback(int number) {
-                    initViewPager();
-                }
-            });
-
+            initViewPager();
         } else {
             //如果没有登陆 则跳转到登陆界面
             startActivity(new Intent(MainActivity.this, Login.class));
             finish();
         }
     }
+
 
     private void initView() {
         main_add_menu_tv_items = new ArrayList<>();
@@ -122,8 +118,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViewPager() {
-
-
         main_lt_pages = new ArrayList<>();
         main_vp_personal = new Personal();
         main_vp_projects = new Projects();
@@ -154,8 +148,8 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.main_iv_item1, R.id.main_iv_item2, R.id.main_iv_item3, R.id.main_iv_item4})
-    public void onClick(View view) {
+    @Event({R.id.main_iv_item1, R.id.main_iv_item2, R.id.main_iv_item3, R.id.main_iv_item4})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.main_iv_item1:
                 main_vp_pagers.setCurrentItem(0);
@@ -285,10 +279,22 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    main_vp_projects.addProject(data.getStringExtra("name"));
+                }
+                break;
+        }
+    }
+
     @Override
     public void onBackPressed() {
         Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
-
         mHomeIntent.addCategory(Intent.CATEGORY_HOME);
         mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);

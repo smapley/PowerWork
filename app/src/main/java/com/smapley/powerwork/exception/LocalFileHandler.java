@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.lidroid.xutils.util.LogUtils;
 import com.smapley.powerwork.utils.JFileKit;
 import com.smapley.powerwork.utils.MyData;
 

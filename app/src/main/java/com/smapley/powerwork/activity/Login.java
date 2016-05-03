@@ -7,33 +7,29 @@ import android.text.TextWatcher;
 import android.transition.Scene;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.lidroid.xutils.db.sqlite.Selector;
-import com.lidroid.xutils.exception.DbException;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.RequestParams;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
-import com.lidroid.xutils.http.client.HttpRequest;
-import com.lidroid.xutils.util.LogUtils;
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.entity.Result_Entity;
-import com.smapley.powerwork.entity.User_Entity;
-import com.smapley.powerwork.http.HttpCallBack;
-import com.smapley.powerwork.utils.ActivityStack;
+import com.smapley.powerwork.application.LocalApplication;
+import com.smapley.powerwork.db.Refresh;
+import com.smapley.powerwork.db.entity.UserBaseEntity;
+import com.smapley.powerwork.db.entity.UserEntity;
+import com.smapley.powerwork.db.modes.UserMode;
+import com.smapley.powerwork.db.services.UserService;
+import com.smapley.powerwork.http.callback.HttpCallBack;
+import com.smapley.powerwork.http.UserParams;
 import com.smapley.powerwork.utils.Code;
 import com.smapley.powerwork.utils.MyData;
-import com.smapley.powerwork.utils.ThreadSleep;
-import com.smapley.powerwork.view.CircleImageView;
+
+import org.xutils.ex.DbException;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -46,7 +42,7 @@ public class Login extends BaseActivity {
     @ViewInject(R.id.log_ll_content)
     private ViewGroup log_ll_content;
 
-    private CircleImageView log_ci_pic;
+    private ImageView log_ci_pic;
     private EditText log_et_username;
     private EditText log_et_password;
     private EditText reg_et_username;
@@ -66,9 +62,10 @@ public class Login extends BaseActivity {
 
     @Override
     protected void initParams() {
-        if (user_entity != null) {
-            log_st_usernmae = user_entity.getUsername();
-            log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCre_date());
+        if (userBaseEntity != null) {
+            log_st_usernmae = userBaseEntity.getUsername();
+            log_st_password = Code.doCode(userBaseEntity.getPassword());
+
         }
         transitionInflater = TransitionInflater.from(this);
         transitionManager = transitionInflater.inflateTransitionManager(R.transition.transition_manager, log_ll_content);
@@ -80,20 +77,20 @@ public class Login extends BaseActivity {
 
 
     private void doRegister() {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("username", reg_st_username);
-        params.addBodyParameter("password", reg_st_password);
-        params.addBodyParameter("phone", reg_st_phone);
-        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_REGISTER, params, new HttpCallBack(Login.this, R.string.log_dia_register_ing) {
+        UserParams params = new UserParams(MyData.URL_REGISTER);
+        params.username = reg_st_username;
+        params.password = reg_st_password;
+        params.phone = reg_st_phone;
+        x.http().post(params, new HttpCallBack(Login.this, R.string.log_dia_register_ing) {
             @Override
-            public void onResult(String result,SweetAlertDialog dialog) {
+            public void onResult(String result, SweetAlertDialog dialog) {
                 dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
                         .showText(R.string.log_dia_register_suc)
                         .commit()
                         .dismiss(2000);
-                User_Entity user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                UserMode userMode = JSON.parseObject(result, new TypeReference<UserMode>() {
                 });
-                afterRegister(user_entity);
+                afterLogin(userMode);
             }
         });
 
@@ -101,51 +98,43 @@ public class Login extends BaseActivity {
     }
 
     private void doLogin() {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("username", log_st_usernmae);
-        params.addBodyParameter("password", log_st_password);
-        httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_LOGIN, params, new HttpCallBack(Login.this, R.string.log_dia_login_ing) {
+        UserParams params = new UserParams(MyData.URL_LOGIN);
+        params.username = log_st_usernmae;
+        params.password = log_st_password;
+        x.http().post(params, new HttpCallBack(Login.this, R.string.log_dia_login_ing) {
             @Override
-            public void onResult(String result,SweetAlertDialog dialog) {
+            public void onResult(String result, SweetAlertDialog dialog) {
                 dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
                         .showText(R.string.log_dia_login_suc)
                         .commit()
                         .dismiss(2000);
-                User_Entity user_entity = JSON.parseObject(result, new TypeReference<User_Entity>() {
+                UserMode userMode = JSON.parseObject(result, new TypeReference<UserMode>() {
                 });
-                afterLogin(user_entity);
+                afterLogin(userMode);
             }
         });
     }
 
-    private void afterRegister(User_Entity user_entity) {
-        log_st_usernmae = user_entity.getUsername();
-        log_st_password = Code.doCode(user_entity.getPassword(), user_entity.getCre_date());
-        goToScene1(null);
-        new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
-            @Override
-            public void onCallback(int number) {
-                doLogin();
-            }
-        });
-
-    }
-
-    private void afterLogin(User_Entity user_entity) {
+    private void afterLogin(UserMode userMode) {
         try {
             SharedPreferences.Editor editor = sp_user.edit();
-            editor.putInt("id", user_entity.getUse_id());
+            editor.putInt("id", userMode.getUserEntity().getUseId());
             editor.putBoolean("islogin", true);
             editor.commit();
-            dbUtils.deleteById(User_Entity.class, user_entity.getUse_id());
-            dbUtils.save(user_entity);
-            this.user_entity = user_entity;
+            new UserService().save(userMode);
+            //新建刷新表
+            Refresh refresh = new Refresh();
+            refresh.setUse_id(userMode.getUserEntity().getUseId());
+            dbUtils.saveOrUpdate(refresh);
+            this.userBaseEntity = userMode.getUserBaseEntity();
+            this.userEntity = userMode.getUserEntity();
 
             toNextActivity();
 
         } catch (DbException e) {
             e.printStackTrace();
         }
+        toNextActivity();
     }
 
     private void toNextActivity() {
@@ -155,13 +144,15 @@ public class Login extends BaseActivity {
 
     public void goToScene1(View view) {
         transitionManager.transitionTo(log_sc_login);
-        log_ci_pic = (CircleImageView) log_sc_login.getSceneRoot().findViewById(R.id.log_ci_pic);
+        log_ci_pic = (ImageView) log_sc_login.getSceneRoot().findViewById(R.id.log_ci_pic);
         log_et_username = (EditText) log_sc_login.getSceneRoot().findViewById(R.id.log_et_username);
         log_et_password = (EditText) log_sc_login.getSceneRoot().findViewById(R.id.log_et_password);
         log_et_password.setText(log_st_password);
         log_et_username.setText(log_st_usernmae);
-        if (user_entity != null) {
-            asyncImageLoader.loadBitmaps(log_ci_pic, user_entity.getPic_url());
+        if (userEntity != null) {
+            x.image().bind(log_ci_pic, MyData.URL_PIC + userEntity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
+        } else {
+            x.image().bind(log_ci_pic, "assets://logo.jpg", LocalApplication.getInstance().CirtlesImage);
         }
         log_et_username.addTextChangedListener(new TextWatcher() {
             @Override
@@ -175,18 +166,25 @@ public class Login extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                User_Entity user_entity = null;
+                UserBaseEntity userBaseEntity = null;
+                UserEntity userEntity = null;
                 try {
-                    user_entity = dbUtils.findFirst(Selector.from(User_Entity.class).where("username", "=", log_et_username.getText().toString()));
+                    userBaseEntity = dbUtils.selector(UserBaseEntity.class).where("username", "=", log_et_username.getText().toString()).findFirst();
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
-                if (user_entity != null) {
-                    log_et_password.setText(Code.doCode(user_entity.getPassword(), user_entity.getCre_date()));
-                    asyncImageLoader.loadBitmaps(log_ci_pic, user_entity.getPic_url());
+                if (userBaseEntity != null)
+                    try {
+                        userEntity = dbUtils.findById(UserEntity.class, userBaseEntity.getUseId());
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+                if (userEntity != null) {
+                    log_et_password.setText(Code.doCode(userBaseEntity.getPassword()));
+                    x.image().bind(log_ci_pic, MyData.URL_PIC + userEntity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
                 } else {
                     log_et_password.setText("");
-                    log_ci_pic.setImageResource(R.mipmap.logo);
+                    x.image().bind(log_ci_pic, "assets://logo.jpg", LocalApplication.getInstance().CirtlesImage);
                 }
             }
         });

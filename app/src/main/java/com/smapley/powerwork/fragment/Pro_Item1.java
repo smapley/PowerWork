@@ -1,80 +1,145 @@
 package com.smapley.powerwork.fragment;
 
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.adapter.ProItem1Adapter;
+import com.smapley.powerwork.db.entity.DynamicEntity;
+import com.smapley.powerwork.http.MyResponse;
+import com.smapley.powerwork.http.params.BaseParams;
+import com.smapley.powerwork.utils.MyData;
+
+import org.xutils.common.Callback;
+import org.xutils.ex.DbException;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by smapley on 15/11/16.
  */
+@ContentView(R.layout.fragment_pro_item1)
 public class Pro_Item1 extends BaseFragment {
 
-    @ViewInject(R.id.pro_ct_layout)
-    private CollapsingToolbarLayout pro_ct_layout;
 
-    @ViewInject(R.id.pro_item1_tv_number)
-    private TextView pro_item1_tv_number;
-    @ViewInject(R.id.pro_item1_iv_member1)
-    private ImageView pro_item1_iv_member1;
-    @ViewInject(R.id.pro_item1_iv_member2)
-    private ImageView pro_item1_iv_member2;
-    @ViewInject(R.id.pro_item1_iv_member3)
-    private ImageView pro_item1_iv_member3;
-    @ViewInject(R.id.pro_item1_iv_member4)
-    private ImageView pro_item1_iv_member4;
-    @ViewInject(R.id.pro_item1_iv_member5)
-    private ImageView pro_item1_iv_member5;
+    private static final int GETDATE = 1;
+    private static final int SAVEDATA = 2;
     @ViewInject(R.id.pro_item1_rv_list)
     private RecyclerView pro_item1_rv_list;
 
+    private List<DynamicEntity> list;
+    private ProItem1Adapter adapter;
+    private int pro_id;
 
-    private String name;
-    private String number;
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_pro_item1;
-    }
 
     @Override
     protected void initParams(View view) {
-        //使用CollapsingToolbarLayout必须把title设置到CollapsingToolbarLayout上，设置到Toolbar上则不会显示
-        pro_ct_layout.setExpandedTitleTextAppearance(R.style.pro_name_expanded);
-        pro_ct_layout.setCollapsedTitleTextAppearance(R.style.per_name_collapsed);
-        //通过CollapsingToolbarLayout修改字体颜色
-        pro_ct_layout.setExpandedTitleColor(getResources().getColor(R.color.cal_text));//设置还没收缩时状态下字体颜色
-        pro_ct_layout.setCollapsedTitleTextColor(getResources().getColor(R.color.cal_text));//设置收缩后Toolbar上字体的颜色
-
-        getData();
-
-
-    }
-
-    private void getData() {
-        name = "12软件工程";
-        number = "48成员";
         initData();
+        initView();
+        getDataForDb();
+        getDataForWeb();
+
+
     }
+
 
     private void initData() {
-        pro_ct_layout.setTitle(name);
-        pro_item1_tv_number.setText(number);
-
+        pro_id = getArguments().getInt("pro_id");
     }
 
-    @OnClick(R.id.pro_item1_iv_member5)
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.pro_item1_iv_member5:
+    private void initView() {
+        pro_item1_rv_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list = new ArrayList<>();
+        adapter = new ProItem1Adapter(getActivity(), list);
+        pro_item1_rv_list.setAdapter(adapter);
+    }
 
-                break;
+    public void getDataForDb() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<DynamicEntity> listDynamic = dbUtils
+                            .selector(DynamicEntity.class)
+                            .where("pro_id", "=", pro_id + "")
+                            .orderBy("cre_date",true)
+                            .findAll();
+                    if (listDynamic != null && !listDynamic.isEmpty()) {
+                        mhandler.obtainMessage(GETDATE, listDynamic).sendToTarget();
+                    }
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void getDataForWeb() {
+
+        BaseParams baseParams = new BaseParams(MyData.URL_DynamicList, userBaseEntity);
+        baseParams.addBodyParameter("pro_id", pro_id + "");
+        x.http().post(baseParams, new Callback.CommonCallback<MyResponse>() {
+            @Override
+            public void onSuccess(final MyResponse result) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<DynamicEntity> listDynamic = JSON.parseObject(result.data, new TypeReference<List<DynamicEntity>>() {
+                        });
+                        if (listDynamic != null && !listDynamic.isEmpty()) {
+                            for (DynamicEntity dynamicEntity : listDynamic) {
+                                try {
+                                    dbUtils.saveOrUpdate(dynamicEntity);
+                                } catch (DbException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            mhandler.obtainMessage(SAVEDATA).sendToTarget();
+                        }
+                    }
+                }).start();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case GETDATE:
+                    adapter.addAll((List<DynamicEntity>) msg.obj);
+                    break;
+                case SAVEDATA:
+                    getDataForDb();
+                    break;
+            }
         }
-    }
+    };
+
 }

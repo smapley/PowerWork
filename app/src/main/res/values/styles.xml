@@ -201,12 +201,12 @@
     </style>
 
     <style name="pro_btn_item_text">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/cal_text</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:textColor">@color/transparent_black</item>
+        <item name="android:textSize">@dimen/text_size_item2</item>
     </style>
 
     <style name="log_ev">
@@ -231,6 +231,54 @@
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:background">@null</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="pro_btn_layout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="pro_btn_image">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+    </style>
+
+    <style name="pub_ll">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="pub_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/default_text</item>
+        <item name="android:textSize">@dimen/text_size_item1</item>
+    </style>
+
+    <style name="pub_tv_right">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">end</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/transparent_black</item>
+        <item name="android:textSize">@dimen/text_size_item1</item>
+    </style>
+
+    <style name="pub_image">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:scaleType">fitEnd</item>
     </style>
 
 </resources>

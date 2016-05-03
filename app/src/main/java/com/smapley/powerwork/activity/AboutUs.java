@@ -1,18 +1,14 @@
 package com.smapley.powerwork.activity;
 
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.lidroid.xutils.view.annotation.ContentView;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
 
-import me.nereo.multi_image_selector.bean.Image;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 /**
  * Created by smapley on 15/10/24.
@@ -33,8 +29,8 @@ public class AboutUs extends BaseActivity {
 
     }
 
-    @OnClick({R.id.abo_bt_good,R.id.title_iv_back})
-    public void onClick(View view) {
+    @Event(value = {R.id.abo_bt_good,R.id.title_iv_back})
+    private void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_iv_back:
                 finish();

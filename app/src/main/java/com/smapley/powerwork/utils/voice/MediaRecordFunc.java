@@ -34,21 +34,20 @@ public class MediaRecordFunc {
         if (isRecord) {
             return ErrorCode.E_STATE_RECODING;
         } else {
-            if (mMediaRecorder == null)
+            if (mMediaRecorder == null);
                 createMediaRecord();
-
             try {
                 mMediaRecorder.prepare();
                 mMediaRecorder.start();
                 // 让录制状态为true
                 isRecord = true;
                 return ErrorCode.SUCCESS;
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 return ErrorCode.E_UNKOWN;
             }
-        }
 
+        }
 
     }
 

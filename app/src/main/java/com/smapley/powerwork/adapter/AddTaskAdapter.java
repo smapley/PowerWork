@@ -7,14 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 import com.smapley.powerwork.holder.Add_Menu_Holder;
 import com.smapley.powerwork.holder.Add_Pic_Holder;
 import com.smapley.powerwork.holder.Add_Text_Holder;
 import com.smapley.powerwork.holder.Add_Voice_Holder;
-import com.smapley.powerwork.mode.Add_Pic_Mode;
-import com.smapley.powerwork.mode.Add_Text_Mode;
-import com.smapley.powerwork.mode.Add_Voice_Mode;
-import com.smapley.powerwork.mode.BaseMode;
 
 import java.util.List;
 
@@ -24,22 +21,26 @@ import java.util.List;
 public class AddTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<BaseMode> list;
+    private List<NoteDetailsEntity> list;
     private LayoutInflater inflater;
 
-    public int focusPosition = 0;
+  //  public int focusPosition = 0;
 
-    public AddTaskAdapter(Context context, List<BaseMode> list) {
+    public AddTaskAdapter(Context context, List<NoteDetailsEntity> list) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.list = list;
 
     }
 
-    public void addItem(BaseMode mode) {
-        list.add(focusPosition + 1, mode);
-        notifyItemInserted(focusPosition + 1);
-        notifyItemRangeChanged(focusPosition, list.size());
+    public List<NoteDetailsEntity> getList() {
+        return list;
+    }
+
+    public void addItem(NoteDetailsEntity mode) {
+        list.add(list.size()-1, mode);
+        notifyItemInserted(list.size()-1);
+        notifyItemRangeChanged(list.size()-2, list.size());
     }
 
     @Override
@@ -70,13 +71,13 @@ public class AddTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((Add_Menu_Holder) holder).setData(context, this, position);
                 break;
             case 3:
-                ((Add_Pic_Holder) holder).setData(context, (Add_Pic_Mode) list.get(position));
+                ((Add_Pic_Holder) holder).setData(context, list.get(position));
                 break;
             case 4:
-                ((Add_Voice_Holder) holder).setData(context, (Add_Voice_Mode) list.get(position));
+                ((Add_Voice_Holder) holder).setData(context, list.get(position));
                 break;
             case 5:
-                ((Add_Text_Holder) holder).setData(this, (Add_Text_Mode) list.get(position), position);
+                ((Add_Text_Holder) holder).setData(this, list.get(position), position);
                 break;
         }
 

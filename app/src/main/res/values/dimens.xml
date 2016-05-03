@@ -6,4 +6,5 @@
     <dimen name="historyscore_tb">10dp</dimen>
     <dimen name="text_size_item1">18sp</dimen>
     <dimen name="text_size_item2">16sp</dimen>
+    <dimen name="text_size_item3">15sp</dimen>
 </resources>

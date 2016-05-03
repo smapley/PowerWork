@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/main_ll_title"
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_alignBottom="@+id/main_ll_title"
-        android:background="@color/gray_btn_bg_color"/>
+        android:background="@color/gray_btn_bg_color" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/main_vp_pagers"
@@ -50,6 +50,8 @@
         android:layout_below="@+id/main_ll_title" />
 
     <include layout="@layout/activity_main_add_menu" />
+
+
 
 
 </RelativeLayout>

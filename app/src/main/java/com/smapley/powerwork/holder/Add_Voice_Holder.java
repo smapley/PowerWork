@@ -1,24 +1,17 @@
 package com.smapley.powerwork.holder;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
-import android.service.carrier.CarrierService;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.mode.Add_Pic_Mode;
-import com.smapley.powerwork.mode.Add_Voice_Mode;
-import com.smapley.powerwork.utils.BitmapUtil;
-import com.smapley.powerwork.utils.JFileKit;
+import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -44,10 +37,10 @@ public class Add_Voice_Holder extends BaseHolder {
     }
 
 
-    public void setData(Context context, final Add_Voice_Mode mode) {
+    public void setData(Context context, final NoteDetailsEntity mode) {
         simpleDateFormat = new SimpleDateFormat("mm:ss");
-        playlength = mode.getTime();
-        add_tv_voice_time.setText(simpleDateFormat.format(mode.getTime()));
+        playlength = mode.getLength();
+        add_tv_voice_time.setText(simpleDateFormat.format(mode.getLength()));
         add_iv_voice_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,8 +68,8 @@ public class Add_Voice_Holder extends BaseHolder {
                         public void onCompletion(MediaPlayer mediaPlayer) {
                             add_iv_voice_play.setImageResource(R.mipmap.play_iv);
                             isPlay = false;
-                            playlength = mode.getTime();
-                            add_tv_voice_time.setText(simpleDateFormat.format(mode.getTime()));
+                            playlength = mode.getLength();
+                            add_tv_voice_time.setText(simpleDateFormat.format(mode.getLength()));
                             add_sb_voice_bar.setProgress(0);
                         }
                     });

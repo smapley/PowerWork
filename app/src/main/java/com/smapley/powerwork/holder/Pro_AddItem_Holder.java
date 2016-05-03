@@ -2,24 +2,22 @@ package com.smapley.powerwork.holder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.lidroid.xutils.http.RequestParams;
-import com.lidroid.xutils.http.client.HttpRequest;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.activity.BaseActivity;
-import com.smapley.powerwork.activity.Project;
-import com.smapley.powerwork.entity.Project_Entity;
-import com.smapley.powerwork.http.HttpCallBack;
-import com.smapley.powerwork.http.MyRequstParams;
+import com.smapley.powerwork.activity.Add;
+import com.smapley.powerwork.activity.MainActivity;
+import com.smapley.powerwork.activity.Search;
 import com.smapley.powerwork.mode.Pro_AddItem_Mode;
-import com.smapley.powerwork.utils.MyData;
-import com.smapley.powerwork.utils.ThreadSleep;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 /**
@@ -28,6 +26,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class Pro_AddItem_Holder extends BaseHolder {
 
     private ImageView pro_additem_iv_add;
+    private PopupWindow pop_project;
 
     public Pro_AddItem_Holder(View view) {
         super(view);
@@ -40,55 +39,72 @@ public class Pro_AddItem_Holder extends BaseHolder {
         pro_additem_iv_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SweetAlertDialog dialog = new SweetAlertDialog(context);
-                dialog.showTitle(R.string.addproject)
-                        .showEditext()
-                        .showConfirmButton()
-                        .showCancelButton()
-                        .setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onConfirmClick(SweetAlertDialog dialog) {
-                                String data = dialog.getEditext();
-                                if (data != null && !data.isEmpty()) {
-                                    addProject(context, data);
-                                    dialog.dismiss();
-                                }
-                            }
+                showProjectPopupWindow(view, context);
+            }
+        });
+    }
+    /**
+     * 显示选择文件PopupWindow
+     */
+    private void showProjectPopupWindow(View view,Context context) {
+        //初始化
+        initProjectPopupWindow(context);
+        pop_project.showAtLocation(view, Gravity.CENTER, 0, 0);
+        //设置背景变暗
+        pop_project.setBackgroundDrawable(new ColorDrawable(0));
+        WindowManager.LayoutParams layoutParams = ((MainActivity)context).getWindow().getAttributes();
+        layoutParams.alpha = 0.4f;
+        ((MainActivity)context).getWindow().setAttributes(layoutParams);
+    }
+    /**
+     * 初始化选择文件PopupWindow
+     */
+    private void initProjectPopupWindow(final Context context) {
+        View popView = LayoutInflater.from(context).inflate(R.layout.popup_pro_add, null);
+        pop_project = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //设置不可点击背景
+        pop_project.setFocusable(true);
+        pop_project.setBackgroundDrawable(new BitmapDrawable());
+        //设置popwindow出现和消失动画
+        pop_project.setAnimationStyle(R.style.pop_voice);
+        //监听popupwindow消失动作
+        pop_project.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                hitProjectPopupWindow(context);
+            }
+        });
 
-                            @Override
-                            public void onFirstClick(SweetAlertDialog dialog) {
+        //监听按钮点击
+        TextView item1 = (TextView) popView.findViewById(R.id.pro_add_tv_item1);
+        TextView item2 = (TextView) popView.findViewById(R.id.pro_add_tv_item2);
+        item1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hitProjectPopupWindow(context);
+                Intent intent = new Intent(context, Add.class);
+                intent.putExtra("src", 2);
+                ((MainActivity) context).startActivityForResult(intent, 1);
+            }
+        });
 
-                            }
-
-                            @Override
-                            public void onCancelClick(SweetAlertDialog dialog) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+        item2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hitProjectPopupWindow(context);
+                context.startActivity(new Intent(context, Search.class));
             }
         });
     }
 
-    private void addProject(final Context context, String data) {
-        RequestParams params = new MyRequstParams(((BaseActivity) context).user_entity);
-        params.addBodyParameter("name", data);
-        ((BaseActivity) context).httpUtils.send(HttpRequest.HttpMethod.POST, MyData.URL_AddProject, params, new HttpCallBack(context, R.string.addproject_ing) {
-            @Override
-            public void onResult(String result, SweetAlertDialog dialog) {
-                dialog.showText(R.string.addproject_ed).commit().dismiss(2000);
-                final Project_Entity project_entity = JSON.parseObject(result, new TypeReference<Project_Entity>() {
-                });
-                new ThreadSleep().sleep(2000, new ThreadSleep.Callback() {
-                    @Override
-                    public void onCallback(int number) {
-                        Intent intent = new Intent(context, Project.class);
-                        intent.putExtra("pro_id", project_entity.getPro_id());
-                        intent.putExtra("pro_name", project_entity.getName());
-                        context.startActivity(intent);
-                    }
-                });
-            }
-        });
+    /**
+     * 隐藏选择文件PopupWindow
+     */
+    private void hitProjectPopupWindow(Context context) {
+        if (pop_project.isShowing())
+            pop_project.dismiss();
+        WindowManager.LayoutParams layoutParams = ((MainActivity)context).getWindow().getAttributes();
+        layoutParams.alpha = 1f;
+        ((MainActivity)context).getWindow().setAttributes(layoutParams);
     }
 }

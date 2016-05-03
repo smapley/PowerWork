@@ -1,21 +1,27 @@
 package com.smapley.powerwork.fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.adapter.PersonalAdapter;
+import com.smapley.powerwork.adapter.CalAdapter;
+import com.smapley.powerwork.db.entity.TaskEntity;
+import com.smapley.powerwork.db.service.TaskService;
+import com.smapley.powerwork.http.service.TaskListService;
 import com.smapley.powerwork.mode.BaseMode;
-import com.smapley.powerwork.mode.Cal_Task_Mode;
+import com.smapley.powerwork.utils.DateUtil;
 import com.smapley.powerwork.view.MyCalendar;
+
+import org.xutils.common.util.LogUtil;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +29,11 @@ import java.util.List;
 /**
  * Created by smapley on 15/10/25.
  */
+@ContentView(R.layout.fragment_calendar)
 public class Calendar extends BaseFragment {
 
+    private static final int SAVEDATA = 1;
+    private static final int GETDATA = 2;
     @ViewInject(R.id.cal_ct_layout)
     private CollapsingToolbarLayout cal_ct_layout;
 
@@ -35,16 +44,21 @@ public class Calendar extends BaseFragment {
     private MyCalendar cal_mc_calendar;
     @ViewInject(R.id.cal_rv_recycler)
     private RecyclerView cal_rv_recycler;
-    private PersonalAdapter per_adapter;
+    private CalAdapter calAdapter;
     private List<BaseMode> cal_list;
 
     private String[] cal_month;
+    //当前选择的日期
+    private String dateChecked;
+    private List<TaskEntity> taskList;
 
+    private TaskListService taskListService = new TaskListService() {
+        @Override
+        public void onSucceed() {
+            getDataForDb();
+        }
+    };
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_calendar;
-    }
 
     @Override
     protected void initParams(View view) {
@@ -55,52 +69,54 @@ public class Calendar extends BaseFragment {
         cal_ct_layout.setExpandedTitleColor(getResources().getColor(R.color.cal_text));//设置还没收缩时状态下字体颜色
         cal_ct_layout.setCollapsedTitleTextColor(getResources().getColor(R.color.cal_text));//设置收缩后Toolbar上字体的颜色
 
-
-
-        cal_month = getResources().getStringArray(R.array.cal_month);
+        //初始化数据
+        initData();
+        //初始化日历组件
         initCalendar();
+        //初始化列表组件
         initRecyclerView();
+        //初始化组件
+        initView();
+        //从数据库获取数据
+        getDataForDb();
+        //从网络获取数据
+        getDataForWeb();
     }
 
-    @OnClick({R.id.cal_iv_refresh})
-    public void onClick(View view) {
-
+    @Event({R.id.cal_iv_refresh})
+    private void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.cal_iv_refresh:
+                getDataForWeb();
+                LogUtil.d("asdfasdfasdfasdf");
+                break;
+        }
     }
 
     private void initData() {
+        cal_month = getResources().getStringArray(R.array.cal_month);
+        dateChecked = DateUtil.getDateString(System.currentTimeMillis(), DateUtil.formatDate);
+        taskList = new ArrayList<>();
 
-        //初始化日期显示
-        cal_tv_month.setText(cal_month[cal_mc_calendar.getCalendarMonth()]);
-        cal_ct_layout.setTitle(cal_mc_calendar.getCalendarMonth() + 1 + " - " + cal_mc_calendar.getCalendarDay());
-
-        cal_list = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            Cal_Task_Mode cal_task_mode = new Cal_Task_Mode();
-            cal_task_mode.setName("画界面");
-            cal_task_mode.setTime("10-26  23:00");
-            cal_list.add(cal_task_mode);
-        }
-        Cal_Task_Mode cal_task_mode = new Cal_Task_Mode();
-        cal_task_mode.setName("画界面");
-        cal_task_mode.setTime("10-26  23:00");
-        cal_task_mode.setCheck(true);
-        cal_list.add(cal_task_mode);
-        per_adapter = new PersonalAdapter(getActivity(), cal_list);
-        cal_rv_recycler.setAdapter(per_adapter);
     }
 
     /**
      * 初始化列表
      */
     private void initRecyclerView() {
-
         cal_rv_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        initData();
+        cal_list = new ArrayList<>();
+        calAdapter = new CalAdapter(getActivity(), cal_list);
+        cal_rv_recycler.setAdapter(calAdapter);
+
     }
 
+    public void getDataForWeb() {
+        taskListService.load(userBaseEntity);
+    }
+
+
     private void initCalendar() {
-        //设置标记的日期
-        cal_mc_calendar.addMark("2015-10-30",R.drawable.cal_cc_mark);
 
         //监听所选中的日期
         cal_mc_calendar.setOnCalendarClickListener(new MyCalendar.OnCalendarClickListener() {
@@ -127,7 +143,8 @@ public class Calendar extends BaseFragment {
                     //设置日期显示
                     cal_tv_month.setText(cal_month[month - 1]);
                     cal_ct_layout.setTitle(month + " - " + day);
-
+                    dateChecked = dateFormat;
+                    showCal();
                 }
             }
         });
@@ -141,5 +158,58 @@ public class Calendar extends BaseFragment {
         });
     }
 
+    private void initView() {
+        //初始化日期显示
+        cal_tv_month.setText(cal_month[cal_mc_calendar.getCalendarMonth()]);
+        cal_ct_layout.setTitle(cal_mc_calendar.getCalendarMonth() + 1 + " - " + cal_mc_calendar.getCalendarDay());
+    }
 
+    //显示日历&&更新日历
+    private void showCal() {
+        if (taskList != null && !taskList.isEmpty()) {
+
+            //设置标记的日期
+            cal_mc_calendar.removeAllMarks();
+            for (TaskEntity task : taskList) {
+                cal_mc_calendar.addMark(DateUtil.getDateString(task.getEnd_date(), DateUtil.formatDate), R.drawable.cal_cc_mark);
+            }
+            //显示当天任务
+            cal_list.clear();
+            for (TaskEntity task : taskList) {
+                if (dateChecked.equals(DateUtil.getDateString(task.getEnd_date(), DateUtil.formatDate)))
+                    cal_list.add(task);
+            }
+            calAdapter.addAll(cal_list);
+        }
+    }
+
+    private Handler mhandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SAVEDATA:
+                    //更新数据
+                    getDataForDb();
+                    break;
+                case GETDATA:
+                    taskList = (List<TaskEntity>) msg.obj;
+                    showCal();
+                    break;
+
+            }
+        }
+    };
+
+    public void getDataForDb() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //从数据库获取数据更新界面
+                List<TaskEntity> list = new TaskService().findByUseId(userBaseEntity.getUseId());
+                if (list != null && !list.isEmpty())
+                    mhandler.obtainMessage(GETDATA, list).sendToTarget();
+            }
+        }).start();
+    }
 }

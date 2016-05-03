@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/per_ll_layout"
+    android:layout_marginBottom="3dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="8dp">
+
+
+    <TextView
+        android:id="@+id/pro_item2_group_tv_title"
+        style="@style/per_tv_group"
+        tools:text="我的任务" />
+
+    <LinearLayout
+        android:id="@+id/pro_item2_group_ll_add"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/pro_item2_group_iv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/add_iv_title" />
+
+        <TextView
+            android:id="@+id/pro_item2_group_tv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:text="@string/add"
+            android:textColor="@color/pro_text"
+            android:textSize="@dimen/text_size_item1" />
+    </LinearLayout>
+</LinearLayout>
