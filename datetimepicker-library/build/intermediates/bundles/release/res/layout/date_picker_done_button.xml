@@ -15,4 +15,4 @@
         android:minHeight="48dip"
         android:text="@string/done_label"
         style="?android:attr/buttonBarButtonStyle" />
-</LinearLayout><!-- From: file:/Users/smapley/Desktop/PowerWork/datetimepicker-library/res/layout/date_picker_done_button.xml -->
+</LinearLayout>

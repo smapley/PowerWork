@@ -18,7 +18,7 @@ public class MyData {
     public static final String File_Audio = "/audio";
 
 //        private final static String BASE_URL = "http://115.28.213.161:8080/PowerWorkService/";
-    private final static String BASE_URL = "http://192.168.2.1:8080/PowerWorkService/";
+    private final static String BASE_URL = "http://172.23.100.4:8080/PowerWorkService/";
     public final static String URL_PIC = BASE_URL + "upload/pic/";
     public final static String URL_File = BASE_URL + "upload/file/";
     public final static String URL_LOGIN = BASE_URL + "Login";

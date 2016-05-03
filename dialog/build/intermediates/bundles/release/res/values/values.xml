@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/smapley/Desktop/PowerWork/dialog/src/main/res/values/colors.xml -->
-    <eat-comment/>
     <color name="blue_btn_bg_color">#AEDEF4</color>
     <color name="blue_btn_bg_pressed_color">#96BFD2</color>
     <color name="button_text_color">#FFFFFF</color>
@@ -16,14 +14,10 @@
     <color name="trans_success_stroke_color">#33A5DC86</color>
     <color name="warning_stroke_color">#F8BB86</color>
     <declare-styleable name="Rotate3dAnimation"><attr format="enum" name="rollType"><enum name="x" value="0"/><enum name="y" value="1"/><enum name="z" value="2"/></attr><attr format="float" name="fromDeg"/><attr format="float" name="toDeg"/><attr format="fraction" name="pivotX"/><attr format="fraction" name="pivotY"/></declare-styleable>
-    <!-- From: file:/Users/smapley/Desktop/PowerWork/dialog/src/main/res/values/strings.xml -->
-    <eat-comment/>
     <string name="app_name">SweetAlertDialog</string>
     <string name="dialog_cancel">取消</string>
     <string name="dialog_default_title">Here\'s a message!</string>
     <string name="dialog_ok">确定</string>
-    <!-- From: file:/Users/smapley/Desktop/PowerWork/dialog/src/main/res/values/styles.xml -->
-    <eat-comment/>
     <style name="alert_dialog" parent="@android:Theme.Dialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowIsTranslucent">true</item>
