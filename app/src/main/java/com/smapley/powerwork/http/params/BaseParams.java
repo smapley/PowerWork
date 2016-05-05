@@ -1,7 +1,6 @@
 package com.smapley.powerwork.http.params;
 
-import com.smapley.powerwork.db.entity.UserBaseEntity;
-import com.smapley.powerwork.utils.Code;
+import com.smapley.powerwork.db.entity.UserEntity;
 
 import org.xutils.http.RequestParams;
 
@@ -10,11 +9,10 @@ import org.xutils.http.RequestParams;
  */
 public class BaseParams extends RequestParams {
 
-    public BaseParams(String url, UserBaseEntity userBaseEntity) {
+    public BaseParams(String url, UserEntity userEntity) {
         super(url);
-        if (userBaseEntity != null) {
-            addHeader("cookie", "JSESSIONID=" + Code.doCode(userBaseEntity.getSkey()));
+        if (userEntity != null) {
+            addBodyParameter("userId",userEntity.getUseId()+"");
         }
     }
-
 }

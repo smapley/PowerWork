@@ -3,7 +3,7 @@ package com.smapley.powerwork.http.params;
 import com.alibaba.fastjson.JSON;
 import com.smapley.powerwork.db.entity.NoteDetailsEntity;
 import com.smapley.powerwork.db.entity.TasUseEntity;
-import com.smapley.powerwork.db.entity.UserBaseEntity;
+import com.smapley.powerwork.db.entity.UserEntity;
 import com.smapley.powerwork.utils.MyData;
 
 import java.io.File;
@@ -15,8 +15,8 @@ import java.util.List;
 public class AddTaskParams extends BaseParams {
 
 
-    public AddTaskParams(UserBaseEntity userBaseEntity) {
-        super(MyData.URL_AddTask, userBaseEntity);
+    public AddTaskParams(UserEntity userEntity) {
+        super(MyData.URL_AddTask, userEntity);
     }
 
     public AddTaskParams setName(String name){

@@ -7,6 +7,12 @@ import org.xutils.db.annotation.Table;
 public class UserEntity {
     @Column(name = "id", isId = true, autoGen = false)
     private int useId;
+    @Column(name = "username")
+    private String username;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "skey")
+    private String skey;
     @Column(name = "nickname")
     private String nickname;
     @Column(name = "truename")
@@ -31,6 +37,30 @@ public class UserEntity {
 
     public void setUseId(int useId) {
         this.useId = useId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSkey() {
+        return skey;
+    }
+
+    public void setSkey(String skey) {
+        this.skey = skey;
     }
 
     public String getNickname() {

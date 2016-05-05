@@ -62,7 +62,7 @@ public class Feedback extends BaseActivity {
     private void submit() {
         String details = fee_et_content.getText().toString();
         if (details != null && !details.isEmpty()) {
-            BaseParams params = new BaseParams(MyData.URL_Feedback, userBaseEntity);
+            BaseParams params = new BaseParams(MyData.URL_Feedback, userEntity);
             params.addBodyParameter("details", details);
             x.http().post(params, new HttpCallBack(this, R.string.feedback_ing) {
                 @Override

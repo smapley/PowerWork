@@ -77,7 +77,7 @@ public class Projects extends BaseFragment {
             @Override
             public void run() {
                 //加载数据库缓存的project
-                List<ProjectEntity> listProject = ProjectService.findEntityByUseId(userBaseEntity.getUseId());
+                List<ProjectEntity> listProject = ProjectService.findEntityByUseId(userEntity.getUseId());
                 if (listProject != null)
                     mhandler.obtainMessage(GETDATA, listProject).sendToTarget();
             }
@@ -85,7 +85,7 @@ public class Projects extends BaseFragment {
     }
 
     public void addProject(String data) {
-        BaseParams params = new BaseParams(MyData.URL_AddProject, userBaseEntity);
+        BaseParams params = new BaseParams(MyData.URL_AddProject, userEntity);
         params.addBodyParameter("name", data);
         x.http().post(params, new HttpCallBack(getActivity(), R.string.addproject_ing) {
             @Override
@@ -111,7 +111,7 @@ public class Projects extends BaseFragment {
     }
 
     public void getDataForWeb() {
-        projectListService.load(userBaseEntity);
+        projectListService.load(userEntity);
     }
 
 

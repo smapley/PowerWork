@@ -62,7 +62,7 @@ public class Message extends BaseFragment {
 
     @Override
     public void getDataForWeb() {
-        messageListService.load(userBaseEntity);
+        messageListService.load(userEntity);
     }
 
 }

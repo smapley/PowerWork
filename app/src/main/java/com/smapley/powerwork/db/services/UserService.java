@@ -1,7 +1,7 @@
 package com.smapley.powerwork.db.services;
 
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.db.modes.UserMode;
+import com.smapley.powerwork.db.entity.UserEntity;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -12,21 +12,15 @@ import org.xutils.ex.DbException;
 public class UserService {
     private static DbManager dbUtils = LocalApplication.getInstance().dbUtils;
 
-    public static void save(UserMode userMode) {
-        if (userMode != null) {
+    public static void save(UserEntity userEntity) {
+        if (userEntity != null) {
             try {
-                if (userMode.getUserBaseEntity() != null)
-                    dbUtils.saveOrUpdate(userMode.getUserBaseEntity());
+                dbUtils.saveOrUpdate(userEntity);
             } catch (DbException e) {
                 e.printStackTrace();
             }
 
-            try {
-                if (userMode.getUserEntity() != null)
-                    dbUtils.saveOrUpdate(userMode.getUserEntity());
-            } catch (DbException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 }

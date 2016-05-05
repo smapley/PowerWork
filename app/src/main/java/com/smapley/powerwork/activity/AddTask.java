@@ -38,8 +38,6 @@ public class AddTask extends BaseActivity {
     private List<NoteDetailsEntity> add_lis_data;
     private AddTaskAdapter add_aa_adapter;
 
-    private int TYPE_NOW = -1;
-
     @Override
     protected void initParams() {
         title_tv_name.setText(R.string.add);
@@ -51,11 +49,6 @@ public class AddTask extends BaseActivity {
         add_lis_data.add(new NoteDetailsEntity(0));
         add_aa_adapter = new AddTaskAdapter(this, add_lis_data);
         add_rv_list.setAdapter(add_aa_adapter);
-
-
-        doJump();
-
-
     }
 
 
@@ -75,25 +68,6 @@ public class AddTask extends BaseActivity {
         }
     }
 
-    /**
-     * 跳转到相应界面
-     */
-    public void doJump() {
-        TYPE_NOW = getIntent().getIntExtra("type", -1);
-        showToast(TYPE_NOW + "");
-        switch (TYPE_NOW) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

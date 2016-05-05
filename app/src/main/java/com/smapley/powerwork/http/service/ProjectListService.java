@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.db.Refresh;
 import com.smapley.powerwork.db.RefreshService;
-import com.smapley.powerwork.db.entity.UserBaseEntity;
+import com.smapley.powerwork.db.entity.UserEntity;
 import com.smapley.powerwork.db.modes.ProjectMode;
 import com.smapley.powerwork.db.service.ProjectService;
 import com.smapley.powerwork.http.callback.SimpleCallback;
@@ -32,10 +32,10 @@ public abstract class ProjectListService {
         refreshService = new RefreshService();
     }
 
-    public void load(UserBaseEntity userBaseEntity) {
+    public void load(UserEntity userEntity) {
         time = System.currentTimeMillis();
-        refresh = refreshService.findById(userBaseEntity.getUseId());
-        BaseParams params = new BaseParams(MyData.URL_ProjectList, userBaseEntity);
+        refresh = refreshService.findById(userEntity.getUseId());
+        BaseParams params = new BaseParams(MyData.URL_ProjectList, userEntity);
         params.addBodyParameter("time", refresh.getProjectList() + "");
         x.http().post(params, new SimpleCallback() {
             @Override

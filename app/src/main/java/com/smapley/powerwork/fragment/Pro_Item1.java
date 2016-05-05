@@ -11,6 +11,8 @@ import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.ProItem1Adapter;
 import com.smapley.powerwork.db.entity.DynamicEntity;
+import com.smapley.powerwork.db.mode.DynamicMode;
+import com.smapley.powerwork.db.service.DynamicService;
 import com.smapley.powerwork.http.MyResponse;
 import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.utils.MyData;
@@ -85,7 +87,7 @@ public class Pro_Item1 extends BaseFragment {
 
     public void getDataForWeb() {
 
-        BaseParams baseParams = new BaseParams(MyData.URL_DynamicList, userBaseEntity);
+        BaseParams baseParams = new BaseParams(MyData.URL_DynamicList, userEntity);
         baseParams.addBodyParameter("pro_id", pro_id + "");
         x.http().post(baseParams, new Callback.CommonCallback<MyResponse>() {
             @Override
@@ -93,15 +95,11 @@ public class Pro_Item1 extends BaseFragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<DynamicEntity> listDynamic = JSON.parseObject(result.data, new TypeReference<List<DynamicEntity>>() {
+                        List<DynamicMode> dynamicModes = JSON.parseObject(result.data, new TypeReference<List<DynamicMode>>() {
                         });
-                        if (listDynamic != null && !listDynamic.isEmpty()) {
-                            for (DynamicEntity dynamicEntity : listDynamic) {
-                                try {
-                                    dbUtils.saveOrUpdate(dynamicEntity);
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
+                        if (dynamicModes != null && !dynamicModes.isEmpty()) {
+                            for (DynamicMode dynamicMode : dynamicModes) {
+                                DynamicService.save(dynamicMode);
                             }
                             mhandler.obtainMessage(SAVEDATA).sendToTarget();
                         }

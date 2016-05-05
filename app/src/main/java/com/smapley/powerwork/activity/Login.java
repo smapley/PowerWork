@@ -17,13 +17,10 @@ import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.db.Refresh;
-import com.smapley.powerwork.db.entity.UserBaseEntity;
 import com.smapley.powerwork.db.entity.UserEntity;
-import com.smapley.powerwork.db.modes.UserMode;
 import com.smapley.powerwork.db.services.UserService;
 import com.smapley.powerwork.http.callback.HttpCallBack;
 import com.smapley.powerwork.http.UserParams;
-import com.smapley.powerwork.utils.Code;
 import com.smapley.powerwork.utils.MyData;
 
 import org.xutils.ex.DbException;
@@ -62,9 +59,9 @@ public class Login extends BaseActivity {
 
     @Override
     protected void initParams() {
-        if (userBaseEntity != null) {
-            log_st_usernmae = userBaseEntity.getUsername();
-            log_st_password = Code.doCode(userBaseEntity.getPassword());
+        if (userEntity != null) {
+            log_st_usernmae = userEntity.getUsername();
+            log_st_password = userEntity.getPassword();
 
         }
         transitionInflater = TransitionInflater.from(this);
@@ -88,9 +85,9 @@ public class Login extends BaseActivity {
                         .showText(R.string.log_dia_register_suc)
                         .commit()
                         .dismiss(2000);
-                UserMode userMode = JSON.parseObject(result, new TypeReference<UserMode>() {
+                UserEntity userEntity = JSON.parseObject(result, new TypeReference<UserEntity>() {
                 });
-                afterLogin(userMode);
+                afterLogin(userEntity);
             }
         });
 
@@ -108,26 +105,25 @@ public class Login extends BaseActivity {
                         .showText(R.string.log_dia_login_suc)
                         .commit()
                         .dismiss(2000);
-                UserMode userMode = JSON.parseObject(result, new TypeReference<UserMode>() {
+                UserEntity userEntity = JSON.parseObject(result, new TypeReference<UserEntity>() {
                 });
-                afterLogin(userMode);
+                afterLogin(userEntity);
             }
         });
     }
 
-    private void afterLogin(UserMode userMode) {
+    private void afterLogin(UserEntity userEntity) {
         try {
             SharedPreferences.Editor editor = sp_user.edit();
-            editor.putInt("id", userMode.getUserEntity().getUseId());
+            editor.putInt("id", userEntity.getUseId());
             editor.putBoolean("islogin", true);
             editor.commit();
-            new UserService().save(userMode);
+            new UserService().save(userEntity);
             //新建刷新表
             Refresh refresh = new Refresh();
-            refresh.setUse_id(userMode.getUserEntity().getUseId());
+            refresh.setUse_id(userEntity.getUseId());
             dbUtils.saveOrUpdate(refresh);
-            this.userBaseEntity = userMode.getUserBaseEntity();
-            this.userEntity = userMode.getUserEntity();
+            this.userEntity = userEntity;
 
             toNextActivity();
 
@@ -166,10 +162,10 @@ public class Login extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                UserBaseEntity userBaseEntity = null;
+                UserEntity userBaseEntity = null;
                 UserEntity userEntity = null;
                 try {
-                    userBaseEntity = dbUtils.selector(UserBaseEntity.class).where("username", "=", log_et_username.getText().toString()).findFirst();
+                    userBaseEntity = dbUtils.selector(UserEntity.class).where("username", "=", log_et_username.getText().toString()).findFirst();
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
@@ -180,7 +176,7 @@ public class Login extends BaseActivity {
                         e.printStackTrace();
                     }
                 if (userEntity != null) {
-                    log_et_password.setText(Code.doCode(userBaseEntity.getPassword()));
+                    log_et_password.setText(userBaseEntity.getPassword());
                     x.image().bind(log_ci_pic, MyData.URL_PIC + userEntity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
                 } else {
                     log_et_password.setText("");

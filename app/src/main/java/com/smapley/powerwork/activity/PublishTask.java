@@ -120,7 +120,11 @@ public class PublishTask extends BaseActivity {
             e.printStackTrace();
         }
 
-        projectModes = new ProjectService().findByUseId(userBaseEntity.getUseId());
+        projectModes = new ProjectService().findByUseId(userEntity.getUseId());
+        if (projectModes!=null&&!projectModes.isEmpty())
+            changeType(0);
+        else
+            changeType(1);
 
         //初始化创建者和执行者TasUse
         listTasUse = new ArrayList<>();
@@ -194,18 +198,18 @@ public class PublishTask extends BaseActivity {
         //去除TasUse重复
         boolean hasCreat = false;
         for (TasUseEntity tasUseEntity : listTasUse) {
-            if (tasUseEntity.getUse_id() == userBaseEntity.getUseId()) {
+            if (tasUseEntity.getUse_id() == userEntity.getUseId()) {
                 hasCreat = true;
                 tasUseEntity.setRank(tasUseEntity.getRank() + 3);
             }
         }
         if(!hasCreat){
             TasUseEntity creatTasUse=new TasUseEntity();
-            creatTasUse.setUse_id(userBaseEntity.getUseId());
+            creatTasUse.setUse_id(userEntity.getUseId());
             creatTasUse.setRank(3);
             listTasUse.add(creatTasUse);
         }
-        AddTaskParams params = new AddTaskParams(userBaseEntity);
+        AddTaskParams params = new AddTaskParams(userEntity);
         params.setName(name).
                 setEndtime(endTime).
                 setProId(pro_id).
@@ -242,7 +246,7 @@ public class PublishTask extends BaseActivity {
             name = pub_et_note_name.getHint().toString();
         }
 
-        AddNoteParams params = new AddNoteParams(userBaseEntity);
+        AddNoteParams params = new AddNoteParams(userEntity);
         params.setName(name).
                 setAlarm(alarm).
                 setList(list);

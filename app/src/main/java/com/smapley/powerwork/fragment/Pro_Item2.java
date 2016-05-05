@@ -125,7 +125,7 @@ public class Pro_Item2 extends BaseFragment {
     }
 
     private void getMytaskForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_TaskList, userBaseEntity);
+        BaseParams params = new BaseParams(MyData.URL_TaskList, userEntity);
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(MyResponse result) {
@@ -171,7 +171,7 @@ public class Pro_Item2 extends BaseFragment {
     }
 
     private void getOtherTaskForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_OtherTaskList, userBaseEntity);
+        BaseParams params = new BaseParams(MyData.URL_OtherTaskList, userEntity);
         params.addBodyParameter("pro_id",pro_id+"");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override

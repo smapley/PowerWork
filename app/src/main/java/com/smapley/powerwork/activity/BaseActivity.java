@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.db.entity.UserBaseEntity;
 import com.smapley.powerwork.db.entity.UserEntity;
 import com.smapley.powerwork.utils.ActivityStack;
 
@@ -29,8 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected SharedPreferences sp_set;
     protected DbManager dbUtils;
     protected SweetAlertDialog dialog;
-    public UserBaseEntity userBaseEntity=null;
-    protected UserEntity userEntity=null;
+    protected UserEntity userEntity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +40,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         sp_set = LocalApplication.getInstance().sp_set;
 
         try {
-            userBaseEntity=dbUtils.findById(UserBaseEntity.class,sp_user.getInt("id", 0));
+            userEntity = dbUtils.findById(UserEntity.class, sp_user.getInt("id", 0));
         } catch (DbException e) {
             e.printStackTrace();
         }
-        if(userBaseEntity!=null)
-            try {
-                userEntity=dbUtils.findById(UserEntity.class,userBaseEntity.getUseId());
-            } catch (DbException e) {
-                e.printStackTrace();
-            }
         dialog = new SweetAlertDialog(this);
         isCreate = true;
     }
@@ -90,7 +82,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void showToast(String data) {
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
     }
-    protected void showOutLoginDialog(final Context context,String details) {
+
+    protected void showOutLoginDialog(final Context context, String details) {
         SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE);
         dialog.showText(details)
                 .showConfirmButton(R.string.login)

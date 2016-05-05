@@ -16,13 +16,9 @@ import java.util.List;
  * Created by smapley on 15/12/18.
  */
 public class DynamicService {
-    private DbManager dbUtils;
+    private static DbManager dbUtils= LocalApplication.getInstance().dbUtils;
 
-    public DynamicService() {
-        dbUtils = LocalApplication.getInstance().dbUtils;
-    }
-
-    public void save(DynamicMode dynamicMode) {
+    public static void save(DynamicMode dynamicMode) {
         if (dynamicMode != null) {
             try {
                 if (dynamicMode.getDynamicEntity() != null)

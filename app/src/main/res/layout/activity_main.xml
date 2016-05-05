@@ -49,7 +49,16 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/main_ll_title" />
 
-    <include layout="@layout/activity_main_add_menu" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/main_add_menu_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:src="@mipmap/main_iv_add" />
 
 
 

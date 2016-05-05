@@ -22,6 +22,8 @@ import com.smapley.powerwork.activity.Add;
 import com.smapley.powerwork.adapter.ProItem3Adapter;
 import com.smapley.powerwork.db.entity.FileEntity;
 import com.smapley.powerwork.db.entity.FolderEntity;
+import com.smapley.powerwork.db.mode.FolderMode;
+import com.smapley.powerwork.db.service.FolderService;
 import com.smapley.powerwork.http.callback.HttpCallBack;
 import com.smapley.powerwork.http.MyResponse;
 import com.smapley.powerwork.http.params.BaseParams;
@@ -205,7 +207,7 @@ public class Pro_Item3 extends BaseFragment {
     }
 
     private void getFolderForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_FolderList, userBaseEntity);
+        BaseParams params = new BaseParams(MyData.URL_FolderList, userEntity);
         params.addBodyParameter("pro_id", pro_id + "");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
@@ -214,16 +216,10 @@ public class Pro_Item3 extends BaseFragment {
                     @Override
                     public void run() {
                         if (result.flag.equals(MyData.SUCC)) {
-                            List<FolderEntity> listFolder = JSON.parseObject(result.data, new TypeReference<List<FolderEntity>>() {
+                            FolderMode folderMode = JSON.parseObject(result.data, new TypeReference<FolderMode>() {
                             });
-                            if (listFolder != null && !listFolder.isEmpty()) {
-                                for (FolderEntity folderEntity : listFolder) {
-                                    try {
-                                        dbUtils.saveOrUpdate(folderEntity);
-                                    } catch (DbException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
+                            if (folderMode != null ) {
+                                FolderService.save(folderMode);
                                 mhandler.obtainMessage(SAVEFOLDER).sendToTarget();
                             }
                         }
@@ -249,7 +245,7 @@ public class Pro_Item3 extends BaseFragment {
     }
 
     private void getFileForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_FileList, userBaseEntity);
+        BaseParams params = new BaseParams(MyData.URL_FileList, userEntity);
         params.addBodyParameter("pro_id", pro_id + "");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
@@ -491,7 +487,7 @@ public class Pro_Item3 extends BaseFragment {
      */
     public void addFolder(String name) {
         if (fol_id != -1) {
-            BaseParams params = new BaseParams(MyData.URL_AddFolder, userBaseEntity);
+            BaseParams params = new BaseParams(MyData.URL_AddFolder, userEntity);
             params.addBodyParameter("fol_id", fol_id + "");
             params.addBodyParameter("name", name);
             x.http().post(params, new HttpCallBack(getActivity(), R.string.addfolder_ing) {
@@ -526,7 +522,7 @@ public class Pro_Item3 extends BaseFragment {
      * 新建文件
      */
     public void addFile(int type, List<String> list) {
-        BaseParams params = new BaseParams(MyData.URL_AddFile, userBaseEntity);
+        BaseParams params = new BaseParams(MyData.URL_AddFile, userEntity);
         params.addBodyParameter("pro_id",pro_id+"");
         params.addBodyParameter("fol_id", fol_id + "");
         params.addBodyParameter("size", list.size() + "");

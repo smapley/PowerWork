@@ -109,7 +109,7 @@ public class Personal extends BaseFragment {
 
 
     public void getDataForWeb() {
-        noteListService.load(userBaseEntity);
+        noteListService.load(userEntity);
     }
 
     public void getDataForDb() {
@@ -127,7 +127,7 @@ public class Personal extends BaseFragment {
                     //从昨天到现在创建的Note
                     List<NoteEntity> listNote = dbUtils.selector(NoteEntity.class)
                             .where("cre_date", "between", new String[]{time1 + "", time2 + ""})
-                            .and("use_id","=",userBaseEntity.getUseId())
+                            .and("use_id","=",userEntity.getUseId())
                             .orderBy("cre_date",true).findAll();
 
                     mhandler.obtainMessage(NOTEDATA, listNote).sendToTarget();
@@ -145,7 +145,7 @@ public class Personal extends BaseFragment {
                 try {
                     long time = DateUtil.getDateLong(DateUtil.getDateString(System.currentTimeMillis() + DateUtil.onDay, DateUtil.formatDate), DateUtil.formatDate);
                     //今天以前没有完成的任务
-                    List<TaskEntity> listTask = TaskService.findByUseId(userBaseEntity.getUseId(),time);
+                    List<TaskEntity> listTask = TaskService.findByUseId(userEntity.getUseId(),time);
                     mhandler.obtainMessage(TASKDATA, listTask).sendToTarget();
 
                 } catch (Exception e) {

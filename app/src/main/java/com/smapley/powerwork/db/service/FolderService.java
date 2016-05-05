@@ -15,13 +15,10 @@ import java.util.List;
  * Created by smapley on 15/12/18.
  */
 public class FolderService {
-    private DbManager dbUtils;
+    private static DbManager dbUtils = LocalApplication.getInstance().dbUtils;
 
-    public FolderService() {
-        dbUtils = LocalApplication.getInstance().dbUtils;
-    }
 
-    public void save(FolderMode folderMode) {
+    public static void save(FolderMode folderMode) {
         if (folderMode != null) {
             try {
                 if (folderMode.getFolderEntity() != null)
@@ -37,6 +34,10 @@ public class FolderService {
                         e.printStackTrace();
                     }
                 }
+            if(folderMode.getFolderModes()!=null&&!folderMode.getFolderModes().isEmpty()){
+                for(FolderMode folderMode1:folderMode.getFolderModes())
+                    save(folderMode1);
+            }
         }
     }
 

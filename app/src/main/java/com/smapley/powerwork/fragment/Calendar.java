@@ -112,7 +112,7 @@ public class Calendar extends BaseFragment {
     }
 
     public void getDataForWeb() {
-        taskListService.load(userBaseEntity);
+        taskListService.load(userEntity);
     }
 
 
@@ -206,7 +206,7 @@ public class Calendar extends BaseFragment {
             @Override
             public void run() {
                 //从数据库获取数据更新界面
-                List<TaskEntity> list = new TaskService().findByUseId(userBaseEntity.getUseId());
+                List<TaskEntity> list = new TaskService().findByUseId(userEntity.getUseId());
                 if (list != null && !list.isEmpty())
                     mhandler.obtainMessage(GETDATA, list).sendToTarget();
             }

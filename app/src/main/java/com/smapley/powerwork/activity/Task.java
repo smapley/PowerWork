@@ -76,7 +76,7 @@ public class Task extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                    List<TaskEntity> listTask = TaskService.findByUseId(userBaseEntity.getUseId());
+                    List<TaskEntity> listTask = TaskService.findByUseId(userEntity.getUseId());
                     mhandler.obtainMessage(GETDATA, listTask).sendToTarget();
 
             }
@@ -84,7 +84,7 @@ public class Task extends BaseActivity {
     }
 
     public void getDataForWeb() {
-        taskListService.load(userBaseEntity);
+        taskListService.load(userEntity);
     }
 
     private Handler mhandler = new Handler() {

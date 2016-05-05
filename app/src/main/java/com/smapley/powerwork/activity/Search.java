@@ -61,7 +61,7 @@ public class Search extends BaseActivity {
     }
 
     private void getDataForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_SearchProject, userBaseEntity);
+        BaseParams params = new BaseParams(MyData.URL_SearchProject, userEntity);
         params.addBodyParameter("data", data);
         x.http().post(params, new HttpCallBack(this, R.string.search_ing) {
             @Override

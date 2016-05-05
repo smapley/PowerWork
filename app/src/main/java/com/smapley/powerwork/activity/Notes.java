@@ -13,6 +13,7 @@ import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.NoteAdapter;
 import com.smapley.powerwork.db.entity.NoteEntity;
 import com.smapley.powerwork.db.modes.NoteMode;
+import com.smapley.powerwork.db.service.NoteService;
 import com.smapley.powerwork.http.MyResponse;
 import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.utils.MyData;
@@ -55,21 +56,18 @@ public class Notes extends BaseActivity {
     }
 
     private void getDataForWeb() {
-        BaseParams baseParams=new BaseParams(MyData.URL_NoteList,userBaseEntity);
+        BaseParams baseParams = new BaseParams(MyData.URL_NoteList, userEntity);
         x.http().post(baseParams, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(final MyResponse result) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<NoteMode> listNote= JSON.parseObject(result.data,new TypeReference<List<NoteMode>>(){});
-                        if(listNote!=null&&!listNote.isEmpty()){
-                            for(NoteMode noteMode :listNote){
-                                try {
-                                    dbUtils.saveOrUpdate(noteMode);
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
+                        List<NoteMode> listNote = JSON.parseObject(result.data, new TypeReference<List<NoteMode>>() {
+                        });
+                        if (listNote != null && !listNote.isEmpty()) {
+                            for (NoteMode noteMode : listNote) {
+                                NoteService.save(noteMode);
                             }
                             mhandler.obtainMessage(SAVEDATA).sendToTarget();
                         }
@@ -101,7 +99,7 @@ public class Notes extends BaseActivity {
             @Override
             public void run() {
                 try {
-                    List<NoteMode> listNote = dbUtils.selector(NoteMode.class).orderBy("cre_date").findAll();
+                    List<NoteEntity> listNote = dbUtils.selector(NoteEntity.class).orderBy("cre_date").findAll();
                     if (listNote != null && !listNote.isEmpty())
                         mhandler.obtainMessage(GETDATA, listNote).sendToTarget();
                 } catch (DbException e) {
@@ -132,7 +130,7 @@ public class Notes extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case GETDATA:
                     not_pa_adapter.addAll((List<NoteEntity>) msg.obj);
                     break;

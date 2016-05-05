@@ -183,7 +183,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
         try {
             if (resultCode == RESULT_OK && requestCode == 0) {
                 List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                BaseParams params = new BaseParams(MyData.URL_UserPicUpLoad, userBaseEntity);
+                BaseParams params = new BaseParams(MyData.URL_UserPicUpLoad, userEntity);
                 params.addBodyParameter("file", new File(resultList.get(0)));
                 params.setMultipart(true);
                 x.http().post(params, new HttpCallBack(Account.this, R.string.acc_dialog_uppic) {
@@ -208,7 +208,7 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     }
 
     private void saveData() {
-        BaseParams params = new BaseParams(MyData.URL_Account, userBaseEntity);
+        BaseParams params = new BaseParams(MyData.URL_Account, userEntity);
         params.addBodyParameter("truename", acc_et_name.getText().toString());
         params.addBodyParameter("phone", acc_et_phone.getText().toString());
         params.addBodyParameter("birthday", DateUtil.getDateLong(acc_tv_birthday.getText().toString(), DateUtil.formatDate) + "");

@@ -9,7 +9,7 @@ import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.db.Refresh;
 import com.smapley.powerwork.db.RefreshService;
 import com.smapley.powerwork.db.entity.MessageEntity;
-import com.smapley.powerwork.db.entity.UserBaseEntity;
+import com.smapley.powerwork.db.entity.UserEntity;
 import com.smapley.powerwork.http.callback.SimpleCallback;
 import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.utils.MyData;
@@ -33,10 +33,10 @@ public abstract class MessageListService {
         refreshService = new RefreshService();
     }
 
-    public void load(UserBaseEntity userBaseEntity) {
+    public void load(UserEntity userEntity) {
         time = System.currentTimeMillis();
-        refresh = refreshService.findById(userBaseEntity.getUseId());
-        BaseParams params = new BaseParams(MyData.URL_MessageList, userBaseEntity);
+        refresh = refreshService.findById(userEntity.getUseId());
+        BaseParams params = new BaseParams(MyData.URL_MessageList, userEntity);
         params.addBodyParameter("time", refresh.getMessageList() + "");
         x.http().post(params, new SimpleCallback() {
             @Override

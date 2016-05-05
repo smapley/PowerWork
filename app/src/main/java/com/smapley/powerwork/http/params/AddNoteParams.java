@@ -1,7 +1,7 @@
 package com.smapley.powerwork.http.params;
 
 import com.smapley.powerwork.db.entity.NoteDetailsEntity;
-import com.smapley.powerwork.db.entity.UserBaseEntity;
+import com.smapley.powerwork.db.entity.UserEntity;
 import com.smapley.powerwork.utils.MyData;
 
 import java.io.File;
@@ -13,8 +13,8 @@ import java.util.List;
 public class AddNoteParams extends BaseParams {
 
 
-    public AddNoteParams(UserBaseEntity userBaseEntity) {
-        super(MyData.URL_AddNote, userBaseEntity);
+    public AddNoteParams(UserEntity userEntity) {
+        super(MyData.URL_AddNote, userEntity);
     }
 
     public AddNoteParams setName(String name){
