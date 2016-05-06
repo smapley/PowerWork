@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.db.entity.ProjectEntity;
 import com.smapley.powerwork.holder.Sea_Item_Holder;
+import com.smapley.powerwork.mode.SearchMode;
 
 import java.util.List;
 
@@ -18,13 +18,15 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<ProjectEntity> list;
+    private List<SearchMode> list;
     private LayoutInflater inflater;
+    private int projectId;
 
-    public SearchAdapter(Context context, List<ProjectEntity> list) {
+    public SearchAdapter(Context context, List<SearchMode> list,int projectId) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.list = list;
+        this.projectId=projectId;
 
     }
 
@@ -32,6 +34,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
+            case 0:
             case 1:
                 view = inflater.inflate(R.layout.adapter_sea_item, parent, false);
                 return new Sea_Item_Holder(view);
@@ -43,8 +46,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
+            case 0:
             case 1:
-                ((Sea_Item_Holder) holder).setData(context, list.get(position));
+                ((Sea_Item_Holder) holder).setData(context, list.get(position),projectId);
                 break;
         }
 

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.db.entity.ProjectEntity;
 import com.smapley.powerwork.fragment.BaseFragment;
 import com.smapley.powerwork.fragment.Pro_Item1;
@@ -17,11 +18,13 @@ import com.smapley.powerwork.fragment.Pro_Item2;
 import com.smapley.powerwork.fragment.Pro_Item3;
 import com.smapley.powerwork.fragment.Pro_Item4;
 import com.smapley.powerwork.fragment.Pro_Item5;
+import com.smapley.powerwork.utils.MyData;
 
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,9 @@ public class Project extends BaseActivity {
 
     @ViewInject(R.id.pro_fl_content)
     private FrameLayout pro_fl_content;
+
+    @ViewInject(R.id.pro_item1_iv)
+    private ImageView pro_item1_iv;
 
     @ViewInject(R.id.pro_tv_btn_item1)
     private TextView pro_tv_btn_item1;
@@ -90,6 +96,7 @@ public class Project extends BaseActivity {
     private void initView() {
         if (project != null) {
             pro_ct_layout.setTitle(project.getName());
+            x.image().bind(pro_item1_iv, MyData.URL_PIC+project.getPic_url(), LocalApplication.getInstance().CirtlesImage);
         }
     }
 

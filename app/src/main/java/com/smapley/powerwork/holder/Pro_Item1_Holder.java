@@ -47,20 +47,28 @@ public class Pro_Item1_Holder extends BaseHolder {
     public void setData(Context context, DynamicEntity mode) {
         types = context.getResources().getStringArray(R.array.dynamic_type);
         x.image().bind(use_pic, MyData.URL_PIC + mode.getPic_url(), LocalApplication.getInstance().CirtlesImage);
-        //     use_name.setText(mode.getUse_name());
+        use_name.setText(mode.getUsername());
         type.setText(types[mode.getType()]);
         cre_date.setText(DateUtil.getDateString(mode.getCre_date(), DateUtil.formatDate));
         switch (mode.getType()){
+            case 0:
+                x.image().bind(dynamic_pic, MyData.PIC_TEAM, LocalApplication.getInstance().CirtlesImage);
+                break;
+            case 1:
+                x.image().bind(dynamic_pic, MyData.PIC_TASK, LocalApplication.getInstance().CirtlesImage);
+                break;
             case 2:
-                //     x.image().bind(dynamic_pic, MyData.URL_File + mode.getdPic_url(), LocalApplication.getInstance().CirtlesImage);
+                x.image().bind(dynamic_pic, MyData.PIC_FILE, LocalApplication.getInstance().CirtlesImage);
                 break;
         }
-        //  dynamic_name.setText(mode.getDetai());
+        dynamic_name.setText(mode.getDetail());
 
         praise_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                int num =Integer.parseInt(praise_text.getText().toString().substring(3,4));
+                num++;
+                praise_text.setText(" 赞（"+num+"）");
             }
         });
         discuss_text.setOnClickListener(new View.OnClickListener() {

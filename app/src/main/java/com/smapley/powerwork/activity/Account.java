@@ -2,6 +2,7 @@ package com.smapley.powerwork.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.db.entity.MessageEntity;
 import com.smapley.powerwork.db.entity.UserEntity;
 import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.http.callback.HttpCallBack;
@@ -56,24 +58,66 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
     @ViewInject(R.id.acc_bt_exit)
     private Button acc_bt_exit;
 
+    @ViewInject(R.id.acc_iv_changepic)
+    private ImageView acc_iv_changepic;
+
+    @ViewInject(R.id.acc_bt_message)
+    private Button acc_bt_message;
+    @ViewInject(R.id.acc_bt_join)
+    private Button acc_bt_join;
+
     //记录当前的编辑状态
     private boolean isEdit = false;
 
+    private int userId;
+
     private DatePickerDialog datePickerDialog;
+
+    private UserEntity userEntity;
+    private boolean edit = false;
+    private boolean join = false;
+    private int projectId;
+    private int userId2;
 
     @Override
     protected void initParams() {
         title_tv_name.setText(R.string.account);
         title_iv_edit.setVisibility(View.VISIBLE);
 
-        initView();
+        userId = getIntent().getIntExtra("userId", 0);
+        edit = getIntent().getBooleanExtra("edit", false);
+        join = getIntent().getBooleanExtra("join", false);
+        projectId=getIntent().getIntExtra("projectId",0);
+        userId2=getIntent().getIntExtra("userId2",0);
+        if (userId > 0) {
+            try {
+                userEntity = dbUtils.findById(UserEntity.class, userId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            initView();
 
-        final Calendar calendar = Calendar.getInstance();
-        datePickerDialog = DatePickerDialog.newInstance(Account.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-
+            final Calendar calendar = Calendar.getInstance();
+            datePickerDialog = DatePickerDialog.newInstance(Account.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+        }
     }
 
     private void initView() {
+
+        if (!edit) {
+            title_iv_edit.setVisibility(View.GONE);
+            acc_iv_changepic.setVisibility(View.GONE);
+            acc_bt_exit.setVisibility(View.GONE);
+            acc_bt_message.setVisibility(View.VISIBLE);
+            if (join)
+                acc_bt_join.setVisibility(View.VISIBLE);
+        } else {
+            title_iv_edit.setVisibility(View.VISIBLE);
+            acc_iv_changepic.setVisibility(View.VISIBLE);
+            acc_bt_exit.setVisibility(View.VISIBLE);
+            acc_bt_message.setVisibility(View.GONE);
+        }
+
         if (userEntity != null) {
             x.image().bind(acc_iv_pic, MyData.URL_PIC + userEntity.getPicUrl());
             acc_et_name.setText(userEntity.getTruename());
@@ -96,9 +140,18 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
 
     }
 
-    @Event({R.id.acc_iv_changepic, R.id.acc_bt_exit, R.id.title_iv_back, R.id.title_iv_edit, R.id.acc_tv_birthday, R.id.title_iv_done})
+    @Event({R.id.acc_iv_changepic, R.id.acc_bt_join, R.id.acc_bt_message, R.id.acc_bt_exit, R.id.title_iv_back, R.id.title_iv_edit, R.id.acc_tv_birthday, R.id.title_iv_done})
     private void onClick(View view) {
         switch (view.getId()) {
+            case R.id.acc_bt_join:
+                send();
+                break;
+            case R.id.acc_bt_message:
+                Intent intent = new Intent(Account.this, Feedback.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+                break;
             case R.id.acc_tv_birthday:
                 datePickerDialog.setVibrate(false);
                 datePickerDialog.setYearRange(1985, 2028);
@@ -154,6 +207,31 @@ public class Account extends BaseActivity implements DatePickerDialog.OnDateSetL
                 startActivity(new Intent(Account.this, Login.class));
                 break;
         }
+    }
+
+
+    private void send() {
+        BaseParams params = new BaseParams(MyData.URL_SendMessage, userEntity);
+        params.addBodyParameter("projectId", projectId+"");
+        params.addBodyParameter("userId2",userId2+"");
+        params.addBodyParameter("data", "项目邀请");
+        x.http().post(params, new HttpCallBack(this, R.string.feedback_ing) {
+            @Override
+            public void onResult(String result, SweetAlertDialog dialog) {
+                Log.d("result", result);
+                MessageEntity entity = JSON.parseObject(result, new TypeReference<MessageEntity>() {
+                });
+                try {
+                    dbUtils.saveOrUpdate(entity);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+                        .showText(R.string.sendMessage_done)
+                        .commit()
+                        .dismiss(3000);
+            }
+        });
     }
 
     /**

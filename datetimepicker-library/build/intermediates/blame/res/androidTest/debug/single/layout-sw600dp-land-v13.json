@@ -1,9 +1,5 @@
 [
     {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout-sw600dp-land-v13/date_picker_dialog.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout-sw600dp-land-v13/date_picker_dialog.xml"
-    },
-    {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout-sw600dp-land-v13/date_picker_dialog.xml",
         "source": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout-sw600dp-land-v13/date_picker_dialog.xml"
     }

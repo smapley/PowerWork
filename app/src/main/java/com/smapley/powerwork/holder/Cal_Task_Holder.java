@@ -1,11 +1,13 @@
 package com.smapley.powerwork.holder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smapley.powerwork.R;
+import com.smapley.powerwork.activity.AddTask;
 import com.smapley.powerwork.db.entity.TaskEntity;
 import com.smapley.powerwork.utils.DateUtil;
 
@@ -28,28 +30,38 @@ public class Cal_Task_Holder extends BaseHolder {
     }
 
     public void setData(final Context context, final TaskEntity mode) {
-        if(mode.getProgress()==100){
+        if (mode.getProgress() == 100) {
             cal_iv_task_state.setImageResource(R.drawable.task_iv_checked_select);
             cal_tv_task_name.setTextColor(context.getResources().getColor(R.color.gray_text));
-        }else {
+        } else {
             cal_iv_task_state.setImageResource(R.drawable.task_iv_select);
             cal_tv_task_name.setTextColor(context.getResources().getColor(R.color.default_text));
         }
         cal_tv_task_name.setText(mode.getName());
-        cal_tv_task_time.setText(DateUtil.getDateString(mode.getEnd_date(),DateUtil.formatDateAndTime));
+        cal_tv_task_time.setText(DateUtil.getDateString(mode.getEnd_date(), DateUtil.formatDateAndTime));
 
         cal_iv_task_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mode.getProgress()==100){
+                if (mode.getProgress() == 100) {
                     cal_iv_task_state.setImageResource(R.drawable.task_iv_select);
                     cal_tv_task_name.setTextColor(context.getResources().getColor(R.color.default_text));
                     mode.setProgress(0);
-                }else {
+                } else {
                     cal_iv_task_state.setImageResource(R.drawable.task_iv_checked_select);
                     cal_tv_task_name.setTextColor(context.getResources().getColor(R.color.gray_text));
                     mode.setProgress(100);
                 }
+            }
+        });
+        contentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AddTask.class);
+                intent.putExtra("edit", false);
+                intent.putExtra("taskId", mode.getTas_id());
+                intent.putExtra("taskName", mode.getName());
+                context.startActivity(intent);
             }
         });
     }

@@ -148,7 +148,7 @@ public class Login extends BaseActivity {
         if (userEntity != null) {
             x.image().bind(log_ci_pic, MyData.URL_PIC + userEntity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
         } else {
-            x.image().bind(log_ci_pic, "assets://logo.jpg", LocalApplication.getInstance().CirtlesImage);
+            x.image().bind(log_ci_pic, "assets://logo.png", LocalApplication.getInstance().CirtlesImage);
         }
         log_et_username.addTextChangedListener(new TextWatcher() {
             @Override
@@ -180,7 +180,7 @@ public class Login extends BaseActivity {
                     x.image().bind(log_ci_pic, MyData.URL_PIC + userEntity.getPicUrl(), LocalApplication.getInstance().CirtlesImage);
                 } else {
                     log_et_password.setText("");
-                    x.image().bind(log_ci_pic, "assets://logo.jpg", LocalApplication.getInstance().CirtlesImage);
+                    x.image().bind(log_ci_pic, "assets://logo.png", LocalApplication.getInstance().CirtlesImage);
                 }
             }
         });

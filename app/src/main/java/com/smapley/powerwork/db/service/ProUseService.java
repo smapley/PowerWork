@@ -18,7 +18,7 @@ public class ProUseService {
     private static DbManager dbUtils= LocalApplication.getInstance().dbUtils;
 
 
-    public void save(ProUseMode proUseMode) {
+    public static void save(ProUseMode proUseMode) {
         if (proUseMode != null) {
             try {
                 if (proUseMode.getUserEntity() != null)
@@ -35,7 +35,7 @@ public class ProUseService {
         }
     }
 
-    public ProUseMode findById(int id) {
+    public static ProUseMode findById(int id) {
         ProUseMode proUseMode = new ProUseMode();
 
         //添加ProUseEntity
@@ -56,7 +56,7 @@ public class ProUseService {
         return proUseMode;
     }
 
-    public List<ProUseMode> findByProId(int proId) {
+    public static List<ProUseMode> findByProId(int proId) {
         List<ProUseMode> list = new ArrayList<>();
         List<ProUseEntity> proUseEntityList = null;
         try {

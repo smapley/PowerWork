@@ -2,9 +2,5 @@
     {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/dialog/build/intermediates/res/merged/release/color-v23/abc_color_highlight_material.xml",
         "source": "/Users/smapley/Desktop/powerwork/PowerWork/dialog/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.0/res/color-v23/abc_color_highlight_material.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/dialog/build/intermediates/res/merged/release/color-v23/abc_color_highlight_material.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/dialog/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.0/res/color-v23/abc_color_highlight_material.xml"
     }
 ]

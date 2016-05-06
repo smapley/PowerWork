@@ -74,8 +74,8 @@ public class LocalApplication extends BaseApplication {
                         // 加载中或错误图片的ScaleType
                 .setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setLoadingDrawableId(R.mipmap.load_ing)
-                .setFailureDrawableId(R.mipmap.load_file)
+                .setLoadingDrawableId(R.mipmap.logo)
+                .setFailureDrawableId(R.mipmap.logo)
                 .build();
         //初始化圆角图片
         FilletImage=new ImageOptions.Builder()
@@ -85,8 +85,8 @@ public class LocalApplication extends BaseApplication {
                         // 加载中或错误图片的ScaleType
                 .setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setLoadingDrawableId(R.mipmap.load_ing)
-                .setFailureDrawableId(R.mipmap.load_file)
+                .setLoadingDrawableId(R.mipmap.logo)
+                .setFailureDrawableId(R.mipmap.logo)
                 .build();
 
 

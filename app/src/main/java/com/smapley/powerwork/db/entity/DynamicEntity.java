@@ -31,8 +31,10 @@ public class DynamicEntity implements BaseMode{
 	private int state;
 	@Column(name = "cre_date")
 	private long cre_date;
-
-
+	@Column(name = "username")
+	private String username;
+	@Column(name = "detail")
+	private String detail;
 
 
 	public int getDyn_id() {
@@ -115,4 +117,19 @@ public class DynamicEntity implements BaseMode{
 		this.cre_date = cre_date;
 	}
 
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

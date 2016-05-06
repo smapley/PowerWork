@@ -42,13 +42,18 @@ public class Setting extends BaseActivity {
                 finish();
                 break;
             case R.id.set_tv_account:
-                startActivity(new Intent(Setting.this, Account.class));
+                Intent intent = new Intent(Setting.this, Account.class);
+                intent.putExtra("userId",userEntity.getUseId());
+                intent.putExtra("edit",true);
+                startActivity(intent);
                 break;
             case R.id.set_tv_info:
                 startActivity(new Intent(Setting.this, Notification.class));
                 break;
             case R.id.set_tv_feedback:
-                startActivity(new Intent(Setting.this, Feedback.class));
+                Intent intent1=new Intent(Setting.this, Feedback.class);
+                intent1.putExtra("type",0);
+                startActivity(intent1);
                 break;
             case R.id.set_tv_aboutus:
                 startActivity(new Intent(Setting.this, AboutUs.class));

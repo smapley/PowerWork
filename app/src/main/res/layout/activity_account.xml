@@ -74,6 +74,22 @@
                 android:layout_margin="30dp"
                 android:background="@null"
                 android:text="@string/acc_bt_exit" />
+            <Button
+                android:id="@+id/acc_bt_join"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="30dp"
+                android:background="@null"
+                android:visibility="gone"
+                android:text="@string/acc_bt_join" />
+            <Button
+                android:id="@+id/acc_bt_message"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="30dp"
+                android:background="@null"
+                android:visibility="gone"
+                android:text="@string/acc_bt_message" />
         </LinearLayout>
     </ScrollView>
 

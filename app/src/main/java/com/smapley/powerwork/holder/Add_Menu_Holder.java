@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.activity.AddTask;
 import com.smapley.powerwork.adapter.AddTaskAdapter;
-import com.smapley.powerwork.db.entity.NoteDetailsEntity;
+import com.smapley.powerwork.db.entity.TaskDetailsEntity;
 import com.smapley.powerwork.utils.JFileKit;
 import com.smapley.powerwork.utils.voice.ErrorCode;
 import com.smapley.powerwork.utils.voice.MediaRecordFunc;
@@ -214,11 +214,11 @@ public class Add_Menu_Holder extends BaseHolder {
         pop_add_voice_tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NoteDetailsEntity add_item_mode=new NoteDetailsEntity(4);
+                TaskDetailsEntity add_item_mode=new TaskDetailsEntity(4);
                 add_item_mode.setPath(JFileKit.AUDIO_AMR_FILEPATH);
                 add_item_mode.setLength(voicelength);
                 adapter.addItem(add_item_mode);
-                adapter.addItem(new NoteDetailsEntity(5));
+                adapter.addItem(new TaskDetailsEntity(5));
                 hitPopVoice(context);
             }
         });

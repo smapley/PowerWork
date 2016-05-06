@@ -10,7 +10,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.adapter.ProItem2Adapter;
+import com.smapley.powerwork.db.entity.TasUseEntity;
 import com.smapley.powerwork.db.entity.TaskEntity;
+import com.smapley.powerwork.db.modes.TaskMode;
+import com.smapley.powerwork.db.service.TaskService;
 import com.smapley.powerwork.http.MyResponse;
 import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.mode.BaseMode;
@@ -78,46 +81,41 @@ public class Pro_Item2 extends BaseFragment {
         pro_item2_rv_list.setAdapter(adapter);
     }
 
+
     public void getDataForDb() {
-        getMyTaskForDb();
-        getOtherTaskForDb();
-
-
-    }
-
-    private void getOtherTaskForDb() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-//                try {
-//                    List<OtherTaskEntity> listTask=dbUtils.selector(OtherTaskEntity.class).where("pro_id","=",pro_id+"").findAll();
-//                    if(listTask!=null&&!listTask.isEmpty())
-//                        mhandler.obtainMessage(GETOTHERTASK,listTask).sendToTarget();
-//                } catch (DbException e) {
-//                    e.printStackTrace();
-//                }
-
-            }
-        }).start();
-    }
-
-    private void getMyTaskForDb() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    List<TaskEntity> listTask=dbUtils
+                    List<TaskEntity> listTask = dbUtils
                             .selector(TaskEntity.class)
                             .where("pro_id", "=", pro_id + "")
                             .findAll();
-                    if(listTask!=null&&!listTask.isEmpty())
-                        mhandler.obtainMessage(GETMYTASK,listTask).sendToTarget();
+                    List<TaskEntity> myTask = new ArrayList<TaskEntity>();
+                    List<TaskEntity> otherTask = new ArrayList<TaskEntity>();
+                    for (TaskEntity taskEntity : listTask) {
+                        List<TasUseEntity> tasUseEntities = dbUtils.selector(TasUseEntity.class)
+                                .where("tas_id", "=", taskEntity.getTas_id())
+                                .and("use_id", "=", userEntity.getUseId())
+                                .findAll();
+                        if (tasUseEntities!=null&&!tasUseEntities.isEmpty()){
+                            myTask.add(taskEntity);
+                        }else
+                            otherTask.add(taskEntity);
+
+                    }
+                    if (myTask != null && !myTask.isEmpty())
+                        mhandler.obtainMessage(GETMYTASK, listTask).sendToTarget();
+                    if (otherTask != null && !otherTask.isEmpty())
+                        mhandler.obtainMessage(GETOTHERTASK, listTask).sendToTarget();
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
     }
+
+
 
     public void getDataForWeb() {
         getMytaskForWeb();
@@ -126,24 +124,19 @@ public class Pro_Item2 extends BaseFragment {
 
     private void getMytaskForWeb() {
         BaseParams params = new BaseParams(MyData.URL_TaskList, userEntity);
+        params.addBodyParameter("projectId", pro_id + "");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(MyResponse result) {
-                final List<TaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskEntity>>() {
+                final List<TaskMode> listTask = JSON.parseObject(result.data, new TypeReference<List<TaskMode>>() {
                 });
                 if (listTask != null && !listTask.isEmpty()) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             //添加新表
-                            for (TaskEntity taskMode : listTask) {
-                                try {
-                                    //添加Task
-                                    dbUtils.saveOrUpdate(taskMode);
-                                } catch (DbException e) {
-                                    e.printStackTrace();
-                                }
-
+                            for (TaskMode taskMode : listTask) {
+                                TaskService.save(taskMode);
                             }
                             mhandler.obtainMessage(SAVEMYTASK).sendToTarget();
                         }
@@ -172,7 +165,7 @@ public class Pro_Item2 extends BaseFragment {
 
     private void getOtherTaskForWeb() {
         BaseParams params = new BaseParams(MyData.URL_OtherTaskList, userEntity);
-        params.addBodyParameter("pro_id",pro_id+"");
+        params.addBodyParameter("pro_id", pro_id + "");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
             @Override
             public void onSuccess(MyResponse result) {
@@ -219,24 +212,21 @@ public class Pro_Item2 extends BaseFragment {
 
     }
 
-    private Handler mhandler=new Handler(){
+    private Handler mhandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case GETMYTASK:
                     adapter.removeMyTask();
                     adapter.addMyTask((List<TaskEntity>) msg.obj);
                     break;
                 case GETOTHERTASK:
                     adapter.removeOtherTask();
-//                    adapter.addOtherTask((List<OtherTaskEntity>) msg.obj);
+                    adapter.addOtherTask((List<TaskEntity>) msg.obj);
                     break;
                 case SAVEMYTASK:
-                    getMyTaskForDb();
-                    break;
-                case SAVEOTHERTASK:
-                    getOtherTaskForDb();
+                    getDataForDb();
                     break;
             }
         }

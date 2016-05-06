@@ -12,6 +12,7 @@ public class DateUtil {
     public static String formatDate = "yyyy-MM-dd";
     public static String formatTime = "MMddHHmm";
     public static String formatDateAndTime = "yyyy-MM-dd HH:mm";
+    public static String formatDayAndTime = "MM-dd HH:mm";
     public static long onDay = 86400000;
 
     /**

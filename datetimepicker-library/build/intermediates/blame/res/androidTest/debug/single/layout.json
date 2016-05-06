@@ -1,43 +1,15 @@
 [
     {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/time_picker_dialog.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/time_picker_dialog.xml"
-    },
-    {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_header_view.xml",
         "source": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/date_picker_header_view.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_selected_date.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/date_picker_selected_date.xml"
     },
     {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_dialog.xml",
         "source": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/date_picker_dialog.xml"
     },
     {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_view_animator.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/date_picker_view_animator.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_dialog.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/date_picker_dialog.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/time_header_label.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/time_header_label.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/year_label_text_view.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/year_label_text_view.xml"
-    },
-    {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/time_picker_dialog.xml",
         "source": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/time_picker_dialog.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_done_button.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/date_picker_done_button.xml"
     },
     {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/year_label_text_view.xml",
@@ -50,10 +22,6 @@
     {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_selected_date.xml",
         "source": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/date_picker_selected_date.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_header_view.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/bundles/debug/res/layout/date_picker_header_view.xml"
     },
     {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/res/merged/androidTest/debug/layout/date_picker_done_button.xml",

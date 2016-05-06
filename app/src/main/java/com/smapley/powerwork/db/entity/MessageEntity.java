@@ -1,11 +1,13 @@
 package com.smapley.powerwork.db.entity;
 
 
+import com.smapley.powerwork.mode.BaseMode;
+
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
 @Table(name = "Message")
-public class MessageEntity {
+public class MessageEntity implements BaseMode {
 
 	@Column(name = "mes_id",isId = true,autoGen = false)
 	private int mes_id;

@@ -7,8 +7,11 @@ import android.widget.ImageView;
 
 import com.smapley.powerwork.R;
 import com.smapley.powerwork.application.LocalApplication;
-import com.smapley.powerwork.db.entity.NoteDetailsEntity;
+import com.smapley.powerwork.db.entity.TaskDetailsEntity;
 import com.smapley.powerwork.utils.BitmapUtil;
+import com.smapley.powerwork.utils.MyData;
+
+import org.xutils.x;
 
 import java.io.FileNotFoundException;
 
@@ -25,14 +28,18 @@ public class Add_Pic_Holder extends BaseHolder {
     }
 
 
-    public void setData(Context context, NoteDetailsEntity mode) {
-        Bitmap bitmap = null;
-        try {
-            bitmap = BitmapUtil.decodeSampledBitmap(mode.getPath(), LocalApplication.getInstance().screenW-70, 20);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        add_iv_pic.setImageBitmap(bitmap);
+    public void setData(Context context, TaskDetailsEntity mode, boolean edit) {
+        if (edit) {
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapUtil.decodeSampledBitmap(mode.getPath(), LocalApplication.getInstance().screenW - 70, 20);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            add_iv_pic.setImageBitmap(bitmap);
+        } else
+            x.image().bind(add_iv_pic, MyData.URL_NOTE + mode.getPath());
+
 
     }
 }

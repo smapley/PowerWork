@@ -169,5 +169,12 @@
     <string name="search">查找</string>
     <string name="searchnull">查找信息不能为空</string>
     <string name="search_ing">正在查找</string>
+    <string name="acc_bt_message">发送消息</string>
+    <string name="sendMessage">发送消息</string>
+    <string name="sendFeedback">提交反馈</string>
+    <string name="send">发送</string>
+    <string name="message_null">消息不能为空</string>
+    <string name="sendMessage_done">发送成功</string>
+    <string name="acc_bt_join">邀请</string>
 
 </resources>

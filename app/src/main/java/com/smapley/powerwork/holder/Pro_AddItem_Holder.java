@@ -92,7 +92,9 @@ public class Pro_AddItem_Holder extends BaseHolder {
             @Override
             public void onClick(View view) {
                 hitProjectPopupWindow(context);
-                context.startActivity(new Intent(context, Search.class));
+                Intent intent=new Intent(context, Search.class);
+                intent.putExtra("type",1);
+                context.startActivity(intent);
             }
         });
     }

@@ -46,6 +46,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         dialog = new SweetAlertDialog(this);
         isCreate = true;
+        initParams();
+
     }
 
     @Override

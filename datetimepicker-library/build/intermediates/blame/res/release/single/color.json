@@ -8,19 +8,7 @@
         "source": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/res/color/done_text_color.xml"
     },
     {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/release/color/date_picker_year_selector.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/res/color/date_picker_year_selector.xml"
-    },
-    {
         "merged": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/build/intermediates/res/merged/release/color/date_picker_selector.xml",
         "source": "/Users/smapley/Desktop/powerwork/PowerWork/datetimepicker-library/res/color/date_picker_selector.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/release/color/done_text_color.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/res/color/done_text_color.xml"
-    },
-    {
-        "merged": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/build/intermediates/res/merged/release/color/date_picker_selector.xml",
-        "source": "/Users/smapley/Desktop/Android/PowerWork/datetimepicker-library/res/color/date_picker_selector.xml"
     }
 ]

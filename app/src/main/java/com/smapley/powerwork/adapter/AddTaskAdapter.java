@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.db.entity.NoteDetailsEntity;
+import com.smapley.powerwork.db.entity.TaskDetailsEntity;
 import com.smapley.powerwork.holder.Add_Menu_Holder;
 import com.smapley.powerwork.holder.Add_Pic_Holder;
 import com.smapley.powerwork.holder.Add_Text_Holder;
@@ -21,23 +21,25 @@ import java.util.List;
 public class AddTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<NoteDetailsEntity> list;
+    private List<TaskDetailsEntity> list;
     private LayoutInflater inflater;
+    private boolean edit;
 
   //  public int focusPosition = 0;
 
-    public AddTaskAdapter(Context context, List<NoteDetailsEntity> list) {
+    public AddTaskAdapter(Context context, List<TaskDetailsEntity> list,boolean edit) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.list = list;
+        this.edit=edit;
 
     }
 
-    public List<NoteDetailsEntity> getList() {
+    public List<TaskDetailsEntity> getList() {
         return list;
     }
 
-    public void addItem(NoteDetailsEntity mode) {
+    public void addItem(TaskDetailsEntity mode) {
         list.add(list.size()-1, mode);
         notifyItemInserted(list.size()-1);
         notifyItemRangeChanged(list.size()-2, list.size());
@@ -71,13 +73,13 @@ public class AddTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((Add_Menu_Holder) holder).setData(context, this, position);
                 break;
             case 3:
-                ((Add_Pic_Holder) holder).setData(context, list.get(position));
+                ((Add_Pic_Holder) holder).setData(context, list.get(position),edit);
                 break;
             case 4:
                 ((Add_Voice_Holder) holder).setData(context, list.get(position));
                 break;
             case 5:
-                ((Add_Text_Holder) holder).setData(this, list.get(position), position);
+                ((Add_Text_Holder) holder).setData(this, list.get(position), position,edit);
                 break;
         }
 

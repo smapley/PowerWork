@@ -1,10 +1,12 @@
 package com.smapley.powerwork.db.entity;
 
+import com.smapley.powerwork.mode.BaseMode;
+
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
 @Table(name = "TaskDetails")
-public class TaskDetailsEntity {
+public class TaskDetailsEntity implements BaseMode {
 
 	@Column(name = "det_id",isId = true,autoGen = false)
 	private int det_id;
@@ -23,6 +25,13 @@ public class TaskDetailsEntity {
 	@Column(name = "state")
 	private int state;
 
+	public TaskDetailsEntity(int type){
+		this.type=type;
+	}
+
+	public TaskDetailsEntity(){
+
+	}
 
 	public int getDet_id() {
 		return det_id;
