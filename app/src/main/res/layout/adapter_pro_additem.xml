@@ -7,8 +7,10 @@
 
     <ImageButton
         android:id="@+id/pro_additem_iv_add"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="120dp"
+        android:scaleType="centerInside"
+        android:background="@color/white"
         android:src="@drawable/add_iv_title_select"/>
 
 </LinearLayout>
