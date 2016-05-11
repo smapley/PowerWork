@@ -47,6 +47,7 @@
     <string name="acc_bt_save">保存</string>
     <string name="acc_bt_exit">退出当前账号</string>
     <string name="acc_dialog_title">换个头像，换个心情</string>
+    <string name="acc_dialog_title3">换个项目图标，增加点生机？</string>
     <string name="acc_dialog_title2">修改的信息还没有保存哦！</string>
     <string name="acc_dialog_ok">去相册</string>
 

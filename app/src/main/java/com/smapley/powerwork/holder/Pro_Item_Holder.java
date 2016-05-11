@@ -33,7 +33,7 @@ public class Pro_Item_Holder extends BaseHolder {
 
     public void setData(final Context context, final ProjectEntity mode) {
         pros_item_tv_name.setText(mode.getName());
-        x.image().bind(pros_item_iv_pic, MyData.URL_PIC + mode.getPic_url(), LocalApplication.getInstance().FilletImage);
+        x.image().bind(pros_item_iv_pic, MyData.URL_PIC + mode.getPic_url(), LocalApplication.getInstance().CirtlesImageMin);
 
         pros_item_iv_pic.setOnClickListener(new View.OnClickListener() {
             @Override

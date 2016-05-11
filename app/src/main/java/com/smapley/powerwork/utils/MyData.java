@@ -25,6 +25,7 @@ public class MyData {
     public final static String URL_LOGIN = BASE_URL + "Login";
     public final static String URL_REGISTER = BASE_URL + "Register";
     public final static String URL_UserPicUpLoad = BASE_URL + "UserPicUpLoad";
+    public final static String URL_ProjectPicUpLoad = BASE_URL + "ProjectPicUpLoad";
     public final static String URL_Account = BASE_URL + "Account";
     public final static String URL_Feedback = BASE_URL + "Feedback";
     public final static String URL_AddProject = BASE_URL + "AddProject";
@@ -44,6 +45,7 @@ public class MyData {
     public final static String URL_SearchProject = BASE_URL + "SearchProject";
     public final static String URL_MessageList = BASE_URL + "MessageList";
     public final static String URL_SendMessage = BASE_URL + "SendMessage";
+    public final static String URL_JoinProject = BASE_URL + "JoinProject";
 
 
     public final static String PIC_FILE = URL_PIC + "base/file.png";

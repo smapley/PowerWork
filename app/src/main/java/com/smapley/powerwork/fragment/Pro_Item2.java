@@ -93,21 +93,22 @@ public class Pro_Item2 extends BaseFragment {
                             .findAll();
                     List<TaskEntity> myTask = new ArrayList<TaskEntity>();
                     List<TaskEntity> otherTask = new ArrayList<TaskEntity>();
-                    for (TaskEntity taskEntity : listTask) {
-                        List<TasUseEntity> tasUseEntities = dbUtils.selector(TasUseEntity.class)
-                                .where("tas_id", "=", taskEntity.getTas_id())
-                                .and("use_id", "=", userEntity.getUseId())
-                                .findAll();
-                        if (tasUseEntities!=null&&!tasUseEntities.isEmpty()){
-                            myTask.add(taskEntity);
-                        }else
-                            otherTask.add(taskEntity);
+                    if (listTask != null && !listTask.isEmpty())
+                        for (TaskEntity taskEntity : listTask) {
+                            List<TasUseEntity> tasUseEntities = dbUtils.selector(TasUseEntity.class)
+                                    .where("tas_id", "=", taskEntity.getTas_id())
+                                    .and("use_id", "=", userEntity.getUseId())
+                                    .findAll();
+                            if (tasUseEntities != null && !tasUseEntities.isEmpty()) {
+                                myTask.add(taskEntity);
+                            } else
+                                otherTask.add(taskEntity);
 
-                    }
+                        }
                     if (myTask != null && !myTask.isEmpty())
-                        mhandler.obtainMessage(GETMYTASK, listTask).sendToTarget();
+                        mhandler.obtainMessage(GETMYTASK, myTask).sendToTarget();
                     if (otherTask != null && !otherTask.isEmpty())
-                        mhandler.obtainMessage(GETOTHERTASK, listTask).sendToTarget();
+                        mhandler.obtainMessage(GETOTHERTASK, otherTask).sendToTarget();
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
@@ -116,13 +117,7 @@ public class Pro_Item2 extends BaseFragment {
     }
 
 
-
     public void getDataForWeb() {
-        getMytaskForWeb();
-        getOtherTaskForWeb();
-    }
-
-    private void getMytaskForWeb() {
         BaseParams params = new BaseParams(MyData.URL_TaskList, userEntity);
         params.addBodyParameter("projectId", pro_id + "");
         x.http().post(params, new Callback.CommonCallback<MyResponse>() {
@@ -163,54 +158,6 @@ public class Pro_Item2 extends BaseFragment {
 
     }
 
-    private void getOtherTaskForWeb() {
-        BaseParams params = new BaseParams(MyData.URL_OtherTaskList, userEntity);
-        params.addBodyParameter("pro_id", pro_id + "");
-        x.http().post(params, new Callback.CommonCallback<MyResponse>() {
-            @Override
-            public void onSuccess(MyResponse result) {
-//                final List<OtherTaskEntity> listTask = JSON.parseObject(result.data, new TypeReference<List<OtherTaskEntity>>() {
-//                });
-//                if (listTask != null && !listTask.isEmpty()) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            //添加新表
-//                            for (OtherTaskEntity otherTaskEntity : listTask) {
-//                                try {
-//                                    //添加Task
-//                                    dbUtils.saveOrUpdate(otherTaskEntity);
-//                                    for(TasUseMode tasUseMode :otherTaskEntity.getListTasUse())
-//                                        dbUtils.replace(tasUseMode);
-//                                } catch (DbException e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                            }
-//                            mhandler.obtainMessage(SAVEOTHERTASK).sendToTarget();
-//                        }
-//                    }).start();
-//
-//                }
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-
-    }
 
     private Handler mhandler = new Handler() {
         @Override

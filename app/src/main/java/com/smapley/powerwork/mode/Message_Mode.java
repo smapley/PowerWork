@@ -14,18 +14,28 @@ public class Message_Mode implements BaseMode {
     private long cre_date;
     private String pic_url;
     private String name;
+    private int projectId;
 
 
     public Message_Mode(MessageEntity entity,UserEntity userEntity) {
-        this.type = 0;
+        this.type = entity.getType();
         this.id=entity.getMes_id();
         this.cre_date=entity.getCre_date();
         this.pic_url=userEntity.getPicUrl();
         this.name=entity.getDetails();
+        this.projectId=entity.getPro_id();
     }
 
     public Message_Mode(){
 
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     public void setType(int type) {

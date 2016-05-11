@@ -25,6 +25,7 @@ public class LocalApplication extends BaseApplication {
     private DbManager.DaoConfig daoConfig ;
 
     public ImageOptions CirtlesImage;
+    public ImageOptions CirtlesImageMin;
     public ImageOptions FilletImage;
 
     //当前屏幕的高宽
@@ -80,15 +81,25 @@ public class LocalApplication extends BaseApplication {
         //初始化圆角图片
         FilletImage=new ImageOptions.Builder()
                 .setRadius(DensityUtil.dip2px(10))
-                        // 如果ImageView的大小不是定义为wrap_content, 不要crop.
+                // 如果ImageView的大小不是定义为wrap_content, 不要crop.
                 .setCrop(true)
-                        // 加载中或错误图片的ScaleType
+                // 加载中或错误图片的ScaleType
                 .setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setLoadingDrawableId(R.mipmap.logo)
                 .setFailureDrawableId(R.mipmap.logo)
                 .build();
-
+        //初始化圆角图片
+        CirtlesImageMin=new ImageOptions.Builder()
+                .setRadius(DensityUtil.dip2px(100))
+                // 如果ImageView的大小不是定义为wrap_content, 不要crop.
+                .setCrop(true)
+                // 加载中或错误图片的ScaleType
+                .setPlaceholderScaleType(ImageView.ScaleType.MATRIX)
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setLoadingDrawableId(R.mipmap.logo)
+                .setFailureDrawableId(R.mipmap.logo)
+                .build();
 
         instance = this;
 

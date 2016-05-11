@@ -1,5 +1,6 @@
 package com.smapley.powerwork.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,8 +10,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.smapley.powerwork.R;
-import com.smapley.powerwork.application.LocalApplication;
 import com.smapley.powerwork.db.entity.ProjectEntity;
 import com.smapley.powerwork.fragment.BaseFragment;
 import com.smapley.powerwork.fragment.Pro_Item1;
@@ -18,6 +20,8 @@ import com.smapley.powerwork.fragment.Pro_Item2;
 import com.smapley.powerwork.fragment.Pro_Item3;
 import com.smapley.powerwork.fragment.Pro_Item4;
 import com.smapley.powerwork.fragment.Pro_Item5;
+import com.smapley.powerwork.http.callback.HttpCallBack;
+import com.smapley.powerwork.http.params.BaseParams;
 import com.smapley.powerwork.utils.MyData;
 
 import org.xutils.ex.DbException;
@@ -26,9 +30,11 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 /**
@@ -96,9 +102,58 @@ public class Project extends BaseActivity {
     private void initView() {
         if (project != null) {
             pro_ct_layout.setTitle(project.getName());
-            x.image().bind(pro_item1_iv, MyData.URL_PIC+project.getPic_url(), LocalApplication.getInstance().CirtlesImage);
+            x.image().bind(pro_item1_iv, MyData.URL_PIC+project.getPic_url());
         }
+        pro_item1_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog = new SweetAlertDialog(Project.this);
+                dialog.showText(R.string.acc_dialog_title3)
+                        .showCancelButton()
+                        .showConfirmButton(R.string.acc_dialog_ok)
+                        .setOnSweetClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onConfirmClick(SweetAlertDialog dialog) {
+                                selectPic(Project.this);
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFirstClick(SweetAlertDialog dialog) {
+
+                            }
+
+                            @Override
+                            public void onCancelClick(SweetAlertDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+
+            }
+        });
     }
+
+    /**
+     * 从相册选择头像
+     */
+    private void selectPic(Context context) {
+        int selectedMode = MultiImageSelectorActivity.MODE_SINGLE;
+        boolean showCamera = true;
+        int maxNum = 1;
+        Intent intent = new Intent(context, MultiImageSelectorActivity.class);
+        // 是否显示拍摄图片
+        intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, showCamera);
+        // 最大可选择图片数量
+        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, maxNum);
+        // 选择模式
+        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, selectedMode);
+        // 默认选择
+//                if (mSelectPath != null && mSelectPath.size() > 0) {
+//                    intent.putExtra(MultiImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, mSelectPath);
+//                }
+        startActivityForResult(intent, 0);
+    }
+
 
     private void initFragment() {
         pro_lt_fragment = new ArrayList<>();
@@ -204,6 +259,28 @@ public class Project extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
+            case 0:
+                List<String> resultList1 = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                BaseParams params = new BaseParams(MyData.URL_ProjectPicUpLoad, userEntity);
+                params.addBodyParameter("projectId",pro_id+"");
+                params.addBodyParameter("file", new File(resultList1.get(0)));
+                params.setMultipart(true);
+                x.http().post(params, new HttpCallBack(Project.this, R.string.acc_dialog_uppic) {
+                    @Override
+                    public void onResult(String result, SweetAlertDialog dialog) {
+                        dialog.dismiss();
+                        try {
+                            ProjectEntity projectEntity = JSON.parseObject(result, new TypeReference<ProjectEntity>() {
+                            });
+                            dbUtils.saveOrUpdate(projectEntity);
+                            initData();
+                            initView();
+                        } catch (DbException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                break;
             case 1:
                 if (resultCode == RESULT_OK) {
                     pro_item3.addFolder(data.getStringExtra("name"));

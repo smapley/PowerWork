@@ -11,6 +11,6 @@
         android:layout_height="120dp"
         android:scaleType="centerInside"
         android:background="@color/white"
-        android:src="@drawable/add_iv_title_select"/>
+        android:src="@drawable/add_iv_button_select"/>
 
 </LinearLayout>
